@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Amal Neko Glow — Mobile Widgets 🐾</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .widget-page-header {
+      text-align: center;
+      margin-bottom: 1.8rem;
+    }
+
+    .widget-selector-tabs {
+      display: flex;
+      gap: 0.6rem;
+      background: var(--input-bg);
+      padding: 0.35rem;
+      border-radius: 14px;
+      border: 1.5px solid var(--input-border);
+      margin-bottom: 2rem;
+    }
+
+    .w-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .w-tab-btn.active {
+      background: linear-gradient(135deg, var(--primary-glow), var(--primary-accent));
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(255, 117, 195, 0.4);
+    }
+
+    /* Widget Containers */
+    .widget-display-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    /* 3x2 Wide Widget */
+    .widget-3x2 {
+      width: 360px;
+      height: 200px;
+      background: var(--dropdown-bg);
+      border: 2px solid var(--primary-glow);
+      border-radius: 26px;
+      padding: 1.1rem 1.3rem;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 25px rgba(255, 117, 195, 0.35);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+
+    /* 3x3 Large Square Widget */
+    .widget-3x3 {
+      width: 310px;
+      height: 310px;
+      background: var(--dropdown-bg);
+      border: 2px solid var(--primary-glow);
+      border-radius: 28px;
+      padding: 1.2rem;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 117, 195, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+
+    /* 2x3 Tall Vertical Widget */
+    .widget-2x3 {
+      width: 200px;
+      height: 320px;
+      background: var(--dropdown-bg);
+      border: 2px solid var(--primary-glow);
+      border-radius: 26px;
+      padding: 1.1rem 1rem;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 25px rgba(255, 117, 195, 0.35);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+
+    /* Widget Internal Components */
+    .widget-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .widget-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--primary-glow);
+    }
+
+    .widget-progress-pill {
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      background: rgba(255, 117, 195, 0.2);
+      color: var(--primary-glow);
+      font-weight: 700;
+    }
+
+    .widget-task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin: 0.4rem 0;
+      overflow-y: auto;
+    }
+
+    .w-task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.84rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.45rem 0.65rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .w-task-item.completed span {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .w-checkbox {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 1.5px solid var(--primary-glow);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .w-task-item.completed .w-checkbox {
+      background: var(--primary-glow);
+      color: #fff;
+    }
+
+    .widget-bottom-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      padding-top: 0.4rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .widget-back-link {
+      margin-top: 2rem;
+      color: var(--primary-glow);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="widget-page-header">
+    <h1>Amal Neko Glow 🐾</h1>
+    <p class="subtitle">Mobile Home Screen Widgets</p>
+  </div>
+
+  <!-- Widget Size Selector -->
+  <div class="widget-selector-tabs">
+    <button class="w-tab-btn active ripple-btn" data-widget="3x2">3x2 Wide</button>
+    <button class="w-tab-btn ripple-btn" data-widget="3x3">3x3 Square</button>
+    <button class="w-tab-btn ripple-btn" data-widget="2x3">2x3 Tall</button>
+  </div>
+
+  <!-- Widget Display Area -->
+  <div class="widget-display-area">
+    <!-- 3x2 Wide Widget -->
+    <div id="w-container-3x2" class="widget-3x2">
+      <div class="widget-top-bar">
+        <div class="widget-brand">
+          <span>🐱</span>
+          <span>Neko Study 3x2</span>
+        </div>
+        <span class="widget-progress-pill" id="w-3x2-progress">0% Done</span>
+      </div>
+      <ul class="widget-task-list" id="w-3x2-tasks"></ul>
+      <div class="widget-bottom-bar">
+        <span id="w-3x2-stats">0 Goals</span>
+        <span>Tap 🐾 to complete</span>
+      </div>
+    </div>
+
+    <!-- 3x3 Large Square Widget -->
+    <div id="w-container-3x3" class="widget-3x3 hidden">
+      <div class="widget-top-bar">
+        <div class="widget-brand">
+          <span style="font-size: 1.3rem;">🐱</span>
+          <span>Neko Dashboard 3x3</span>
+        </div>
+        <span class="widget-progress-pill" id="w-3x3-progress">0% Done</span>
+      </div>
+      <ul class="widget-task-list" id="w-3x3-tasks" style="max-height: 180px;"></ul>
+      <div class="widget-bottom-bar">
+        <span id="w-3x3-stats">0 Total • 0 Active</span>
+        <span>Purrrrr... ✨</span>
+      </div>
+    </div>
+
+    <!-- 2x3 Tall Vertical Widget -->
+    <div id="w-container-2x3" class="widget-2x3 hidden">
+      <div class="widget-top-bar">
+        <div class="widget-brand">
+          <span>🐱</span>
+          <span>2x3 Tall</span>
+        </div>
+      </div>
+      <div style="font-size: 0.72rem; color: var(--primary-glow); font-weight: 700; margin: 0.2rem 0;" id="w-2x3-progress">
+        0% Completed
+      </div>
+      <ul class="widget-task-list" id="w-2x3-tasks" style="max-height: 190px;"></ul>
+      <div class="widget-bottom-bar">
+        <span>🐾 Study Goals</span>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="widget-back-link ripple-btn">
+    <span>← Back to Full App</span>
+  </a>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem('amal_study_todos_v3') || '[]');
+
+    const tabBtns = document.querySelectorAll('.w-tab-btn');
+    const w3x2 = document.getElementById('w-container-3x2');
+    const w3x3 = document.getElementById('w-container-3x3');
+    const w2x3 = document.getElementById('w-container-2x3');
+
+    // Check URL parameters (e.g. ?size=3x3)
+    const urlParams = new URLSearchParams(window.location.search);
+    const sizeParam = urlParams.get('size');
+    if (sizeParam) {
+      switchWidget(sizeParam);
+    }
+
+    function switchWidget(size) {
+      tabBtns.forEach(b => b.classList.toggle('active', b.dataset.widget === size));
+      w3x2.classList.toggle('hidden', size !== '3x2');
+      w3x3.classList.toggle('hidden', size !== '3x3');
+      w2x3.classList.toggle('hidden', size !== '2x3');
+    }
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => switchWidget(btn.dataset.widget));
+    });
+
+    function renderWidgets() {
+      tasks = JSON.parse(localStorage.getItem('amal_study_todos_v3') || '[]');
+      const total = tasks.length;
+      const completed = tasks.filter(t => t.completed).length;
+      const active = total - completed;
+      const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+      // 3x2 Updates
+      document.getElementById('w-3x2-progress').textContent = `${pct}% Done`;
+      document.getElementById('w-3x2-stats').textContent = `${active} Pending • ${completed} Done`;
+      renderWidgetList('w-3x2-tasks', tasks.slice(0, 2));
+
+      // 3x3 Updates
+      document.getElementById('w-3x3-progress').textContent = `${pct}% Done`;
+      document.getElementById('w-3x3-stats').textContent = `${active} Pending • ${completed} Done`;
+      renderWidgetList('w-3x3-tasks', tasks.slice(0, 4));
+
+      // 2x3 Updates
+      document.getElementById('w-2x3-progress').textContent = `${pct}% Done (${completed}/${total})`;
+      renderWidgetList('w-2x3-tasks', tasks.slice(0, 4));
+    }
+
+    function renderWidgetList(elementId, taskSubset) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      el.innerHTML = '';
+
+      if (taskSubset.length === 0) {
+        el.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 1rem 0;">All caught up! 🐾</li>';
+        return;
+      }
+
+      taskSubset.forEach(t => {
+        const li = document.createElement('li');
+        li.className = `w-task-item ${t.completed ? 'completed' : ''}`;
+        li.innerHTML = `
+          <button class="w-checkbox" data-id="${t.id}">
+            ${t.completed ? '🐾' : ''}
+          </button>
+          <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.text}</span>
+        `;
+        el.appendChild(li);
+      });
+    }
+
+    document.body.addEventListener('click', e => {
+      const cb = e.target.closest('.w-checkbox');
+      if (cb) {
+        const id = Number(cb.dataset.id);
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+          task.completed = !task.completed;
+          localStorage.setItem('amal_study_todos_v3', JSON.stringify(tasks));
+          renderWidgets();
+        }
+      }
+    });
+
+    renderWidgets();
+  </script>
+</body>
+</html>

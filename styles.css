@@ -1071,6 +1071,178 @@ h1 {
   color: var(--badge-urgent-text);
 }
 
+/* =================================================== */
+/* 📱 MOBILE WIDGETS STYLING (3x2, 3x3, 2x3)           */
+/* =================================================== */
+.widgets-modal-card {
+  max-width: 480px;
+}
+
+.modal-widget-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--input-bg);
+  padding: 0.3rem;
+  border-radius: 14px;
+  border: 1.5px solid var(--input-border);
+  margin-bottom: 1.5rem;
+}
+
+.m-tab-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 0.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.m-tab-btn.active {
+  background: linear-gradient(135deg, var(--primary-glow), var(--primary-accent));
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 117, 195, 0.4);
+}
+
+.modal-widget-preview-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+}
+
+.widget-3x2 {
+  width: 100%;
+  max-width: 380px;
+  height: 200px;
+  background: var(--dropdown-bg);
+  border: 2px solid var(--primary-glow);
+  border-radius: 26px;
+  padding: 1.1rem 1.3rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 25px rgba(255, 117, 195, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+
+.widget-3x3 {
+  width: 100%;
+  max-width: 310px;
+  height: 310px;
+  background: var(--dropdown-bg);
+  border: 2px solid var(--primary-glow);
+  border-radius: 28px;
+  padding: 1.2rem;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 117, 195, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+
+.widget-2x3 {
+  width: 100%;
+  max-width: 220px;
+  height: 310px;
+  background: var(--dropdown-bg);
+  border: 2px solid var(--primary-glow);
+  border-radius: 26px;
+  padding: 1.1rem 1rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55), 0 0 25px rgba(255, 117, 195, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+
+.widget-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.widget-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--primary-glow);
+}
+
+.widget-progress-pill {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  background: rgba(255, 117, 195, 0.2);
+  color: var(--primary-glow);
+  font-weight: 700;
+}
+
+.widget-task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.4rem 0;
+  overflow-y: auto;
+}
+
+.w-task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.84rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.w-task-item.completed span {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.w-checkbox {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  border: 1.5px solid var(--primary-glow);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.w-task-item.completed .w-checkbox {
+  background: var(--primary-glow);
+  color: #fff;
+}
+
+.widget-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 /* Empty State */
 .empty-state {
   text-align: center;

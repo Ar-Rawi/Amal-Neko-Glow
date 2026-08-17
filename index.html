@@ -53,6 +53,11 @@
       </div>
       
       <div class="header-controls">
+        <!-- Mobile Widgets Drawer Trigger -->
+        <button id="widget-toggle-btn" class="icon-btn ripple-btn" title="Open Mobile Widgets (3x2, 3x3, 2x3)" aria-label="Mobile Widgets">
+          <span>📱</span>
+        </button>
+
         <!-- Notification Bell Toggle for Mobile/Lock-Screen Alerts -->
         <button id="notif-toggle-btn" class="icon-btn ripple-btn" title="Enable Mobile & Lock-Screen Notifications" aria-label="Notifications">
           <span id="notif-icon">🔔</span>
@@ -225,6 +230,71 @@
         <div class="footer-meta">Crafted with 💖 for Study & Cat Lovers • Amal Neko Glow</div>
       </footer>
     </main>
+  </div>
+
+  <!-- Mobile Widgets Drawer Modal -->
+  <div id="widgets-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card widgets-modal-card">
+      <div class="modal-header">
+        <h3>📱 Mobile Widgets (3x2, 3x3, 2x3)</h3>
+        <button id="close-widgets-modal-btn" class="icon-btn ripple-btn">&times;</button>
+      </div>
+
+      <div class="modal-widget-tabs">
+        <button class="m-tab-btn active" data-wsize="3x2">3x2 Wide</button>
+        <button class="m-tab-btn" data-wsize="3x3">3x3 Square</button>
+        <button class="m-tab-btn" data-wsize="2x3">2x3 Tall</button>
+      </div>
+
+      <div class="modal-widget-preview-area">
+        <!-- 3x2 Preview -->
+        <div id="modal-w-3x2" class="widget-3x2">
+          <div class="widget-top-bar">
+            <div class="widget-brand"><span>🐱</span><span>Neko Study 3x2</span></div>
+            <span class="widget-progress-pill" id="mw-3x2-progress">0% Done</span>
+          </div>
+          <ul class="widget-task-list" id="mw-3x2-tasks"></ul>
+          <div class="widget-bottom-bar">
+            <span id="mw-3x2-stats">0 Goals</span>
+            <span>Tap 🐾 to check</span>
+          </div>
+        </div>
+
+        <!-- 3x3 Preview -->
+        <div id="modal-w-3x3" class="widget-3x3 hidden">
+          <div class="widget-top-bar">
+            <div class="widget-brand"><span style="font-size: 1.3rem;">🐱</span><span>Neko Dashboard 3x3</span></div>
+            <span class="widget-progress-pill" id="mw-3x3-progress">0% Done</span>
+          </div>
+          <ul class="widget-task-list" id="mw-3x3-tasks" style="max-height: 170px;"></ul>
+          <div class="widget-bottom-bar">
+            <span id="mw-3x3-stats">0 Goals</span>
+            <span>Purrrrr... ✨</span>
+          </div>
+        </div>
+
+        <!-- 2x3 Preview -->
+        <div id="modal-w-2x3" class="widget-2x3 hidden">
+          <div class="widget-top-bar">
+            <div class="widget-brand"><span>🐱</span><span>2x3 Tall</span></div>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--primary-glow); font-weight: 700; margin: 0.2rem 0;" id="mw-2x3-progress">
+            0% Completed
+          </div>
+          <ul class="widget-task-list" id="mw-2x3-tasks" style="max-height: 180px;"></ul>
+          <div class="widget-bottom-bar">
+            <span>🐾 Study Goals</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+        <a href="widget.html" target="_blank" class="text-btn" style="color: var(--primary-glow); font-weight: 600;">
+          ↗ Open Standalone Widgets
+        </a>
+        <button type="button" id="done-widgets-modal-btn" class="glow-btn ripple-btn">Done 🐾</button>
+      </div>
+    </div>
   </div>
 
   <!-- Custom Add Category Modal -->

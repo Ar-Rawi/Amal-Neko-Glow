@@ -1139,9 +1139,118 @@ function initParticleCanvas() {
   });
 }
 
+// ===================================================
+// 📱 MOBILE WIDGETS MODAL & LIVE SYNC ENGINE
+// ===================================================
+const widgetsModal = document.getElementById('widgets-modal');
+const widgetToggleBtn = document.getElementById('widget-toggle-btn');
+const closeWidgetsModalBtn = document.getElementById('close-widgets-modal-btn');
+const doneWidgetsModalBtn = document.getElementById('done-widgets-modal-btn');
+const mTabBtns = document.querySelectorAll('.m-tab-btn');
+const mw3x2 = document.getElementById('modal-w-3x2');
+const mw3x3 = document.getElementById('modal-w-3x3');
+const mw2x3 = document.getElementById('modal-w-2x3');
+
+function switchModalWidget(size) {
+  mTabBtns.forEach(b => b.classList.toggle('active', b.dataset.wsize === size));
+  if (mw3x2) mw3x2.classList.toggle('hidden', size !== '3x2');
+  if (mw3x3) mw3x3.classList.toggle('hidden', size !== '3x3');
+  if (mw2x3) mw2x3.classList.toggle('hidden', size !== '2x3');
+}
+
+mTabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    playPopSound();
+    switchModalWidget(btn.dataset.wsize);
+  });
+});
+
+function renderModalWidgets() {
+  const total = tasks.length;
+  const completed = tasks.filter(t => t.completed).length;
+  const active = total - completed;
+  const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+  // 3x2
+  const p3x2 = document.getElementById('mw-3x2-progress');
+  const s3x2 = document.getElementById('mw-3x2-stats');
+  if (p3x2) p3x2.textContent = `${pct}% Done`;
+  if (s3x2) s3x2.textContent = `${active} Pending • ${completed} Done`;
+  renderModalWidgetList('mw-3x2-tasks', tasks.slice(0, 2));
+
+  // 3x3
+  const p3x3 = document.getElementById('mw-3x3-progress');
+  const s3x3 = document.getElementById('mw-3x3-stats');
+  if (p3x3) p3x3.textContent = `${pct}% Done`;
+  if (s3x3) s3x3.textContent = `${active} Pending • ${completed} Done`;
+  renderModalWidgetList('mw-3x3-tasks', tasks.slice(0, 4));
+
+  // 2x3
+  const p2x3 = document.getElementById('mw-2x3-progress');
+  if (p2x3) p2x3.textContent = `${pct}% Done (${completed}/${total})`;
+  renderModalWidgetList('mw-2x3-tasks', tasks.slice(0, 4));
+}
+
+function renderModalWidgetList(elementId, taskSubset) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  el.innerHTML = '';
+
+  if (taskSubset.length === 0) {
+    el.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 0.8rem 0;">All caught up! 🐾</li>';
+    return;
+  }
+
+  taskSubset.forEach(t => {
+    const li = document.createElement('li');
+    li.className = `w-task-item ${t.completed ? 'completed' : ''}`;
+    li.innerHTML = `
+      <button class="w-checkbox ripple-btn" data-id="${t.id}">
+        ${t.completed ? '🐾' : ''}
+      </button>
+      <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(t.text)}</span>
+    `;
+    el.appendChild(li);
+  });
+}
+
+if (widgetsModal) {
+  widgetsModal.addEventListener('click', e => {
+    const cb = e.target.closest('.w-checkbox');
+    if (cb) {
+      playPopSound();
+      const id = Number(cb.dataset.id);
+      const task = tasks.find(t => t.id === id);
+      if (task) {
+        task.completed = !task.completed;
+        saveTasks();
+        render();
+        renderModalWidgets();
+      }
+    }
+  });
+}
+
+if (widgetToggleBtn && widgetsModal) {
+  widgetToggleBtn.addEventListener('click', () => {
+    playPopSound();
+    renderModalWidgets();
+    widgetsModal.classList.remove('hidden');
+  });
+}
+
+if (closeWidgetsModalBtn) {
+  closeWidgetsModalBtn.addEventListener('click', () => widgetsModal.classList.add('hidden'));
+}
+
+if (doneWidgetsModalBtn) {
+  doneWidgetsModalBtn.addEventListener('click', () => widgetsModal.classList.add('hidden'));
+}
+
 // Boot up
 document.addEventListener('DOMContentLoaded', () => {
   renderCategoryDropdowns();
   render();
   initParticleCanvas();
 });
+
