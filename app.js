@@ -1314,7 +1314,7 @@ function openSettingsModal(e) {
   }
   if (settingsModalLock) return;
   settingsModalLock = true;
-  setTimeout(() => { settingsModalLock = false; }, 400);
+  setTimeout(() => { settingsModalLock = false; }, 300);
 
   playPopSound();
   updateSettingsUI();
@@ -1325,13 +1325,67 @@ function openSettingsModal(e) {
   }
 }
 
-function closeSettingsModal() {
+function closeSettingsModal(e) {
+  if (e) e.stopPropagation();
   const sm = document.getElementById('settings-modal');
   if (sm) {
     sm.classList.add('hidden');
     sm.style.display = 'none';
   }
 }
+
+function openWidgetsFromSettings(e) {
+  if (e) e.stopPropagation();
+  playPopSound();
+  closeSettingsModal();
+  const wm = document.getElementById('widgets-modal');
+  if (wm) {
+    renderModalWidgets();
+    wm.classList.remove('hidden');
+    wm.style.display = 'flex';
+  }
+}
+
+async function toggleSettingsNotif(e) {
+  if (e) e.stopPropagation();
+  playPopSound();
+  if (!('Notification' in window)) {
+    showNotification("Notifications Not Supported", "Your browser doesn't support system push notifications.");
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  updateSettingsUI();
+  if (permission === 'granted') {
+    showNotification("Amal Neko Glow 🐾", "Purrrrr! Lock-Screen Notifications are now active! ✨");
+  }
+}
+
+function toggleSettingsSound(e) {
+  if (e) e.stopPropagation();
+  soundEnabled = !soundEnabled;
+  localStorage.setItem('amal_sound_enabled', soundEnabled);
+  updateSettingsUI();
+  if (soundEnabled) playPopSound();
+}
+
+function toggleSettingsTheme(e) {
+  if (e) e.stopPropagation();
+  playPopSound();
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('amal_theme', next);
+  updateSettingsUI();
+}
+
+// Expose directly to window for foolproof HTML onclick fallback
+window.openSettingsModal = openSettingsModal;
+window.closeSettingsModal = closeSettingsModal;
+window.openWidgetsFromSettings = openWidgetsFromSettings;
+window.toggleSettingsNotif = toggleSettingsNotif;
+window.toggleSettingsSound = toggleSettingsSound;
+window.toggleSettingsTheme = toggleSettingsTheme;
+window.updateSettingsUI = updateSettingsUI;
 
 function initSettingsEngine() {
   const btn = document.getElementById('settings-toggle-btn');
@@ -1343,76 +1397,32 @@ function initSettingsEngine() {
   const themeBtn = document.getElementById('settings-theme-btn');
   const sm = document.getElementById('settings-modal');
 
-  if (btn) {
-    btn.addEventListener('click', openSettingsModal);
-  }
-
+  if (btn) btn.addEventListener('click', openSettingsModal);
   if (sm) {
     sm.addEventListener('click', (e) => {
-      if (e.target === sm) {
-        closeSettingsModal();
-      }
+      if (e.target === sm) closeSettingsModal(e);
     });
   }
-
   if (closeBtn) closeBtn.addEventListener('click', closeSettingsModal);
   if (doneBtn) doneBtn.addEventListener('click', closeSettingsModal);
-
-  if (openWidgetsBtn) {
-    openWidgetsBtn.addEventListener('click', () => {
-      playPopSound();
-      closeSettingsModal();
-      const wm = document.getElementById('widgets-modal');
-      if (wm) {
-        renderModalWidgets();
-        wm.classList.remove('hidden');
-        wm.style.display = 'flex';
-      }
-    });
-  }
-
-  if (notifBtn) {
-    notifBtn.addEventListener('click', async () => {
-      playPopSound();
-      if (!('Notification' in window)) {
-        showNotification("Notifications Not Supported", "Your browser doesn't support system push notifications.");
-        return;
-      }
-      const permission = await Notification.requestPermission();
-      updateSettingsUI();
-      if (permission === 'granted') {
-        showNotification("Amal Neko Glow 🐾", "Purrrrr! Lock-Screen Notifications are now active! ✨");
-      }
-    });
-  }
-
-  if (soundBtn) {
-    soundBtn.addEventListener('click', () => {
-      soundEnabled = !soundEnabled;
-      localStorage.setItem('amal_sound_enabled', soundEnabled);
-      updateSettingsUI();
-      if (soundEnabled) playPopSound();
-    });
-  }
-
-  if (themeBtn) {
-    themeBtn.addEventListener('click', () => {
-      playPopSound();
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('amal_theme', next);
-      updateSettingsUI();
-    });
-  }
+  if (openWidgetsBtn) openWidgetsBtn.addEventListener('click', openWidgetsFromSettings);
+  if (notifBtn) notifBtn.addEventListener('click', toggleSettingsNotif);
+  if (soundBtn) soundBtn.addEventListener('click', toggleSettingsSound);
+  if (themeBtn) themeBtn.addEventListener('click', toggleSettingsTheme);
 }
 
-// Boot up
-document.addEventListener('DOMContentLoaded', () => {
+// Boot up logic (Immediate + DOMContentLoaded safe)
+function bootstrapAmalNekoApp() {
   renderCategoryDropdowns();
   render();
   initParticleCanvas();
   initSettingsEngine();
   updateSettingsUI();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrapAmalNekoApp);
+} else {
+  bootstrapAmalNekoApp();
+}
 

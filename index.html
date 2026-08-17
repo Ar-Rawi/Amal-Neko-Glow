@@ -54,7 +54,7 @@
       
       <div class="header-controls">
         <!-- Main App Settings Trigger -->
-        <button id="settings-toggle-btn" class="icon-btn ripple-btn" title="Open Settings ⚙️" aria-label="Settings">
+        <button id="settings-toggle-btn" class="icon-btn ripple-btn" onclick="window.openSettingsModal &amp;&amp; window.openSettingsModal(event)" title="Open Settings ⚙️" aria-label="Settings">
           <span class="settings-gear-icon">⚙️</span>
         </button>
       </div>
@@ -364,11 +364,11 @@
   </div>
 
   <!-- App Settings Modal -->
-  <div id="settings-modal" class="modal-overlay hidden">
+  <div id="settings-modal" class="modal-overlay hidden" onclick="if(event.target === this) window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">
     <div class="glass-card modal-card settings-modal-card">
       <div class="modal-header">
         <h3>⚙️ App Settings</h3>
-        <button id="close-settings-modal-btn" class="icon-btn ripple-btn">&times;</button>
+        <button id="close-settings-modal-btn" class="icon-btn ripple-btn" onclick="window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">&times;</button>
       </div>
 
       <div class="settings-options-list">
@@ -381,7 +381,7 @@
               <p class="setting-desc">Preview and configure mobile widgets</p>
             </div>
           </div>
-          <button id="open-widgets-from-settings" class="btn-secondary ripple-btn small-btn">Open 📱</button>
+          <button id="open-widgets-from-settings" class="btn-secondary ripple-btn small-btn" onclick="window.openWidgetsFromSettings &amp;&amp; window.openWidgetsFromSettings(event)">Open 📱</button>
         </div>
 
         <!-- 🔔 Notifications Toggle -->
@@ -393,7 +393,7 @@
               <p class="setting-desc" id="settings-notif-status">System and mobile push alerts</p>
             </div>
           </div>
-          <button id="settings-notif-btn" class="glow-btn ripple-btn small-btn">Toggle 🔔</button>
+          <button id="settings-notif-btn" class="glow-btn ripple-btn small-btn" onclick="window.toggleSettingsNotif &amp;&amp; window.toggleSettingsNotif(event)">Toggle 🔔</button>
         </div>
 
         <!-- 🔊 Sound Effects Toggle -->
@@ -405,7 +405,7 @@
               <p class="setting-desc" id="settings-sound-status">Cute meow, purr, and chime sounds</p>
             </div>
           </div>
-          <button id="settings-sound-btn" class="glow-btn ripple-btn small-btn">Toggle 🔊</button>
+          <button id="settings-sound-btn" class="glow-btn ripple-btn small-btn" onclick="window.toggleSettingsSound &amp;&amp; window.toggleSettingsSound(event)">Toggle 🔊</button>
         </div>
 
         <!-- 🐱 Cat Mood Theme Toggle -->
@@ -417,16 +417,16 @@
               <p class="setting-desc" id="settings-theme-status">Midnight Velvet (Dark Mode)</p>
             </div>
           </div>
-          <button id="settings-theme-btn" class="btn-secondary ripple-btn small-btn">Switch Theme 🐱</button>
+          <button id="settings-theme-btn" class="btn-secondary ripple-btn small-btn" onclick="window.toggleSettingsTheme &amp;&amp; window.toggleSettingsTheme(event)">Switch Theme 🐱</button>
         </div>
       </div>
 
       <div class="modal-actions" style="margin-top: 1.5rem; justify-content: flex-end;">
-        <button type="button" id="done-settings-modal-btn" class="glow-btn ripple-btn">Done 🐾</button>
+        <button type="button" id="done-settings-modal-btn" class="glow-btn ripple-btn" onclick="window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">Done 🐾</button>
       </div>
     </div>
   </div>
 
-  <script type="module" src="app.js?v=2.8.0"></script>
+  <script type="module" src="app.js?v=2.9.0"></script>
 </body>
 </html>
