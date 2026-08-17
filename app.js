@@ -6,7 +6,7 @@ let currentFilter = 'all';
 let currentSort = 'created-desc';
 let searchQuery = '';
 let soundEnabled = localStorage.getItem('amal_sound_enabled') !== 'false';
-let notifPermission = Notification.permission;
+let notifPermission = ('Notification' in window) ? Notification.permission : 'default';
 
 // Default Study Categories + Custom Categories from localStorage
 const defaultCategories = [
@@ -601,8 +601,8 @@ if (openAddCatBtn) {
   });
 }
 
-closeCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
-cancelCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
+if (closeCategoryModalBtn) closeCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
+if (cancelCategoryModalBtn) cancelCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
 
 emojiChoiceBtns.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -1100,13 +1100,15 @@ clearCompletedBtn.addEventListener('click', () => {
 const savedTheme = localStorage.getItem('amal_theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
-themeToggleBtn.addEventListener('click', () => {
-  playPopSound();
-  const current = document.documentElement.getAttribute('data-theme');
-  const next = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('amal_theme', next);
-});
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    playPopSound();
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('amal_theme', next);
+  });
+}
 
 // ===================================================
 // 🐾 BACKGROUND CANVAS (Soft Floating Paws & Sparkles)
