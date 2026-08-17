@@ -77,7 +77,8 @@ function saveTasks() {
 }
 
 // ===================================================
-// 🔊 PROCEDURAL WEB AUDIO SYNTHESIZER
+// ===================================================
+// 🔊 PROCEDURAL WEB AUDIO SYNTHESIZER (Meow & Purr)
 // ===================================================
 let audioCtx = null;
 
@@ -92,38 +93,83 @@ function getAudioContext() {
   return audioCtx;
 }
 
-// Cute Purr Sound Effect
+// Cute Kitten "Mee-oww" Synthesizer 🐱
+function playMeowSound() {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+
+    const t = ctx.currentTime;
+    
+    // Main vocal oscillator (Triangle for warm vocal tone)
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    
+    // Formant Filter for realistic cat vocal tract
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(900, t);
+    filter.Q.setValueAtTime(2.5, t);
+
+    osc.type = 'triangle';
+    // Pitch curve: 480Hz -> 760Hz ("Meee") -> 400Hz ("Owww")
+    osc.frequency.setValueAtTime(480, t);
+    osc.frequency.exponentialRampToValueAtTime(760, t + 0.16);
+    osc.frequency.exponentialRampToValueAtTime(390, t + 0.45);
+
+    // Volume Envelope
+    gain.gain.setValueAtTime(0.01, t);
+    gain.gain.linearRampToValueAtTime(0.35, t + 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.46);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(t);
+    osc.stop(t + 0.46);
+  } catch (e) {
+    console.error('Meow audio error:', e);
+  }
+}
+
+// Cute Purr Motor Sound Effect 🐾
 function playPurrSound() {
   if (!soundEnabled) return;
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
 
+    const t = ctx.currentTime;
     const osc = ctx.createOscillator();
     const mod = ctx.createOscillator();
     const gain = ctx.createGain();
     const modGain = ctx.createGain();
 
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(140, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.5);
+    osc.frequency.setValueAtTime(110, t);
+    osc.frequency.exponentialRampToValueAtTime(70, t + 0.6);
 
-    mod.type = 'triangle';
-    mod.frequency.setValueAtTime(28, ctx.currentTime);
-    modGain.gain.setValueAtTime(45, ctx.currentTime);
+    mod.type = 'sawtooth';
+    mod.frequency.setValueAtTime(26, t); // 26Hz vibration
+    modGain.gain.setValueAtTime(55, t);
 
     mod.connect(osc.frequency);
     osc.connect(gain);
     gain.connect(ctx.destination);
 
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+    gain.gain.setValueAtTime(0.01, t);
+    gain.gain.linearRampToValueAtTime(0.35, t + 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
 
-    mod.start(ctx.currentTime);
-    osc.start(ctx.currentTime);
-    mod.stop(ctx.currentTime + 0.5);
-    osc.stop(ctx.currentTime + 0.5);
-  } catch (e) {}
+    mod.start(t);
+    osc.start(t);
+    mod.stop(t + 0.6);
+    osc.stop(t + 0.6);
+  } catch (e) {
+    console.error('Purr audio error:', e);
+  }
 }
 
 // Crystal Chime for Task Completion & Notifications
@@ -177,6 +223,63 @@ function playPopSound() {
     osc.stop(ctx.currentTime + 0.08);
   } catch (e) {}
 }
+
+// ===================================================
+// 🐱 CAT MASCOT INTERACTION (Tap for Meow / Purr Speech)
+// ===================================================
+const catMascotEl = document.getElementById('cat-mascot');
+const purrSpeechEl = document.getElementById('purr-speech');
+let purrSpeechTimeout = null;
+let meowToggle = false;
+
+const catQuotes = [
+  'Meow! 🐾',
+  'Purrrrr... ✨',
+  'Nyaa~ A+ for you! 😻',
+  'Study hard, take cozy breaks! 📚',
+  'You got this! 💖',
+  'Mew mew! 🐾✨'
+];
+
+function triggerCatMascotSound() {
+  getAudioContext(); // Unlock audio on iOS/Android
+
+  if (meowToggle) {
+    playMeowSound();
+  } else {
+    playPurrSound();
+  }
+  meowToggle = !meowToggle;
+
+  if (purrSpeechEl) {
+    const randomQuote = catQuotes[Math.floor(Math.random() * catQuotes.length)];
+    purrSpeechEl.textContent = randomQuote;
+    purrSpeechEl.classList.remove('hidden');
+
+    if (purrSpeechTimeout) clearTimeout(purrSpeechTimeout);
+    purrSpeechTimeout = setTimeout(() => {
+      purrSpeechEl.classList.add('hidden');
+    }, 2200);
+  }
+
+  // Cute micro bounce on click
+  if (catMascotEl) {
+    catMascotEl.style.transform = 'scale(1.22)';
+    setTimeout(() => {
+      catMascotEl.style.transform = '';
+    }, 200);
+  }
+}
+
+if (catMascotEl) {
+  catMascotEl.addEventListener('click', triggerCatMascotSound);
+  catMascotEl.addEventListener('touchstart', (e) => {
+    // Prevent double fire on mobile
+    e.preventDefault();
+    triggerCatMascotSound();
+  }, { passive: false });
+}
+
 
 // ===================================================
 // 📱 PWA & NOTIFICATIONS API (Lock-Screen & Toast)
