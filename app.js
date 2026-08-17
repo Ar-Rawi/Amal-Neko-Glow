@@ -1280,10 +1280,107 @@ if (doneWidgetsModalBtn) {
   doneWidgetsModalBtn.addEventListener('click', () => widgetsModal.classList.add('hidden'));
 }
 
+// ===================================================
+// ⚙️ APP SETTINGS MODAL ENGINE
+// ===================================================
+const settingsModal = document.getElementById('settings-modal');
+const settingsToggleBtn = document.getElementById('settings-toggle-btn');
+const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
+const doneSettingsModalBtn = document.getElementById('done-settings-modal-btn');
+
+const openWidgetsFromSettings = document.getElementById('open-widgets-from-settings');
+const settingsNotifBtn = document.getElementById('settings-notif-btn');
+const settingsSoundBtn = document.getElementById('settings-sound-btn');
+const settingsThemeBtn = document.getElementById('settings-theme-btn');
+
+const settingsNotifIcon = document.getElementById('settings-notif-icon');
+const settingsNotifStatus = document.getElementById('settings-notif-status');
+const settingsSoundIcon = document.getElementById('settings-sound-icon');
+const settingsSoundStatus = document.getElementById('settings-sound-status');
+const settingsThemeStatus = document.getElementById('settings-theme-status');
+
+function updateSettingsUI() {
+  // Notif Status
+  const isNotifGranted = 'Notification' in window && Notification.permission === 'granted';
+  if (settingsNotifIcon) settingsNotifIcon.textContent = isNotifGranted ? '🔔' : '🔕';
+  if (settingsNotifStatus) settingsNotifStatus.textContent = isNotifGranted ? 'Notifications Active (Granted)' : 'Tap to enable lock-screen alerts';
+
+  // Sound Status
+  if (settingsSoundIcon) settingsSoundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+  if (settingsSoundStatus) settingsSoundStatus.textContent = soundEnabled ? 'Sound Effects Enabled (Meows & Chimes)' : 'Sound Muted';
+
+  // Theme Status
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  if (settingsThemeStatus) settingsThemeStatus.textContent = currentTheme === 'dark' ? 'Midnight Velvet (Dark Mode)' : 'Pastel Strawberry (Light Mode)';
+}
+
+if (settingsToggleBtn && settingsModal) {
+  settingsToggleBtn.addEventListener('click', () => {
+    playPopSound();
+    updateSettingsUI();
+    settingsModal.classList.remove('hidden');
+  });
+}
+
+if (closeSettingsModalBtn) {
+  closeSettingsModalBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+}
+
+if (doneSettingsModalBtn) {
+  doneSettingsModalBtn.addEventListener('click', () => settingsModal.classList.add('hidden'));
+}
+
+if (openWidgetsFromSettings) {
+  openWidgetsFromSettings.addEventListener('click', () => {
+    playPopSound();
+    settingsModal.classList.add('hidden');
+    if (widgetsModal) {
+      renderModalWidgets();
+      widgetsModal.classList.remove('hidden');
+    }
+  });
+}
+
+if (settingsNotifBtn) {
+  settingsNotifBtn.addEventListener('click', async () => {
+    playPopSound();
+    if (!('Notification' in window)) {
+      showNotification("Notifications Not Supported", "Your browser doesn't support system push notifications.");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    updateSettingsUI();
+    if (permission === 'granted') {
+      showNotification("Amal Neko Glow 🐾", "Purrrrr! Lock-Screen Notifications are now active! ✨");
+    }
+  });
+}
+
+if (settingsSoundBtn) {
+  settingsSoundBtn.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    localStorage.setItem('amal_sound_enabled', soundEnabled);
+    updateSettingsUI();
+    if (soundEnabled) playPopSound();
+  });
+}
+
+if (settingsThemeBtn) {
+  settingsThemeBtn.addEventListener('click', () => {
+    playPopSound();
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('amal_theme', next);
+    updateSettingsUI();
+  });
+}
+
 // Boot up
 document.addEventListener('DOMContentLoaded', () => {
   renderCategoryDropdowns();
   render();
   initParticleCanvas();
+  updateSettingsUI();
 });
 

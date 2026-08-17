@@ -53,24 +53,9 @@
       </div>
       
       <div class="header-controls">
-        <!-- Mobile Widgets Drawer Trigger -->
-        <button id="widget-toggle-btn" class="icon-btn ripple-btn" title="Open Mobile Widgets (3x2, 3x3, 2x3)" aria-label="Mobile Widgets">
-          <span>📱</span>
-        </button>
-
-        <!-- Notification Bell Toggle for Mobile/Lock-Screen Alerts -->
-        <button id="notif-toggle-btn" class="icon-btn ripple-btn" title="Enable Mobile & Lock-Screen Notifications" aria-label="Notifications">
-          <span id="notif-icon">🔔</span>
-        </button>
-
-        <!-- Sound Audio Mute Toggle -->
-        <button id="sound-toggle-btn" class="icon-btn ripple-btn" title="Toggle Sound Effects" aria-label="Toggle Sound Effects">
-          <span id="sound-icon">🔊</span>
-        </button>
-
-        <!-- Theme Toggle -->
-        <button id="theme-toggle-btn" class="icon-btn ripple-btn" title="Toggle Cat Mood Theme" aria-label="Toggle Cat Mood Theme">
-          <span class="cat-theme-icon">🐱</span>
+        <!-- Main App Settings Trigger -->
+        <button id="settings-toggle-btn" class="icon-btn ripple-btn" title="Open Settings ⚙️" aria-label="Settings">
+          <span class="settings-gear-icon">⚙️</span>
         </button>
       </div>
     </header>
@@ -378,6 +363,70 @@
     </div>
   </div>
 
-  <script type="module" src="app.js?v=2.6.1"></script>
+  <!-- App Settings Modal -->
+  <div id="settings-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card settings-modal-card">
+      <div class="modal-header">
+        <h3>⚙️ App Settings</h3>
+        <button id="close-settings-modal-btn" class="icon-btn ripple-btn">&times;</button>
+      </div>
+
+      <div class="settings-options-list">
+        <!-- 📱 Mobile Widgets -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon">📱</span>
+            <div>
+              <strong class="setting-title">Mobile Widgets (3x2, 3x3, 2x3)</strong>
+              <p class="setting-desc">Preview and configure mobile widgets</p>
+            </div>
+          </div>
+          <button id="open-widgets-from-settings" class="btn-secondary ripple-btn small-btn">Open 📱</button>
+        </div>
+
+        <!-- 🔔 Notifications Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon" id="settings-notif-icon">🔔</span>
+            <div>
+              <strong class="setting-title">Lock-Screen Notifications</strong>
+              <p class="setting-desc" id="settings-notif-status">System and mobile push alerts</p>
+            </div>
+          </div>
+          <button id="settings-notif-btn" class="glow-btn ripple-btn small-btn">Toggle 🔔</button>
+        </div>
+
+        <!-- 🔊 Sound Effects Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon" id="settings-sound-icon">🔊</span>
+            <div>
+              <strong class="setting-title">Audio & Sound Effects</strong>
+              <p class="setting-desc" id="settings-sound-status">Cute meow, purr, and chime sounds</p>
+            </div>
+          </div>
+          <button id="settings-sound-btn" class="glow-btn ripple-btn small-btn">Toggle 🔊</button>
+        </div>
+
+        <!-- 🐱 Cat Mood Theme Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon">🐱</span>
+            <div>
+              <strong class="setting-title">Cat Mood Theme</strong>
+              <p class="setting-desc" id="settings-theme-status">Midnight Velvet (Dark Mode)</p>
+            </div>
+          </div>
+          <button id="settings-theme-btn" class="btn-secondary ripple-btn small-btn">Switch Theme 🐱</button>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1.5rem; justify-content: flex-end;">
+        <button type="button" id="done-settings-modal-btn" class="glow-btn ripple-btn">Done 🐾</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js?v=2.7.0"></script>
 </body>
 </html>
