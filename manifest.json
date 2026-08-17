@@ -1,7 +1,7 @@
 {
   "name": "Amal Neko Glow",
   "short_name": "NekoGlow",
-  "description": "Cute animated study & task companion for cat lovers",
+  "description": "Cute study & task companion for cat lovers",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0d0a17",
@@ -11,6 +11,29 @@
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%231c152c'/><text y='.9em' font-size='80' x='10'>🐱</text></svg>",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "3x2 Wide Widget",
+      "short_name": "3x2 Widget",
+      "description": "Open 3x2 mobile widget",
+      "url": "./widget.html?size=3x2",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>📱</text></svg>", "sizes": "96x96" }]
+    },
+    {
+      "name": "3x3 Dashboard Widget",
+      "short_name": "3x3 Widget",
+      "description": "Open 3x3 dashboard widget",
+      "url": "./widget.html?size=3x3",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>🐱</text></svg>", "sizes": "96x96" }]
+    },
+    {
+      "name": "2x3 Tall Widget",
+      "short_name": "2x3 Widget",
+      "description": "Open 2x3 tall widget",
+      "url": "./widget.html?size=2x3",
+      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>🐾</text></svg>", "sizes": "96x96" }]
     }
   ]
 }

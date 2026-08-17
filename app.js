@@ -996,7 +996,7 @@ themeToggleBtn.addEventListener('click', () => {
 });
 
 // ===================================================
-// 🐾 BACKGROUND CANVAS (Blinking Cat Faces & Glowing Paws)
+// 🐾 BACKGROUND CANVAS (Soft Floating Paws & Sparkles)
 // ===================================================
 function initParticleCanvas() {
   const canvas = document.getElementById('particle-canvas');
@@ -1007,93 +1007,18 @@ function initParticleCanvas() {
   let height = canvas.height = window.innerHeight;
 
   const particles = [];
-  const particleCount = 28;
+  const particleCount = 30;
 
   for (let i = 0; i < particleCount; i++) {
     particles.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      size: Math.random() * 16 + 18,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: -Math.random() * 0.35 - 0.15,
-      alpha: Math.random() * 0.45 + 0.25,
-      blinkTimer: Math.random() * 180,
-      type: i % 3 === 0 ? 'cat-face' : (i % 3 === 1 ? 'paw' : 'sparkle')
+      size: Math.random() * 12 + 10,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: -Math.random() * 0.35 - 0.1,
+      alpha: Math.random() * 0.35 + 0.2,
+      isPaw: i % 2 === 0
     });
-  }
-
-  function drawAnimatedCatFace(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.globalAlpha = p.alpha;
-    ctx.strokeStyle = '#ff75c3';
-    ctx.fillStyle = '#ff75c3';
-    ctx.lineWidth = 1.5;
-    ctx.shadowColor = '#ff75c3';
-    ctx.shadowBlur = 8;
-
-    const r = p.size;
-    const isBlinking = p.blinkTimer > 170;
-
-    // Cat Face Outline
-    ctx.beginPath();
-    ctx.arc(0, 0, r, 0, Math.PI * 2);
-    ctx.stroke();
-
-    // Left Cat Ear
-    ctx.beginPath();
-    ctx.moveTo(-r * 0.7, -r * 0.7);
-    ctx.lineTo(-r * 0.9, -r * 1.4);
-    ctx.lineTo(-r * 0.15, -r * 0.95);
-    ctx.closePath();
-    ctx.stroke();
-
-    // Right Cat Ear
-    ctx.beginPath();
-    ctx.moveTo(r * 0.7, -r * 0.7);
-    ctx.lineTo(r * 0.9, -r * 1.4);
-    ctx.lineTo(r * 0.15, -r * 0.95);
-    ctx.closePath();
-    ctx.stroke();
-
-    // Eyes (Animated Blinking!)
-    const eyeOffsetX = r * 0.35;
-    const eyeOffsetY = -r * 0.15;
-    const eyeSize = r * 0.16;
-
-    if (isBlinking) {
-      // Closed Blinking Slit
-      ctx.beginPath();
-      ctx.moveTo(-eyeOffsetX - eyeSize, eyeOffsetY);
-      ctx.lineTo(-eyeOffsetX + eyeSize, eyeOffsetY);
-      ctx.moveTo(eyeOffsetX - eyeSize, eyeOffsetY);
-      ctx.lineTo(eyeOffsetX + eyeSize, eyeOffsetY);
-      ctx.stroke();
-    } else {
-      // Open Glowing Eye
-      ctx.beginPath();
-      ctx.arc(-eyeOffsetX, eyeOffsetY, eyeSize, 0, Math.PI * 2);
-      ctx.arc(eyeOffsetX, eyeOffsetY, eyeSize, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // Little Cute Nose
-    ctx.beginPath();
-    ctx.moveTo(0, r * 0.1);
-    ctx.lineTo(-r * 0.1, r * 0.22);
-    ctx.lineTo(r * 0.1, r * 0.22);
-    ctx.closePath();
-    ctx.fill();
-
-    // Cute Whiskers
-    ctx.beginPath();
-    ctx.moveTo(-r * 0.4, r * 0.2); ctx.lineTo(-r * 1.1, r * 0.1);
-    ctx.moveTo(-r * 0.4, r * 0.35); ctx.lineTo(-r * 1.05, r * 0.45);
-    ctx.moveTo(r * 0.4, r * 0.2); ctx.lineTo(r * 1.1, r * 0.1);
-    ctx.moveTo(r * 0.4, r * 0.35); ctx.lineTo(r * 1.05, r * 0.45);
-    ctx.stroke();
-
-    ctx.restore();
   }
 
   function animate() {
@@ -1102,30 +1027,25 @@ function initParticleCanvas() {
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.blinkTimer = (p.blinkTimer + 1) % 185;
 
-      if (p.y < -40) p.y = height + 40;
+      if (p.y < -30) p.y = height + 30;
       if (p.x < -20) p.x = width + 20;
       if (p.x > width + 20) p.x = -20;
 
-      if (p.type === 'cat-face') {
-        drawAnimatedCatFace(p);
-      } else {
-        ctx.save();
-        ctx.globalAlpha = p.alpha;
-        ctx.fillStyle = '#ff75c3';
-        ctx.shadowColor = '#ff75c3';
-        ctx.shadowBlur = 10;
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = '#ff75c3';
+      ctx.shadowColor = '#ff75c3';
+      ctx.shadowBlur = 8;
 
-        if (p.type === 'paw') {
-          ctx.font = `${p.size}px sans-serif`;
-          ctx.fillText('🐾', p.x, p.y);
-        } else {
-          ctx.font = `${p.size * 0.8}px sans-serif`;
-          ctx.fillText('✨', p.x, p.y);
-        }
-        ctx.restore();
+      if (p.isPaw) {
+        ctx.font = `${p.size}px sans-serif`;
+        ctx.fillText('🐾', p.x, p.y);
+      } else {
+        ctx.font = `${p.size * 0.8}px sans-serif`;
+        ctx.fillText('✨', p.x, p.y);
       }
+      ctx.restore();
     });
 
     requestAnimationFrame(animate);
