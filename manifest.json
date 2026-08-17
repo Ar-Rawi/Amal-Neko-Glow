@@ -1,0 +1,16 @@
+{
+  "name": "Amal Neko Glow",
+  "short_name": "NekoGlow",
+  "description": "Cute animated study & task companion for cat lovers",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0d0a17",
+  "theme_color": "#ff75c3",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%231c152c'/><text y='.9em' font-size='80' x='10'>🐱</text></svg>",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
