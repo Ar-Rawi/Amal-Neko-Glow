@@ -1,12 +1,13 @@
-// sw.js — Service Worker for Amal Neko Glow PWA & Lock-Screen Notifications
+// sw.js — Service Worker with Network-First Strategy for Instant Production Updates
 
-const CACHE_NAME = 'neko-glow-v3';
+const CACHE_NAME = 'neko-glow-v4';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
-  './manifest.json'
+  './manifest.json',
+  './widget.html'
 ];
 
 self.addEventListener('install', event => {
@@ -25,13 +26,22 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+// Network-First Strategy (Always fetch latest online version first, fallback to cache offline)
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => response || fetch(event.request))
+    fetch(event.request)
+      .then(response => {
+        if (response && response.status === 200 && event.request.method === 'GET') {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
 
-// Handle Notification Clicks (focus or open app)
+// Handle Notification Clicks
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   event.waitUntil(
