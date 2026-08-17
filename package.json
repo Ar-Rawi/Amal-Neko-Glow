@@ -1,0 +1,14 @@
+{
+  "name": "aisha-glow-todo",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
