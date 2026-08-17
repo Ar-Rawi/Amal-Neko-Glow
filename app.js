@@ -1304,8 +1304,16 @@ function updateSettingsUI() {
   }
 }
 
+let settingsModalLock = false;
+
 function openSettingsModal(e) {
-  if (e) e.stopPropagation();
+  if (e) {
+    e.stopPropagation();
+  }
+  if (settingsModalLock) return;
+  settingsModalLock = true;
+  setTimeout(() => { settingsModalLock = false; }, 400);
+
   playPopSound();
   updateSettingsUI();
   const sm = document.getElementById('settings-modal');
@@ -1331,10 +1339,18 @@ function initSettingsEngine() {
   const notifBtn = document.getElementById('settings-notif-btn');
   const soundBtn = document.getElementById('settings-sound-btn');
   const themeBtn = document.getElementById('settings-theme-btn');
+  const sm = document.getElementById('settings-modal');
 
   if (btn) {
     btn.addEventListener('click', openSettingsModal);
-    btn.addEventListener('touchstart', openSettingsModal, { passive: true });
+  }
+
+  if (sm) {
+    sm.addEventListener('click', (e) => {
+      if (e.target === sm) {
+        closeSettingsModal();
+      }
+    });
   }
 
   if (closeBtn) closeBtn.addEventListener('click', closeSettingsModal);
