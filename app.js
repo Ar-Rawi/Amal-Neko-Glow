@@ -1,10 +1,27 @@
-// app.js — Amal Neko Glow Ultra-Cute Todo App Logic 🐾
+// app.js — Amal Neko Glow Ultra-Cute Study & Task App Logic 🐾
 
 // State Management
-let tasks = JSON.parse(localStorage.getItem('amal_neko_todos_v1') || '[]');
+let tasks = JSON.parse(localStorage.getItem('amal_study_todos_v2') || '[]');
 let currentFilter = 'all';
 let currentSort = 'created-desc';
 let searchQuery = '';
+
+// Default Study Categories + Custom Categories from localStorage
+const defaultCategories = [
+  { key: 'assignment', name: 'Assignment', icon: '📚' },
+  { key: 'project', name: 'Project', icon: '🔬' },
+  { key: 'study', name: 'Study & Exam', icon: '📖' },
+  { key: 'home', name: 'Home & Personal', icon: '🏠' }
+];
+
+let customCategories = JSON.parse(localStorage.getItem('amal_custom_categories') || '[]');
+let allCategories = [...defaultCategories, ...customCategories];
+
+function saveCustomCategories() {
+  localStorage.setItem('amal_custom_categories', JSON.stringify(customCategories));
+  allCategories = [...defaultCategories, ...customCategories];
+  renderCategoryDropdowns();
+}
 
 // DOM Elements
 const todoForm = document.getElementById('todo-form');
@@ -17,7 +34,6 @@ const todoList = document.getElementById('todo-list');
 const emptyState = document.getElementById('empty-state');
 const searchInput = document.getElementById('search-input');
 const filterTabs = document.querySelectorAll('.tab-btn');
-const sortSelect = document.getElementById('sort-select');
 
 const progressText = document.getElementById('progress-text');
 const progressFill = document.getElementById('progress-fill');
@@ -31,6 +47,16 @@ const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const catMascot = document.getElementById('cat-mascot');
 const purrSpeech = document.getElementById('purr-speech');
 
+// Category Modal Elements
+const categoryModal = document.getElementById('category-modal');
+const categoryForm = document.getElementById('category-form');
+const newCatName = document.getElementById('new-cat-name');
+const newCatIcon = document.getElementById('new-cat-icon');
+const openAddCatBtn = document.getElementById('open-add-cat-btn');
+const closeCategoryModalBtn = document.getElementById('close-category-modal-btn');
+const cancelCategoryModalBtn = document.getElementById('cancel-category-modal-btn');
+const emojiChoiceBtns = document.querySelectorAll('.emoji-choice-btn');
+
 // Edit Modal Elements
 const editModal = document.getElementById('edit-modal');
 const editForm = document.getElementById('edit-form');
@@ -42,7 +68,7 @@ const editDueDate = document.getElementById('edit-due-date');
 const closeModalBtn = document.getElementById('close-modal-btn');
 const cancelModalBtn = document.getElementById('cancel-modal-btn');
 
-// Default sample cat goals if first time
+// Initial sample study tasks if first time
 if (tasks.length === 0) {
   const today = new Date().toISOString().split('T')[0];
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
@@ -50,28 +76,28 @@ if (tasks.length === 0) {
   tasks = [
     {
       id: 1,
-      text: '🐾 Design cute Amal Neko Glow theme',
+      text: '📚 Complete Calculus & Linear Algebra Assignment',
       completed: true,
       priority: 'urgent',
-      category: 'personal',
+      category: 'assignment',
       dueDate: today,
       createdAt: Date.now() - 3600000
     },
     {
       id: 2,
-      text: '🐟 Deploy Amal Neko Glow 24/7 web app',
+      text: '🔬 Prepare Physics Lab Prototype & Slides',
       completed: false,
       priority: 'high',
-      category: 'work',
+      category: 'project',
       dueDate: tomorrow,
       createdAt: Date.now()
     },
     {
       id: 3,
-      text: '🧶 Play with yarn & take cozy cat nap',
+      text: '📖 Review Chapter 4 & 5 Study Notes for Midterms',
       completed: false,
       priority: 'medium',
-      category: 'health',
+      category: 'study',
       dueDate: tomorrow,
       createdAt: Date.now()
     }
@@ -79,42 +105,295 @@ if (tasks.length === 0) {
   saveTasks();
 }
 
-// Save to localStorage
 function saveTasks() {
-  localStorage.setItem('amal_neko_todos_v1', JSON.stringify(tasks));
+  localStorage.setItem('amal_study_todos_v2', JSON.stringify(tasks));
 }
 
-// Helpers
 function isOverdue(dueDateStr, completed) {
   if (!dueDateStr || completed) return false;
   const due = new Date(dueDateStr + 'T23:59:59');
   return due < new Date();
 }
 
-const categoryIcons = {
-  work: '🐟 Fish & Treats',
-  personal: '🐾 Paws & Care',
-  health: '🧶 Yarn & Play',
-  finance: '💤 Naps & Chores'
-};
-
 const priorityLabels = {
-  low: '🟢 Soft Nap',
-  medium: '🟡 Cat Play',
-  high: '🔴 Big Pounce',
-  urgent: '⚡ Zoomies!'
+  low: '🟢 Low',
+  medium: '🟡 Medium',
+  high: '🔴 High',
+  urgent: '⚡ Urgent'
 };
 
 const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
 
+function getCategoryInfo(key) {
+  const found = allCategories.find(c => c.key === key);
+  return found ? `${found.icon} ${found.name}` : `📝 ${key}`;
+}
+
+// ===================================================
+// 🌟 THEMED CUSTOM DROPDOWN ENGINE
+// ===================================================
+function setupDropdown(dropdownId, triggerId, menuId, displayId, hiddenInputId, onSelect) {
+  const dropdown = document.getElementById(dropdownId);
+  const trigger = document.getElementById(triggerId);
+  const menu = document.getElementById(menuId);
+  const display = document.getElementById(displayId);
+  const input = document.getElementById(hiddenInputId);
+
+  if (!dropdown || !trigger || !menu) return;
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    closeAllPopupsExcept(menu);
+    menu.classList.toggle('hidden');
+    trigger.classList.toggle('open');
+  });
+
+  menu.addEventListener('click', e => {
+    const opt = e.target.closest('.dropdown-option');
+    if (!opt || opt.id === 'open-add-cat-btn') return;
+
+    const val = opt.dataset.value;
+    input.value = val;
+    display.textContent = opt.textContent.trim();
+
+    menu.querySelectorAll('.dropdown-option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+
+    menu.classList.add('hidden');
+    trigger.classList.remove('open');
+
+    if (onSelect) onSelect(val);
+  });
+}
+
+// Setup Priority & Sort Dropdowns
+setupDropdown('dropdown-priority', 'priority-trigger', 'priority-menu', 'priority-display', 'priority-select');
+setupDropdown('dropdown-sort', 'sort-trigger', 'sort-menu', 'sort-display', 'sort-select', val => {
+  currentSort = val;
+  render();
+});
+
+// Render Category Options in Dropdown and Edit Modal
+function renderCategoryDropdowns() {
+  const catListContainer = document.getElementById('category-options-list');
+  const catDisplay = document.getElementById('category-display');
+  const catInput = document.getElementById('category-select');
+  const editCatSelect = document.getElementById('edit-category');
+
+  if (catListContainer) {
+    catListContainer.innerHTML = '';
+    allCategories.forEach(cat => {
+      const opt = document.createElement('div');
+      opt.className = `dropdown-option ${catInput.value === cat.key ? 'selected' : ''}`;
+      opt.dataset.value = cat.key;
+      opt.innerHTML = `<span>${cat.icon} ${cat.name}</span>`;
+      opt.addEventListener('click', () => {
+        catInput.value = cat.key;
+        catDisplay.textContent = `${cat.icon} ${cat.name}`;
+        document.getElementById('category-menu').classList.add('hidden');
+        document.getElementById('category-trigger').classList.remove('open');
+        renderCategoryDropdowns();
+      });
+      catListContainer.appendChild(opt);
+    });
+  }
+
+  // Populate Edit Modal Category Select
+  if (editCatSelect) {
+    editCatSelect.innerHTML = '';
+    allCategories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.key;
+      opt.textContent = `${cat.icon} ${cat.name}`;
+      editCatSelect.appendChild(opt);
+    });
+  }
+}
+
+// Setup Category Trigger
+const categoryTrigger = document.getElementById('category-trigger');
+const categoryMenu = document.getElementById('category-menu');
+if (categoryTrigger && categoryMenu) {
+  categoryTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    closeAllPopupsExcept(categoryMenu);
+    categoryMenu.classList.toggle('hidden');
+    categoryTrigger.classList.toggle('open');
+  });
+}
+
+// Custom Category Modal Logic
+if (openAddCatBtn) {
+  openAddCatBtn.addEventListener('click', () => {
+    categoryMenu.classList.add('hidden');
+    categoryTrigger.classList.remove('open');
+    newCatName.value = '';
+    categoryModal.classList.remove('hidden');
+  });
+}
+
+closeCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
+cancelCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
+
+emojiChoiceBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    emojiChoiceBtns.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    newCatIcon.value = btn.dataset.emoji;
+  });
+});
+
+categoryForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = newCatName.value.trim();
+  if (!name) return;
+
+  const key = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+  const icon = newCatIcon.value || '📝';
+
+  // Check if exists
+  if (!allCategories.some(c => c.key === key)) {
+    customCategories.push({ key, name, icon });
+    saveCustomCategories();
+  }
+
+  // Auto-select new category
+  categorySelect.value = key;
+  document.getElementById('category-display').textContent = `${icon} ${name}`;
+
+  categoryModal.classList.add('hidden');
+  renderCategoryDropdowns();
+  render();
+});
+
+// ===================================================
+// 📅 THEMED BESPOKE CALENDAR ENGINE
+// ===================================================
+let calCurrentDate = new Date();
+const dateTriggerBtn = document.getElementById('date-trigger-btn');
+const dateDisplayText = document.getElementById('date-display-text');
+const customCalendar = document.getElementById('custom-calendar');
+const calMonthTitle = document.getElementById('cal-month-title');
+const calDaysGrid = document.getElementById('cal-days-grid');
+const calPrevMonth = document.getElementById('cal-prev-month');
+const calNextMonth = document.getElementById('cal-next-month');
+const calTodayBtn = document.getElementById('cal-today-btn');
+const calClearBtn = document.getElementById('cal-clear-btn');
+
+function renderCalendar() {
+  const year = calCurrentDate.getFullYear();
+  const month = calCurrentDate.getMonth();
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  calMonthTitle.textContent = `${monthNames[month]} ${year}`;
+
+  calDaysGrid.innerHTML = '';
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const selectedDateStr = dueDateInput.value;
+
+  // Empty padding cells
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement('div');
+    empty.className = 'cal-day-cell empty';
+    calDaysGrid.appendChild(empty);
+  }
+
+  // Days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day-cell ripple-btn';
+    cell.textContent = d;
+
+    const cellDateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+    if (cellDateStr === todayStr) cell.classList.add('today');
+    if (cellDateStr === selectedDateStr) cell.classList.add('selected');
+
+    cell.addEventListener('click', () => {
+      dueDateInput.value = cellDateStr;
+      dateDisplayText.textContent = `📅 ${cellDateStr}`;
+      customCalendar.classList.add('hidden');
+      renderCalendar();
+    });
+
+    calDaysGrid.appendChild(cell);
+  }
+}
+
+if (dateTriggerBtn && customCalendar) {
+  dateTriggerBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    closeAllPopupsExcept(customCalendar);
+    customCalendar.classList.toggle('hidden');
+    renderCalendar();
+  });
+
+  calPrevMonth.addEventListener('click', e => {
+    e.stopPropagation();
+    calCurrentDate.setMonth(calCurrentDate.getMonth() - 1);
+    renderCalendar();
+  });
+
+  calNextMonth.addEventListener('click', e => {
+    e.stopPropagation();
+    calCurrentDate.setMonth(calCurrentDate.getMonth() + 1);
+    renderCalendar();
+  });
+
+  calTodayBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const todayStr = new Date().toISOString().split('T')[0];
+    dueDateInput.value = todayStr;
+    dateDisplayText.textContent = `📅 ${todayStr}`;
+    customCalendar.classList.add('hidden');
+  });
+
+  calClearBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    dueDateInput.value = '';
+    dateDisplayText.textContent = `📅 Select Date`;
+    customCalendar.classList.add('hidden');
+    renderCalendar();
+  });
+}
+
+// Global Close for Popups when clicking outside
+function closeAllPopupsExcept(exception) {
+  const popups = [
+    document.getElementById('priority-menu'),
+    document.getElementById('category-menu'),
+    document.getElementById('sort-menu'),
+    customCalendar
+  ];
+
+  popups.forEach(p => {
+    if (p && p !== exception) p.classList.add('hidden');
+  });
+
+  document.querySelectorAll('.dropdown-trigger').forEach(t => t.classList.remove('open'));
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.custom-dropdown') && !e.target.closest('.custom-datepicker-wrap')) {
+    closeAllPopupsExcept(null);
+  }
+});
+
 // Interactive Cat Mascot Petting Logic
 const purrPhrases = [
   "Purrrrr... ✨",
-  "Meow! 🐾",
-  "Nyaa~ 😻",
-  "Cat Nap Time! 💤",
-  "Treats Please! 🐟",
-  "Stay Paw-sitive! 🐾"
+  "Study hard! 🐾",
+  "A+ on that Assignment! 📚",
+  "Meow! Stay focused! 😻",
+  "You got this! 🐾",
+  "Time for a quick break! ☕"
 ];
 
 if (catMascot && purrSpeech) {
@@ -123,7 +402,6 @@ if (catMascot && purrSpeech) {
     purrSpeech.textContent = randomPhrase;
     purrSpeech.classList.remove('hidden');
     
-    // Animate mascot
     catMascot.style.transform = "scale(1.3) rotate(10deg)";
     setTimeout(() => {
       catMascot.style.transform = "";
@@ -135,9 +413,10 @@ if (catMascot && purrSpeech) {
   });
 }
 
-// Render Engine
+// ===================================================
+// 🚀 RENDER ENGINE
+// ===================================================
 function render() {
-  // Filter Tasks
   let filtered = tasks.filter(t => {
     if (searchQuery && !t.text.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
@@ -148,7 +427,6 @@ function render() {
     return true;
   });
 
-  // Sort Tasks
   filtered.sort((a, b) => {
     if (currentSort === 'created-desc') return b.createdAt - a.createdAt;
     if (currentSort === 'created-asc') return a.createdAt - b.createdAt;
@@ -161,7 +439,6 @@ function render() {
     return 0;
   });
 
-  // Render Stats
   const totalCount = tasks.length;
   const completedCount = tasks.filter(t => t.completed).length;
   const activeCount = totalCount - completedCount;
@@ -176,7 +453,6 @@ function render() {
   progressText.textContent = `${percent}% Completed 🐾`;
   progressFill.style.width = `${percent}%`;
 
-  // Render List
   todoList.innerHTML = '';
   
   if (filtered.length === 0) {
@@ -191,23 +467,23 @@ function render() {
 
       li.innerHTML = `
         <div class="task-left">
-          <button class="custom-checkbox" data-id="${task.id}" aria-label="Toggle task">
+          <button class="custom-checkbox ripple-btn" data-id="${task.id}" aria-label="Toggle task">
             ${task.completed ? '🐾' : ''}
           </button>
           <div class="task-content">
             <span class="task-text">${escapeHtml(task.text)}</span>
             <div class="task-meta">
-              <span class="category-tag">${categoryIcons[task.category] || task.category}</span>
+              <span class="category-tag">${getCategoryInfo(task.category)}</span>
               <span class="priority-tag priority-${task.priority}">${priorityLabels[task.priority] || task.priority}</span>
               ${task.dueDate ? `<span class="due-tag ${overdue ? 'overdue' : ''}">${overdue ? '🙀 Overdue: ' : '📅 '} ${task.dueDate}</span>` : ''}
             </div>
           </div>
         </div>
         <div class="task-actions">
-          <button class="action-btn edit" data-id="${task.id}" title="Edit Goal">
+          <button class="action-btn edit ripple-btn" data-id="${task.id}" title="Edit Task">
             ✏️
           </button>
-          <button class="action-btn delete" data-id="${task.id}" title="Delete Goal">
+          <button class="action-btn delete ripple-btn" data-id="${task.id}" title="Delete Task">
             🗑️
           </button>
         </div>
@@ -218,7 +494,6 @@ function render() {
   }
 }
 
-// Utility: Escape HTML
 function escapeHtml(str) {
   return str.replace(/[&<>'"]/g, 
     tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
@@ -235,8 +510,8 @@ todoForm.addEventListener('submit', e => {
     id: Date.now(),
     text: text,
     completed: false,
-    priority: prioritySelect.value,
-    category: categorySelect.value,
+    priority: prioritySelect.value || 'medium',
+    category: categorySelect.value || 'assignment',
     dueDate: dueDateInput.value || '',
     createdAt: Date.now()
   };
@@ -245,6 +520,7 @@ todoForm.addEventListener('submit', e => {
   saveTasks();
   taskInput.value = '';
   dueDateInput.value = '';
+  dateDisplayText.textContent = '📅 Select Date';
   render();
 });
 
@@ -278,28 +554,27 @@ todoList.addEventListener('click', e => {
   }
 });
 
-// Purr Pop Animation on Task Completion
 function spawnPurrPop(x, y) {
-  const emojis = ['😻', '🐾', '✨', '🐟', '🧶'];
+  const emojis = ['😻', '🐾', '✨', '📚', '🌟', '🎉'];
   const el = document.createElement('div');
   el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
   el.style.position = 'fixed';
   el.style.left = `${x}px`;
   el.style.top = `${y}px`;
-  el.style.fontSize = '1.8rem';
+  el.style.fontSize = '1.9rem';
   el.style.pointerEvents = 'none';
   el.style.zIndex = '9999';
-  el.style.transition = 'all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
+  el.style.transition = 'all 0.85s cubic-bezier(0.18, 0.89, 0.32, 1.28)';
   document.body.appendChild(el);
 
   setTimeout(() => {
-    el.style.transform = `translate(${(Math.random() - 0.5) * 80}px, -90px) scale(1.4)`;
+    el.style.transform = `translate(${(Math.random() - 0.5) * 80}px, -95px) scale(1.4)`;
     el.style.opacity = '0';
   }, 20);
 
   setTimeout(() => {
     el.remove();
-  }, 850);
+  }, 900);
 }
 
 // Edit Modal Logic
@@ -312,6 +587,9 @@ function openEditModal(id) {
   editPriority.value = task.priority;
   editCategory.value = task.category;
   editDueDate.value = task.dueDate || '';
+
+  renderCategoryDropdowns();
+  editCategory.value = task.category;
 
   editModal.classList.remove('hidden');
 }
@@ -334,7 +612,7 @@ editForm.addEventListener('submit', e => {
   editModal.classList.add('hidden');
 });
 
-// Filters & Search
+// Search & Filter Tabs
 searchInput.addEventListener('input', e => {
   searchQuery = e.target.value;
   render();
@@ -349,12 +627,6 @@ filterTabs.forEach(tab => {
   });
 });
 
-sortSelect.addEventListener('change', e => {
-  currentSort = e.target.value;
-  render();
-});
-
-// Clear Completed
 clearCompletedBtn.addEventListener('click', () => {
   tasks = tasks.filter(t => !t.completed);
   saveTasks();
@@ -436,6 +708,7 @@ function initParticleCanvas() {
 
 // Boot up
 document.addEventListener('DOMContentLoaded', () => {
+  renderCategoryDropdowns();
   render();
   initParticleCanvas();
 });
