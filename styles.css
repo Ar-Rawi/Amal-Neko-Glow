@@ -171,6 +171,8 @@ body {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2.2rem;
+  position: relative;
+  z-index: 50;
 }
 
 .brand {
@@ -225,6 +227,9 @@ h1 {
   display: flex;
   gap: 0.6rem;
   align-items: center;
+  position: relative;
+  z-index: 60;
+  pointer-events: auto;
 }
 
 /* Button & Interactive Motion Effects */
@@ -252,6 +257,13 @@ h1 {
   cursor: pointer;
   backdrop-filter: blur(14px);
   font-size: 1.25rem;
+  position: relative;
+  z-index: 65;
+  pointer-events: auto;
+}
+
+.icon-btn * {
+  pointer-events: none;
 }
 
 .icon-btn:hover {

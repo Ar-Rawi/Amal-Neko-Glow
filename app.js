@@ -1314,12 +1314,16 @@ function updateSettingsUI() {
   if (settingsThemeStatus) settingsThemeStatus.textContent = currentTheme === 'dark' ? 'Midnight Velvet (Dark Mode)' : 'Pastel Strawberry (Light Mode)';
 }
 
+function openSettingsModal(e) {
+  if (e && e.cancelable) e.preventDefault();
+  playPopSound();
+  updateSettingsUI();
+  if (settingsModal) settingsModal.classList.remove('hidden');
+}
+
 if (settingsToggleBtn && settingsModal) {
-  settingsToggleBtn.addEventListener('click', () => {
-    playPopSound();
-    updateSettingsUI();
-    settingsModal.classList.remove('hidden');
-  });
+  settingsToggleBtn.addEventListener('click', openSettingsModal);
+  settingsToggleBtn.addEventListener('touchstart', openSettingsModal, { passive: false });
 }
 
 if (closeSettingsModalBtn) {
