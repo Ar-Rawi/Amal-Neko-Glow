@@ -241,7 +241,18 @@ const catQuotes = [
   'Mew mew! 🐾✨'
 ];
 
-function triggerCatMascotSound() {
+function showCatSpeech(text) {
+  if (!purrSpeechEl) return;
+  purrSpeechEl.textContent = text;
+  purrSpeechEl.classList.remove('hidden');
+
+  if (purrSpeechTimeout) clearTimeout(purrSpeechTimeout);
+  purrSpeechTimeout = setTimeout(() => {
+    purrSpeechEl.classList.add('hidden');
+  }, 2600);
+}
+
+function triggerCatMascotSound(customText = null) {
   getAudioContext(); // Unlock audio on iOS/Android
 
   if (meowToggle) {
@@ -251,20 +262,12 @@ function triggerCatMascotSound() {
   }
   meowToggle = !meowToggle;
 
-  if (purrSpeechEl) {
-    const randomQuote = catQuotes[Math.floor(Math.random() * catQuotes.length)];
-    purrSpeechEl.textContent = randomQuote;
-    purrSpeechEl.classList.remove('hidden');
-
-    if (purrSpeechTimeout) clearTimeout(purrSpeechTimeout);
-    purrSpeechTimeout = setTimeout(() => {
-      purrSpeechEl.classList.add('hidden');
-    }, 2200);
-  }
+  const quote = customText || catQuotes[Math.floor(Math.random() * catQuotes.length)];
+  showCatSpeech(quote);
 
   // Cute micro bounce on click
   if (catMascotEl) {
-    catMascotEl.style.transform = 'scale(1.22)';
+    catMascotEl.style.transform = 'scale(1.18)';
     setTimeout(() => {
       catMascotEl.style.transform = '';
     }, 200);
@@ -272,13 +275,18 @@ function triggerCatMascotSound() {
 }
 
 if (catMascotEl) {
-  catMascotEl.addEventListener('click', triggerCatMascotSound);
+  catMascotEl.addEventListener('click', () => triggerCatMascotSound());
   catMascotEl.addEventListener('touchstart', (e) => {
-    // Prevent double fire on mobile
     e.preventDefault();
     triggerCatMascotSound();
   }, { passive: false });
 }
+
+// Initial welcoming purr speech on load
+setTimeout(() => {
+  showCatSpeech('Purrrrr... ✨ Ready to study! 🐾');
+}, 900);
+
 
 
 // ===================================================
@@ -890,6 +898,7 @@ todoForm.addEventListener('submit', e => {
   dateDisplayText.textContent = '📅 Select Date';
 
   showNotification("New Goal Added 🐾", `"${newTask.text}" is ready for study time!`);
+  showCatSpeech('Added new goal! Mew! 🐾');
   render();
 });
 
@@ -914,6 +923,7 @@ todoList.addEventListener('click', e => {
       if (task.completed) {
         spawnPurrPop(e.clientX, e.clientY);
         showNotification("Task Completed! 😻", `Great job completing "${task.text}"!`);
+        showCatSpeech('Purrrrr! Great job! 😻');
       }
     }
   }
