@@ -1,0 +1,17 @@
+{
+  "appId": "com.amalnekoglow.app",
+  "appName": "Amal Neko Glow 🐾",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://ar-rawi.github.io/Amal-Neko-Glow/",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#1c152c",
+      "showSpinner": false
+    }
+  }
+}
