@@ -128,31 +128,10 @@
               <input type="hidden" id="category-select" value="assignment" />
             </div>
 
-            <!-- Custom Themed Date Picker -->
-            <div class="custom-datepicker-wrap" id="datepicker-wrap">
-              <label class="dropdown-label">Due:</label>
-              <button type="button" class="dropdown-trigger date-trigger ripple-btn" id="date-trigger-btn">
-                <span id="date-display-text">Select Date</span>
-                <span class="dropdown-arrow">▾</span>
-              </button>
-              <input type="hidden" id="due-date-input" />
-              
-              <!-- Themed Calendar Popup -->
-              <div class="custom-calendar-popup hidden" id="custom-calendar">
-                <div class="calendar-header">
-                  <button type="button" class="cal-nav-btn" id="cal-prev-month">◀</button>
-                  <span class="cal-month-title" id="cal-month-title">August 2026</span>
-                  <button type="button" class="cal-nav-btn" id="cal-next-month">▶</button>
-                </div>
-                <div class="calendar-weekdays">
-                  <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
-                </div>
-                <div class="calendar-days-grid" id="cal-days-grid"></div>
-                <div class="calendar-footer">
-                  <button type="button" class="cal-footer-btn text-btn" id="cal-clear-btn">Clear</button>
-                  <button type="button" class="cal-footer-btn glow-btn small-btn" id="cal-today-btn">Today</button>
-                </div>
-              </div>
+            <!-- Standardized Date Picker -->
+            <div class="form-group" style="margin-bottom: 0;">
+              <label for="due-date-input" class="dropdown-label">Due:</label>
+              <input type="date" id="due-date-input" class="styled-native-date" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 14px; border-radius: 12px; font-family: inherit; width: 100%; box-sizing: border-box;" />
             </div>
 
             <button type="submit" class="glow-btn cat-btn ripple-btn">
@@ -713,7 +692,7 @@
   <audio id="sound-level-up" src="assets/level-up.mp3"></audio>
 
   <!-- Custom Neon Calendar Modal -->
-  <div id="calendar-modal" class="modal">
+  <div id="calendar-modal" class="modal-overlay hidden">
     <div class="modal-content glass-card" style="max-width: 340px;">
       <div class="modal-header">
         <h2 id="calendar-month-year" style="font-size: 1.2rem; color: var(--primary-glow); margin: 0;">August 2026</h2>

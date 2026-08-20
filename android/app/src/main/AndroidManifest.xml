@@ -26,6 +26,19 @@
             </intent-filter>
         </activity>
 
+        <!-- Native Transparent Widget Activities (Isolated from main app) -->
+        <activity
+            android:name=".WidgetTaskDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:taskAffinity=""
+            android:excludeFromRecents="true" />
+            
+        <activity
+            android:name=".WidgetFilterActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:taskAffinity=""
+            android:excludeFromRecents="true" />
+
         <!-- Native 3x2 Wide Widget Provider -->
         <receiver
             android:name=".NekoWidget3x2Provider"

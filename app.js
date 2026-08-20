@@ -368,9 +368,16 @@ if (window.Capacitor && window.Capacitor.Plugins.App && window.Capacitor.Plugins
   // Sync on launch
   syncFromWidget();
 
-  // Sync every time app resumes from background
+  // Sync every time app resumes from background (Capacitor)
   window.Capacitor.Plugins.App.addListener('appStateChange', ({ isActive }) => {
     if (isActive) syncFromWidget();
+  });
+
+  // Universal Deep Sync (iOS / Android / Web) when returning to the app
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      syncFromWidget();
+    }
   });
 
   if (window.initCustomCalendar) {

@@ -59,15 +59,16 @@ public class WidgetTaskDialogActivity extends Activity {
     }
 
     private void showTaskDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert);
-        builder.setTitle(isEditMode ? "Edit Task" : "Add New Task");
+        setContentView(R.layout.activity_widget_task_dialog);
+        
+        android.widget.TextView titleText = findViewById(R.id.dialog_title);
+        titleText.setText(isEditMode ? "Edit Task" : "Add New Task");
 
-        View view = LayoutInflater.from(this).inflate(R.layout.activity_widget_task_dialog, null);
-        builder.setView(view);
-
-        final EditText titleInput = view.findViewById(R.id.dialog_task_title);
-        final Spinner categorySpinner = view.findViewById(R.id.dialog_task_category);
-        final Spinner prioritySpinner = view.findViewById(R.id.dialog_task_priority);
+        final EditText titleInput = findViewById(R.id.dialog_task_title);
+        final Spinner categorySpinner = findViewById(R.id.dialog_task_category);
+        final Spinner prioritySpinner = findViewById(R.id.dialog_task_priority);
+        final Button saveBtn = findViewById(R.id.dialog_btn_save);
+        final Button cancelBtn = findViewById(R.id.dialog_btn_cancel);
 
         // Setup Spinners
         String[] categories = {"study", "project", "assignment", "home"};
@@ -88,9 +89,9 @@ public class WidgetTaskDialogActivity extends Activity {
             for (int i=0; i<priorities.length; i++) if (priorities[i].equals(prio)) prioritySpinner.setSelection(i);
         }
 
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 String title = titleInput.getText().toString().trim();
                 if (title.isEmpty()) {
                     Toast.makeText(WidgetTaskDialogActivity.this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
@@ -100,26 +101,16 @@ public class WidgetTaskDialogActivity extends Activity {
                 String category = categorySpinner.getSelectedItem().toString();
                 String priority = prioritySpinner.getSelectedItem().toString();
                 saveTask(title, category, priority);
-                dialog.dismiss();
                 finish();
             }
         });
 
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
+            public void onClick(View v) {
                 finish();
             }
         });
-
-        builder.show();
     }
 
     private void saveTask(String title, String category, String priority) {

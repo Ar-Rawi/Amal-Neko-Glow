@@ -29,26 +29,41 @@ public class WidgetFilterActivity extends Activity {
             }
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert);
-        builder.setTitle("Select Category");
-        builder.setSingleChoiceItems(categories, selectedIndex, new DialogInterface.OnClickListener() {
+        setContentView(R.layout.activity_widget_filter);
+
+        android.widget.ListView listView = findViewById(R.id.filter_list);
+        android.widget.Button cancelBtn = findViewById(R.id.filter_btn_cancel);
+
+        // Custom adapter for white text on dark background
+        android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<String>(this, android.R.layout.simple_list_item_single_choice, categories) {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                prefs.edit().putString("widget_filter_category", values[which]).apply();
-                refreshWidgets();
-                dialog.dismiss();
-                finish();
+            public android.view.View getView(int position, android.view.View convertView, android.view.ViewGroup parent) {
+                android.view.View view = super.getView(position, convertView, parent);
+                android.widget.TextView text = (android.widget.TextView) view.findViewById(android.R.id.text1);
+                text.setTextColor(android.graphics.Color.WHITE);
+                return view;
             }
-        });
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        };
+
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(android.widget.ListView.CHOICE_MODE_SINGLE);
+        listView.setItemChecked(selectedIndex, true);
+
+        listView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
-            public void onCancel(DialogInterface dialog) {
+            public void onItemClick(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
+                prefs.edit().putString("widget_filter_category", values[position]).apply();
+                refreshWidgets();
                 finish();
             }
         });
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        cancelBtn.setOnClickListener(new android.view.View.OnClickListener() {
+            @Override
+            public void onClick(android.view.View v) {
+                finish();
+            }
+        });
     }
 
     private void refreshWidgets() {

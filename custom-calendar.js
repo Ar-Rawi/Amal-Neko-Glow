@@ -50,7 +50,7 @@ function initCustomCalendar() {
           targetInput.dispatchEvent(new Event('change'));
         }
         modal.classList.add('hidden');
-        modal.style.display = 'none';
+        modal.style.display = '';
       });
       
       day.addEventListener('mouseover', () => day.style.background = 'rgba(255,255,255,0.1)');
@@ -68,8 +68,8 @@ function initCustomCalendar() {
 
   prevBtn.onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); };
   nextBtn.onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); };
-  cancelBtn.onclick = () => { modal.classList.add('hidden'); modal.style.display = 'none'; };
-  clearBtn.onclick = () => { if(targetInput) targetInput.value = ''; modal.classList.add('hidden'); modal.style.display = 'none'; };
+  cancelBtn.onclick = () => { modal.classList.add('hidden'); modal.style.display = ''; };
+  clearBtn.onclick = () => { if(targetInput) targetInput.value = ''; modal.classList.add('hidden'); modal.style.display = ''; };
   todayBtn.onclick = () => { currentDate = new Date(); renderCalendar(); };
 
   document.querySelectorAll('input[type="date"]').forEach(input => {
@@ -83,7 +83,6 @@ function initCustomCalendar() {
       }
       renderCalendar();
       modal.classList.remove('hidden');
-      modal.style.display = 'flex';
     });
   });
 }
