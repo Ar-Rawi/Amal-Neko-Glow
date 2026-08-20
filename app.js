@@ -333,9 +333,11 @@ setTimeout(() => {
 //  PWA & NOTIFICATIONS API (Lock-Screen & Toast)
 // ===================================================
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
+  }).catch(() => {});
 }
 
 function showNotification(title, body) {

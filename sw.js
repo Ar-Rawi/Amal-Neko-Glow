@@ -1,60 +1,12 @@
-const CACHE_NAME = 'amalneko-v20';
-const ASSETS = [
-  './',
-  './index.html',
-  './styles.css?v=4.0.0',
-  './app.js?v=4.0.0',
-  './manifest.json',
-  './widget.html'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
-  );
+// sw.js — Self-Unregistering Service Worker
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-
-// Network-First Strategy (Always fetch latest online version first, fallback to cache offline)
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    fetch(event.request, { cache: 'no-cache' })
-      .then(response => {
-        if (response && response.status === 200 && event.request.method === 'GET') {
-          const responseClone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(event.request))
-  );
-});
-
-// Handle Notification Clicks
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-  event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
-      if (clientList.length > 0) {
-        let client = clientList[0];
-        for (let i = 0; i < clientList.length; i++) {
-          if (clientList[i].focused) {
-            client = clientList[i];
-            break;
-          }
-        }
-        return client.focus();
-      }
-      return clients.openWindow('./');
-    })
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.claim())
   );
 });
