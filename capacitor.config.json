@@ -1,6 +1,6 @@
 {
-  "appId": "com.amalnekoglow.app",
-  "appName": "Amal Neko Glow 🐾",
+  "appId": "com.amalneko.app",
+  "appName": "Amal Neko 🐾",
   "webDir": ".",
   "bundledWebRuntime": false,
   "server": {

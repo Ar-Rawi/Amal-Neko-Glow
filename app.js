@@ -1,4 +1,4 @@
-// app.js — Amal Neko Glow Ultra-Cute Study & Task App Logic
+// app.js — Amal Neko Ultra-Cute Study & Task App Logic
 
 // State Management
 let tasks = JSON.parse(localStorage.getItem('amal_study_todos_v3') || '[]');
@@ -8,15 +8,54 @@ let searchQuery = '';
 let soundEnabled = localStorage.getItem('amal_sound_enabled') !== 'false';
 let notifPermission = ('Notification' in window) ? Notification.permission : 'default';
 
-// Default Study Categories + Custom Categories from localStorage
+// Curated Modern Vector SVG Graphics (No OS Emojis) with Harmonious Vibrant Palettes
+const CATEGORY_GRAPHICS = {
+  book: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  exam: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
+  lab: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M10 2v7.31L4.1 19.6A2 2 0 0 0 5.8 22h12.4a2 2 0 0 0 1.7-2.4L14 9.31V2z"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>`,
+  code: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+  target: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  briefcase: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  palette: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d946ef" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.04-.23-.29-.38-.63-.38-1.01 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.52-4.48-9.5-10-9.5z"/></svg>`,
+  idea: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg>`,
+  flame: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
+  coffee: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>`,
+  paw: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff75c3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/><circle cx="9" cy="11" r="1.2" fill="#ff75c3"/><circle cx="15" cy="11" r="1.2" fill="#ff75c3"/></svg>`,
+  star: `<svg class="cat-svg-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+};
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 const defaultCategories = [
-  { key: 'assignment', name: 'Assignment', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' },
-  { key: 'project', name: 'Project', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>' },
-  { key: 'study', name: 'Study & Exam', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>' },
-  { key: 'home', name: 'Home & Personal', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' }
+  { key: 'assignment', name: 'Assignment', icon: CATEGORY_GRAPHICS.book },
+  { key: 'project', name: 'Project', icon: CATEGORY_GRAPHICS.briefcase },
+  { key: 'study', name: 'Study & Exam', icon: CATEGORY_GRAPHICS.exam },
+  { key: 'home', name: 'Home & Personal', icon: CATEGORY_GRAPHICS.coffee }
 ];
 
-let customCategories = JSON.parse(localStorage.getItem('amal_custom_categories') || '[]');
+let rawCustomCats = JSON.parse(localStorage.getItem('amal_custom_categories') || '[]');
+let customCategories = rawCustomCats.map(c => {
+  let icon = '';
+  if (c.graphic && CATEGORY_GRAPHICS[c.graphic]) {
+    icon = CATEGORY_GRAPHICS[c.graphic];
+  } else if (c.icon && c.icon.startsWith('<svg')) {
+    icon = c.icon;
+  }
+  return {
+    key: c.key,
+    name: c.name,
+    graphic: c.graphic || '',
+    icon: icon
+  };
+});
+
 let allCategories = [...defaultCategories, ...customCategories];
 
 function saveCustomCategories() {
@@ -370,7 +409,7 @@ if (notifToggleBtn) {
       const permission = await Notification.requestPermission();
       updateNotifIcon();
       if (permission === 'granted') {
-        showNotification('Amal Neko Glow', 'Purrrrr! Mobile & Lock-Screen Notifications are now active!');
+        showNotification('Amal Neko', 'Purrrrr! Mobile & Lock-Screen Notifications are now active!');
       }
     }
   });
@@ -428,11 +467,11 @@ const purrSpeech = document.getElementById('purr-speech');
 const categoryModal = document.getElementById('category-modal');
 const categoryForm = document.getElementById('category-form');
 const newCatName = document.getElementById('new-cat-name');
-const newCatIcon = document.getElementById('new-cat-icon');
+const newCatGraphic = document.getElementById('new-cat-graphic');
 const openAddCatBtn = document.getElementById('open-add-cat-btn');
 const closeCategoryModalBtn = document.getElementById('close-category-modal-btn');
 const cancelCategoryModalBtn = document.getElementById('cancel-category-modal-btn');
-const emojiChoiceBtns = document.querySelectorAll('.emoji-choice-btn');
+const graphicChoiceBtns = document.querySelectorAll('.graphic-choice-btn');
 
 // Edit Modal Elements
 const editModal = document.getElementById('edit-modal');
@@ -462,7 +501,8 @@ const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
 
 function getCategoryInfo(key) {
   const found = allCategories.find(c => c.key === key);
-  return found ? `${found.icon} ${found.name}` : key;
+  if (!found) return escapeHtml(key);
+  return found.icon ? `${found.icon} ${escapeHtml(found.name)}` : escapeHtml(found.name);
 }
 
 // ===================================================
@@ -547,28 +587,86 @@ function setupDropdown(dropdownId, triggerId, menuId, displayId, hiddenInputId, 
 }
 
 setupDropdown('dropdown-priority', 'priority-trigger', 'priority-menu', 'priority-display', 'priority-select');
+setupDropdown('dropdown-edit-priority', 'edit-priority-trigger', 'edit-priority-menu', 'edit-priority-display', 'edit-priority');
 setupDropdown('dropdown-sort', 'sort-trigger', 'sort-menu', 'sort-display', 'sort-select', val => {
   currentSort = val;
   render();
 });
 
+function deleteCustomCategory(key) {
+  playPopSound();
+  const targetCat = customCategories.find(c => c.key === key);
+  const catName = targetCat ? targetCat.name : 'Category';
+
+  customCategories = customCategories.filter(c => c.key !== key);
+  saveCustomCategories();
+
+  const catInput = document.getElementById('category-select');
+  if (catInput && catInput.value === key) {
+    catInput.value = defaultCategories[0].key;
+    const catDisplay = document.getElementById('category-display');
+    if (catDisplay) {
+      catDisplay.innerHTML = `${defaultCategories[0].icon ? defaultCategories[0].icon + ' ' : ''}<span>${escapeHtml(defaultCategories[0].name)}</span>`;
+    }
+  }
+
+  showNotification('Category Deleted', `Removed "${catName}" category 🐾`);
+  render();
+}
+
 function renderCategoryDropdowns() {
   const catListContainer = document.getElementById('category-options-list');
   const catDisplay = document.getElementById('category-display');
   const catInput = document.getElementById('category-select');
-  const editCatSelect = document.getElementById('edit-category');
 
+  const editCatListContainer = document.getElementById('edit-category-options-list');
+  const editCatDisplay = document.getElementById('edit-category-display');
+  const editCatInput = document.getElementById('edit-category');
+
+  const selectedCat = allCategories.find(c => c.key === (catInput ? catInput.value : '')) || allCategories[0];
+  if (catDisplay && selectedCat) {
+    catDisplay.innerHTML = `${selectedCat.icon ? selectedCat.icon + ' ' : ''}<span>${escapeHtml(selectedCat.name)}</span>`;
+  }
+
+  const selectedEditCat = allCategories.find(c => c.key === (editCatInput ? editCatInput.value : '')) || allCategories[0];
+  if (editCatDisplay && selectedEditCat) {
+    editCatDisplay.innerHTML = `${selectedEditCat.icon ? selectedEditCat.icon + ' ' : ''}<span>${escapeHtml(selectedEditCat.name)}</span>`;
+  }
+
+  // Populate creator dropdown
   if (catListContainer) {
     catListContainer.innerHTML = '';
     allCategories.forEach(cat => {
+      const isCustom = customCategories.some(c => c.key === cat.key);
       const opt = document.createElement('div');
-      opt.className = `dropdown-option ${catInput.value === cat.key ? 'selected' : ''}`;
+      opt.className = `dropdown-option ${catInput && catInput.value === cat.key ? 'selected' : ''}`;
       opt.dataset.value = cat.key;
-      opt.innerHTML = `<span>${cat.icon} ${cat.name}</span>`;
+      
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'cat-option-label';
+      labelSpan.innerHTML = `${cat.icon ? cat.icon + ' ' : ''}<span>${escapeHtml(cat.name)}</span>`;
+      opt.appendChild(labelSpan);
+
+      if (isCustom) {
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'delete-cat-btn ripple-btn';
+        delBtn.title = `Delete "${cat.name}" category`;
+        delBtn.setAttribute('aria-label', `Delete category ${cat.name}`);
+        delBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteCustomCategory(cat.key);
+        });
+        opt.appendChild(delBtn);
+      }
+
       opt.addEventListener('click', () => {
         playPopSound();
-        catInput.value = cat.key;
-        catDisplay.textContent = `${cat.icon} ${cat.name}`;
+        if (catInput) catInput.value = cat.key;
+        if (catDisplay) {
+          catDisplay.innerHTML = `${cat.icon ? cat.icon + ' ' : ''}<span>${escapeHtml(cat.name)}</span>`;
+        }
         document.getElementById('category-menu').classList.add('hidden');
         document.getElementById('category-trigger').classList.remove('open');
         renderCategoryDropdowns();
@@ -577,15 +675,47 @@ function renderCategoryDropdowns() {
     });
   }
 
-  if (editCatSelect) {
-    editCatSelect.innerHTML = '';
+  // Populate Edit Modal custom category dropdown
+  if (editCatListContainer) {
+    editCatListContainer.innerHTML = '';
     allCategories.forEach(cat => {
-      const opt = document.createElement('option');
-      opt.value = cat.key;
-      opt.textContent = `${cat.icon} ${cat.name}`;
-      editCatSelect.appendChild(opt);
+      const opt = document.createElement('div');
+      opt.className = `dropdown-option ${editCatInput && editCatInput.value === cat.key ? 'selected' : ''}`;
+      opt.dataset.value = cat.key;
+
+      const labelSpan = document.createElement('span');
+      labelSpan.className = 'cat-option-label';
+      labelSpan.innerHTML = `${cat.icon ? cat.icon + ' ' : ''}<span>${escapeHtml(cat.name)}</span>`;
+      opt.appendChild(labelSpan);
+
+      opt.addEventListener('click', () => {
+        playPopSound();
+        if (editCatInput) editCatInput.value = cat.key;
+        if (editCatDisplay) {
+          editCatDisplay.innerHTML = `${cat.icon ? cat.icon + ' ' : ''}<span>${escapeHtml(cat.name)}</span>`;
+        }
+        const editCatMenu = document.getElementById('edit-category-menu');
+        const editCatTrigger = document.getElementById('edit-category-trigger');
+        if (editCatMenu) editCatMenu.classList.add('hidden');
+        if (editCatTrigger) editCatTrigger.classList.remove('open');
+        renderCategoryDropdowns();
+      });
+      editCatListContainer.appendChild(opt);
     });
   }
+}
+
+// Edit category dropdown trigger toggle
+const editCategoryTrigger = document.getElementById('edit-category-trigger');
+const editCategoryMenu = document.getElementById('edit-category-menu');
+if (editCategoryTrigger && editCategoryMenu) {
+  editCategoryTrigger.addEventListener('click', e => {
+    e.stopPropagation();
+    playPopSound();
+    closeAllPopupsExcept(editCategoryMenu);
+    editCategoryMenu.classList.toggle('hidden');
+    editCategoryTrigger.classList.toggle('open');
+  });
 }
 
 const categoryTrigger = document.getElementById('category-trigger');
@@ -606,6 +736,8 @@ if (openAddCatBtn) {
     categoryMenu.classList.add('hidden');
     categoryTrigger.classList.remove('open');
     newCatName.value = '';
+    if (newCatGraphic) newCatGraphic.value = '';
+    graphicChoiceBtns.forEach(b => b.classList.toggle('selected', b.dataset.graphic === ''));
     categoryModal.classList.remove('hidden');
   });
 }
@@ -613,12 +745,14 @@ if (openAddCatBtn) {
 if (closeCategoryModalBtn) closeCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
 if (cancelCategoryModalBtn) cancelCategoryModalBtn.addEventListener('click', () => categoryModal.classList.add('hidden'));
 
-emojiChoiceBtns.forEach(btn => {
+graphicChoiceBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     playPopSound();
-    emojiChoiceBtns.forEach(b => b.classList.remove('selected'));
+    graphicChoiceBtns.forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
-    newCatIcon.value = btn.dataset.emoji;
+    if (newCatGraphic) {
+      newCatGraphic.value = btn.dataset.graphic || '';
+    }
   });
 });
 
@@ -628,17 +762,22 @@ categoryForm.addEventListener('submit', e => {
   if (!name) return;
 
   playChimeSound();
-  const key = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-  const icon = newCatIcon.value || '';
+  const key = name.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_' + Date.now().toString(36).slice(-4);
+  const graphicKey = newCatGraphic ? newCatGraphic.value : '';
+  const icon = graphicKey ? (CATEGORY_GRAPHICS[graphicKey] || '') : '';
 
-  if (!allCategories.some(c => c.key === key)) {
-    customCategories.push({ key, name, icon });
-    saveCustomCategories();
+  customCategories.push({ key, name, graphic: graphicKey, icon });
+  saveCustomCategories();
+
+  const catSelect = document.getElementById('category-select');
+  if (catSelect) catSelect.value = key;
+  const catDisplay = document.getElementById('category-display');
+  if (catDisplay) {
+    catDisplay.innerHTML = `${icon ? icon + ' ' : ''}<span>${escapeHtml(name)}</span>`;
   }
 
-  categorySelect.value = key;
-  document.getElementById('category-display').textContent = `${icon} ${name}`;
   categoryModal.classList.add('hidden');
+  showNotification('Category Added', `Created "${name}" category! ✨`);
   renderCategoryDropdowns();
   render();
 });
@@ -867,15 +1006,15 @@ function render() {
               <div class="task-meta">
                 <span class="category-tag">${getCategoryInfo(task.category)}</span>
                 <span class="priority-tag priority-${task.priority}">${priorityLabels[task.priority] || task.priority}</span>
-                ${task.dueDate ? `<span class="due-tag ${overdue ? 'overdue' : ''}">${overdue ? 'Overdue: ' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> '} ${task.dueDate}</span>` : ''}
-                ${subtasks.length > 0 ? `<span class="category-tag" style="color: var(--cat-gold);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> ${subDone}/${subtasks.length} Sub-tasks</span>` : ''}
+                ${task.dueDate ? `<span class="due-tag ${overdue ? 'overdue' : ''}">${overdue ? 'Overdue: ' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" style="vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> '} ${task.dueDate}</span>` : ''}
+                ${subtasks.length > 0 ? `<span class="category-tag" style="color: var(--cat-gold);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2" style="vertical-align:middle;margin-right:3px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> ${subDone}/${subtasks.length} Sub-tasks</span>` : ''}
               </div>
             </div>
           </div>
           <div class="task-actions">
-            ${subtasks.length === 0 ? `<button class="action-btn add-subtask-toggle ripple-btn" data-id="${task.id}" title="Add Sub-task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Sub-task</button>` : ''}
-            <button class="action-btn edit ripple-btn" data-id="${task.id}" title="Edit Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-            <button class="action-btn delete ripple-btn" data-id="${task.id}" title="Delete Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+            ${subtasks.length === 0 ? `<button class="action-btn add-subtask-toggle ripple-btn" data-id="${task.id}" title="Add Sub-task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Sub-task</button>` : ''}
+            <button class="action-btn edit ripple-btn" data-id="${task.id}" title="Edit Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn delete ripple-btn" data-id="${task.id}" title="Delete Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2.2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
           </div>
         </div>
         ${subtasksWrapperHtml}
@@ -1077,12 +1216,25 @@ function openEditModal(id) {
 
   editTaskId.value = task.id;
   editTaskText.value = task.text;
+  
+  // Set priority in custom dropdown
   editPriority.value = task.priority;
-  editCategory.value = task.category;
-  editDueDate.value = task.dueDate || '';
+  const editPriorityDisplay = document.getElementById('edit-priority-display');
+  if (editPriorityDisplay) {
+    editPriorityDisplay.innerHTML = `<span class="priority-dot dot-${task.priority}"></span>${priorityLabels[task.priority] || task.priority}`;
+  }
+  const editPriorityMenu = document.getElementById('edit-priority-menu');
+  if (editPriorityMenu) {
+    editPriorityMenu.querySelectorAll('.dropdown-option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.value === task.priority);
+    });
+  }
 
-  renderCategoryDropdowns();
+  // Set category in custom dropdown
   editCategory.value = task.category;
+  renderCategoryDropdowns();
+
+  editDueDate.value = task.dueDate || '';
   editModal.classList.remove('hidden');
 }
 
@@ -1346,7 +1498,7 @@ async function toggleSettingsNotif(e) {
   const permission = await Notification.requestPermission();
   updateSettingsUI();
   if (permission === 'granted') {
-    showNotification('Amal Neko Glow', 'Purrrrr! Lock-Screen Notifications are now active!');
+    showNotification('Amal Neko', 'Purrrrr! Lock-Screen Notifications are now active!');
   }
 }
 
@@ -1497,7 +1649,7 @@ function bootstrapAmalNekoApp() {
     console.error("Settings UI update error:", e);
   }
 
-  console.log("🐾 Amal Neko Glow v3.2 Engine Ready & Verified!");
+  console.log("🐾 Amal Neko v3.2 Engine Ready & Verified!");
 }
 
 if (document.readyState === 'loading') {

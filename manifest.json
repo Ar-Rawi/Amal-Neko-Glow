@@ -1,7 +1,7 @@
 {
-  "name": "Amal Neko Glow",
-  "short_name": "NekoGlow",
-  "description": "Cute study & task companion for cat lovers",
+  "name": "Amal Neko",
+  "short_name": "AmalNeko",
+  "description": "Cute study & task companion by Rawi",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0d0a17",
