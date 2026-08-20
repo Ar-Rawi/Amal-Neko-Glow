@@ -11,51 +11,54 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class NekoWidget3x2Provider extends AppWidgetProvider {
 
     private static final String ACTION_TASK_CLICK = "com.amalnekoglow.app.ACTION_TASK_3x2";
+    private static final String ACTION_ADD = "com.amalnekoglow.app.ACTION_ADD_3x2";
+    private static final String ACTION_FILTER = "com.amalnekoglow.app.ACTION_FILTER_3x2";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_3x2_layout);
 
-            // Set up the RemoteViewsService for the ListView
+            // Set up ListView
             Intent serviceIntent = new Intent(context, WidgetTaskService.class);
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
             views.setRemoteAdapter(R.id.widget_task_list, serviceIntent);
+            
+            // Empty View intent (Add task)
+            views.setEmptyView(R.id.widget_task_list, R.id.widget_empty_view);
+            Intent emptyIntent = new Intent(context, NekoWidget3x2Provider.class);
+            emptyIntent.setAction(ACTION_ADD);
+            PendingIntent emptyPendingIntent = PendingIntent.getBroadcast(
+                context, 0, emptyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            views.setOnClickPendingIntent(R.id.widget_empty_view, emptyPendingIntent);
 
-            // Empty view (none needed, list will just be empty)
-            views.setEmptyView(R.id.widget_task_list, android.R.id.empty);
-
-            // Set up PendingIntentTemplate for item clicks (toggle/edit/delete)
+            // Task List item clicks (Edit/Delete)
             Intent actionIntent = new Intent(context, NekoWidget3x2Provider.class);
             actionIntent.setAction(ACTION_TASK_CLICK);
             actionIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             PendingIntent actionPendingIntent = PendingIntent.getBroadcast(
-                context, 0, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+                context, 1, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
             views.setPendingIntentTemplate(R.id.widget_task_list, actionPendingIntent);
 
-            // + Add button opens the app
-            Intent addIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-            if (addIntent == null) {
-                addIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ar-rawi.github.io/Amal-Neko-Glow/"));
-            }
-            addIntent.putExtra("open_add_task", true);
-            PendingIntent addPendingIntent = PendingIntent.getActivity(
-                context, 1, addIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            // + Add button
+            Intent addIntent = new Intent(context, NekoWidget3x2Provider.class);
+            addIntent.setAction(ACTION_ADD);
+            PendingIntent addPendingIntent = PendingIntent.getBroadcast(
+                context, 2, addIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             views.setOnClickPendingIntent(R.id.widget_add_btn, addPendingIntent);
 
-            // Header tap opens the app
-            Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-            if (launchIntent == null) {
-                launchIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ar-rawi.github.io/Amal-Neko-Glow/"));
-            }
-            PendingIntent launchPendingIntent = PendingIntent.getActivity(
-                context, 2, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-            views.setOnClickPendingIntent(R.id.widget_container, launchPendingIntent);
+            // Filter button
+            Intent filterIntent = new Intent(context, NekoWidget3x2Provider.class);
+            filterIntent.setAction(ACTION_FILTER);
+            PendingIntent filterPendingIntent = PendingIntent.getBroadcast(
+                context, 3, filterIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            views.setOnClickPendingIntent(R.id.widget_filter_btn, filterPendingIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }
@@ -64,50 +67,51 @@ public class NekoWidget3x2Provider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (ACTION_TASK_CLICK.equals(intent.getAction())) {
+        String action = intent.getAction();
+        if (action == null) return;
+
+        if (ACTION_TASK_CLICK.equals(action)) {
             int taskId = intent.getIntExtra("task_id", -1);
-            String action = intent.getStringExtra("action");
+            String taskAction = intent.getStringExtra("action");
+            if (taskId == -1 || taskAction == null) return;
 
-            if (taskId == -1 || action == null) return;
-
-            switch (action) {
-                case "TOGGLE":
-                    toggleTask(context, taskId);
-                    break;
-                case "DELETE":
-                    deleteTask(context, taskId);
-                    break;
-                case "EDIT":
-                    // Open app to edit this specific task
-                    Intent editIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-                    if (editIntent == null) {
-                        editIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://ar-rawi.github.io/Amal-Neko-Glow/"));
-                    }
-                    editIntent.putExtra("edit_task_id", taskId);
-                    editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(editIntent);
-                    break;
+            if ("DELETE".equals(taskAction)) {
+                deleteTask(context, taskId);
+            } else if ("EDIT".equals(taskAction)) {
+                setPendingActionAndLaunch(context, "{\"action\":\"edit\", \"taskId\":" + taskId + "}");
             }
+        } else if (ACTION_ADD.equals(action)) {
+            setPendingActionAndLaunch(context, "{\"action\":\"add\"}");
+        } else if (ACTION_FILTER.equals(action)) {
+            cycleFilter(context);
         }
     }
 
-    private void toggleTask(Context context, int taskId) {
+    private void setPendingActionAndLaunch(Context context, String jsonAction) {
         SharedPreferences prefs = context.getSharedPreferences("NekoWidgetData", Context.MODE_PRIVATE);
-        String json = prefs.getString("tasks_json", "[]");
-        try {
-            JSONArray arr = new JSONArray(json);
-            for (int i = 0; i < arr.length(); i++) {
-                org.json.JSONObject obj = arr.getJSONObject(i);
-                if (obj.optInt("id", -1) == taskId) {
-                    obj.put("completed", !obj.optBoolean("completed", false));
-                    break;
-                }
-            }
-            prefs.edit().putString("tasks_json", arr.toString()).apply();
-            refreshWidgets(context);
-        } catch (Exception e) {
-            e.printStackTrace();
+        prefs.edit().putString("pending_action", jsonAction).apply();
+
+        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        if (launchIntent != null) {
+            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(launchIntent);
         }
+    }
+
+    private void cycleFilter(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("NekoWidgetData", Context.MODE_PRIVATE);
+        String current = prefs.getString("widget_filter_category", "all");
+        String next = "all";
+        
+        // Simple cycle logic: all -> study -> project -> assignment -> home -> all
+        if ("all".equals(current)) next = "study";
+        else if ("study".equals(current)) next = "project";
+        else if ("project".equals(current)) next = "assignment";
+        else if ("assignment".equals(current)) next = "home";
+        else next = "all";
+
+        prefs.edit().putString("widget_filter_category", next).apply();
+        refreshWidgets(context);
     }
 
     private void deleteTask(Context context, int taskId) {
@@ -117,7 +121,7 @@ public class NekoWidget3x2Provider extends AppWidgetProvider {
             JSONArray arr = new JSONArray(json);
             JSONArray updated = new JSONArray();
             for (int i = 0; i < arr.length(); i++) {
-                org.json.JSONObject obj = arr.getJSONObject(i);
+                JSONObject obj = arr.getJSONObject(i);
                 if (obj.optInt("id", -1) != taskId) {
                     updated.put(obj);
                 }
@@ -131,8 +135,7 @@ public class NekoWidget3x2Provider extends AppWidgetProvider {
 
     private void refreshWidgets(Context context) {
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
-        ComponentName component = new ComponentName(context, NekoWidget3x2Provider.class);
-        int[] widgetIds = manager.getAppWidgetIds(component);
-        manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.widget_task_list);
+        int[] ids = manager.getAppWidgetIds(new ComponentName(context, NekoWidget3x2Provider.class));
+        manager.notifyAppWidgetViewDataChanged(ids, R.id.widget_task_list);
     }
 }

@@ -332,6 +332,51 @@ setTimeout(() => {
   showCatSpeech('Purrrrr... Ready to study!');
 }, 900);
 
+// ===================================================
+// CAPACITOR WIDGET BI-DIRECTIONAL SYNC
+// ===================================================
+if (window.Capacitor && window.Capacitor.Plugins.App && window.Capacitor.Plugins.WidgetBridge) {
+  const syncFromWidget = async () => {
+    try {
+      // 1. Sync any tasks toggled or deleted from the widget
+      const { tasks: tasksJson } = await window.Capacitor.Plugins.WidgetBridge.getTasks();
+      if (tasksJson && tasksJson !== '[]') {
+        const nativeTasks = JSON.parse(tasksJson);
+        // Only overwrite if the native tasks array actually changed (prevent empty overwrite)
+        if (nativeTasks.length > 0 || tasks.length > 0) {
+          tasks = nativeTasks;
+          localStorage.setItem('amal_study_todos_v3', JSON.stringify(tasks));
+          renderTasks();
+          updateStats();
+        }
+      }
+
+      // 2. Handle pending intents (Edit / Add clicked on widget)
+      const { actionData } = await window.Capacitor.Plugins.WidgetBridge.getPendingAction();
+      if (actionData) {
+        const action = JSON.parse(actionData);
+        if (action.action === 'edit') {
+          openEditModal(action.taskId);
+          window.scrollTo(0, 0);
+        } else if (action.action === 'add') {
+          openAddTaskModal();
+          window.scrollTo(0, 0);
+        }
+      }
+    } catch (e) {
+      console.log('Widget sync error on resume:', e);
+    }
+  };
+
+  // Sync on launch
+  syncFromWidget();
+
+  // Sync every time app resumes from background
+  window.Capacitor.Plugins.App.addListener('appStateChange', ({ isActive }) => {
+    if (isActive) syncFromWidget();
+  });
+}
+
 
 
 // ===================================================

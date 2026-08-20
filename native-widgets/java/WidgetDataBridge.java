@@ -35,6 +35,31 @@ public class WidgetDataBridge extends Plugin {
     }
 
     @PluginMethod()
+    public void getTasks(PluginCall call) {
+        Context context = getContext();
+        SharedPreferences prefs = context.getSharedPreferences("NekoWidgetData", Context.MODE_PRIVATE);
+        String tasksJson = prefs.getString("tasks_json", "[]");
+        
+        JSObject result = new JSObject();
+        result.put("tasks", tasksJson);
+        call.resolve(result);
+    }
+
+    @PluginMethod()
+    public void getPendingAction(PluginCall call) {
+        Context context = getContext();
+        SharedPreferences prefs = context.getSharedPreferences("NekoWidgetData", Context.MODE_PRIVATE);
+        String actionJson = prefs.getString("pending_action", null);
+        
+        JSObject result = new JSObject();
+        result.put("actionData", actionJson);
+        call.resolve(result);
+        
+        // Clear it so it doesn't run twice
+        prefs.edit().remove("pending_action").apply();
+    }
+
+    @PluginMethod()
     public void deleteTask(PluginCall call) {
         int taskId = call.getInt("taskId", -1);
         if (taskId == -1) {

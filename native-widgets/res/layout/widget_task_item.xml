@@ -7,40 +7,32 @@
     android:gravity="center_vertical"
     android:paddingStart="4dp"
     android:paddingEnd="4dp"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="?android:attr/selectableItemBackground">
 
-    <!-- Checkbox Icon (check/uncheck) -->
-    <ImageView
-        android:id="@+id/task_check_icon"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:src="@drawable/ic_uncheck"
-        android:contentDescription="Toggle task" />
-
-    <!-- Task Text -->
+    <!-- Task Text (No Checkbox) -->
     <TextView
         android:id="@+id/task_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
         android:text="Task name"
         android:textColor="#d1c4e9"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:maxLines="2"
         android:ellipsize="end" />
 
-    <!-- Edit Action Button -->
+    <!-- Priority Orb -->
     <ImageView
-        android:id="@+id/task_edit_btn"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_marginEnd="4dp"
-        android:src="@drawable/ic_edit"
-        android:contentDescription="Edit task"
-        android:padding="2dp" />
+        android:id="@+id/task_priority_orb"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_orb"
+        android:contentDescription="Task Priority" />
 
     <!-- Delete Action Button -->
     <ImageView

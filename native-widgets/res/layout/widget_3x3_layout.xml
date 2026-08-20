@@ -23,6 +23,15 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <!-- Filter Button -->
+        <ImageView
+            android:id="@+id/widget_filter_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_filter"
+            android:contentDescription="Filter categories" />
+
         <!-- + Add Button -->
         <ImageView
             android:id="@+id/widget_add_btn"
@@ -59,6 +68,19 @@
         android:scrollbars="none"
         android:fadingEdge="vertical"
         android:fadingEdgeLength="16dp" />
+
+    <!-- Empty State View -->
+    <TextView
+        android:id="@+id/widget_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="No active tasks.\nTap here to add one!"
+        android:textColor="#9ca3af"
+        android:textSize="12sp"
+        android:visibility="gone" />
 
     <!-- Footer -->
     <TextView

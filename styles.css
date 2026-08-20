@@ -2161,6 +2161,19 @@ h1 {
   align-items: center;
 }
 
+.styled-native-date {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--surface-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-color);
+  font-family: inherit;
+  font-size: 0.95rem;
+  appearance: none;
+  color-scheme: dark; /* Forces native date picker popup to be dark */
+}
+
 .subtask-input {
   flex: 1;
   padding: 0.45rem 0.8rem;
