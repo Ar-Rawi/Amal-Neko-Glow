@@ -1,4 +1,4 @@
-// app.js — Amal Neko Glow Ultra-Cute Study & Task App Logic 🐾
+// app.js — Amal Neko Glow Ultra-Cute Study & Task App Logic
 
 // State Management
 let tasks = JSON.parse(localStorage.getItem('amal_study_todos_v3') || '[]');
@@ -10,10 +10,10 @@ let notifPermission = ('Notification' in window) ? Notification.permission : 'de
 
 // Default Study Categories + Custom Categories from localStorage
 const defaultCategories = [
-  { key: 'assignment', name: 'Assignment', icon: '📚' },
-  { key: 'project', name: 'Project', icon: '🔬' },
-  { key: 'study', name: 'Study & Exam', icon: '📖' },
-  { key: 'home', name: 'Home & Personal', icon: '🏠' }
+  { key: 'assignment', name: 'Assignment', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' },
+  { key: 'project', name: 'Project', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>' },
+  { key: 'study', name: 'Study & Exam', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>' },
+  { key: 'home', name: 'Home & Personal', icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' }
 ];
 
 let customCategories = JSON.parse(localStorage.getItem('amal_custom_categories') || '[]');
@@ -26,14 +26,14 @@ function saveCustomCategories() {
 }
 
 // Initial Sample Study Tasks with Sub-tasks
-if (tasks.length === 0) {
+if (!localStorage.getItem('amal_neko_initialized')) {
   const today = new Date().toISOString().split('T')[0];
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
   
   tasks = [
     {
       id: 1,
-      text: '📚 Calculus & Linear Algebra Assignment',
+      text: 'Calculus & Linear Algebra Assignment',
       completed: false,
       priority: 'urgent',
       category: 'assignment',
@@ -47,7 +47,7 @@ if (tasks.length === 0) {
     },
     {
       id: 2,
-      text: '🔬 Physics Lab Prototype & Presentation',
+      text: 'Physics Lab Prototype & Presentation',
       completed: false,
       priority: 'high',
       category: 'project',
@@ -60,7 +60,7 @@ if (tasks.length === 0) {
     },
     {
       id: 3,
-      text: '📖 Midterm Exam Chapter 4 & 5 Review',
+      text: 'Midterm Exam Chapter 4 & 5 Review',
       completed: true,
       priority: 'medium',
       category: 'study',
@@ -70,6 +70,7 @@ if (tasks.length === 0) {
     }
   ];
   saveTasks();
+  localStorage.setItem('amal_neko_initialized', 'true');
 }
 
 function saveTasks() {
@@ -134,7 +135,7 @@ function playMeowSound() {
   }
 }
 
-// Cute Purr Motor Sound Effect 🐾
+// Cute Purr Motor Sound Effect
 function playPurrSound() {
   if (!soundEnabled) return;
   try {
@@ -233,12 +234,12 @@ let purrSpeechTimeout = null;
 let meowToggle = false;
 
 const catQuotes = [
-  'Meow! 🐾',
-  'Purrrrr... ✨',
+  'Meow!',
+  'Purrrrr...',
   'Nyaa~ A+ for you! 😻',
   'Study hard, take cozy breaks! 📚',
   'You got this! 💖',
-  'Mew mew! 🐾✨'
+  'Mew mew!✨'
 ];
 
 function showCatSpeech(text) {
@@ -284,7 +285,7 @@ if (catMascotEl) {
 
 // Initial welcoming purr speech on load
 setTimeout(() => {
-  showCatSpeech('Purrrrr... ✨ Ready to study! 🐾');
+  showCatSpeech('Purrrrr... Ready to study!');
 }, 900);
 
 
@@ -360,12 +361,12 @@ if (notifToggleBtn) {
     }
 
     if (Notification.permission === 'granted') {
-      showNotification("Notifications Active 🐾", "Lock-screen and mobile notifications are fully enabled!");
+      showNotification('Notifications Active', 'Lock-screen and mobile notifications are fully enabled!');
     } else {
       const permission = await Notification.requestPermission();
       updateNotifIcon();
       if (permission === 'granted') {
-        showNotification("Amal Neko Glow 🐾", "Purrrrr! Mobile & Lock-Screen Notifications are now active! ✨");
+        showNotification('Amal Neko Glow', 'Purrrrr! Mobile & Lock-Screen Notifications are now active!');
       }
     }
   });
@@ -460,11 +461,11 @@ function getCategoryInfo(key) {
 // 🌟 INTERACTIVE MASCOT PETTING LOGIC (Purr & Meow!)
 // ===================================================
 const purrPhrases = [
-  "Purrrrr... ✨",
-  "Meow! 🐾",
+  "Purrrrr...",
+  "Meow!",
   "Study hard! 📚",
   "Nyaa~ A+ for you! 😻",
-  "Stay Paw-sitive! 🐾",
+  "Stay Paw-sitive!",
   "Take a cozy break! ☕",
   "You're doing amazing! 🌟"
 ];
@@ -790,7 +791,7 @@ function render() {
   statCompleted.textContent = completedCount;
   statOverdue.textContent = overdueCount;
   
-  progressText.textContent = `${percent}% Completed 🐾`;
+  progressText.textContent = `${percent}% Completed`;
   progressFill.style.width = `${percent}%`;
 
   todoList.innerHTML = '';
@@ -826,7 +827,7 @@ function render() {
         <div class="task-main-row">
           <div class="task-left">
             <button class="custom-checkbox ripple-btn" data-id="${task.id}" aria-label="Toggle task">
-              ${task.completed ? '🐾' : ''}
+              ${task.completed ? '' : ''}
             </button>
             <div class="task-content">
               <span class="task-text">${escapeHtml(task.text)}</span>
@@ -897,8 +898,8 @@ todoForm.addEventListener('submit', e => {
   dueDateInput.value = '';
   dateDisplayText.textContent = '📅 Select Date';
 
-  showNotification("New Goal Added 🐾", `"${newTask.text}" is ready for study time!`);
-  showCatSpeech('Added new goal! Mew! 🐾');
+  showNotification("New Goal Added", `"${newTask.text}" is ready for study time!`);
+  showCatSpeech('Added new goal! Mew!');
   render();
 });
 
@@ -1016,7 +1017,7 @@ todoList.addEventListener('keydown', e => {
 });
 
 function spawnPurrPop(x, y) {
-  const emojis = ['😻', '🐾', '✨', '📚', '🌟', '🎉'];
+  const emojis = ['😻', '', '✨', '📚', '🌟', '🎉'];
   const el = document.createElement('div');
   el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
   el.style.position = 'fixed';
@@ -1110,69 +1111,8 @@ if (themeToggleBtn) {
   });
 }
 
-// ===================================================
-// 🐾 BACKGROUND CANVAS (Soft Floating Paws & Sparkles)
-// ===================================================
-function initParticleCanvas() {
-  const canvas = document.getElementById('particle-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  
-  let width = canvas.width = window.innerWidth;
-  let height = canvas.height = window.innerHeight;
+// BACKGROUND CANVAS — REMOVED (GPU-composited CSS aurora replaces rAF loop)
 
-  const particles = [];
-  const particleCount = 30;
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 12 + 10,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: -Math.random() * 0.35 - 0.1,
-      alpha: Math.random() * 0.35 + 0.2,
-      isPaw: i % 2 === 0
-    });
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-
-      if (p.y < -30) p.y = height + 30;
-      if (p.x < -20) p.x = width + 20;
-      if (p.x > width + 20) p.x = -20;
-
-      ctx.save();
-      ctx.globalAlpha = p.alpha;
-      ctx.fillStyle = '#ff75c3';
-      ctx.shadowColor = '#ff75c3';
-      ctx.shadowBlur = 8;
-
-      if (p.isPaw) {
-        ctx.font = `${p.size}px sans-serif`;
-        ctx.fillText('🐾', p.x, p.y);
-      } else {
-        ctx.font = `${p.size * 0.8}px sans-serif`;
-        ctx.fillText('✨', p.x, p.y);
-      }
-      ctx.restore();
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
-}
 
 // ===================================================
 // 📱 MOBILE WIDGETS MODAL & LIVE SYNC ENGINE
@@ -1232,7 +1172,7 @@ function renderModalWidgetList(elementId, taskSubset) {
   el.innerHTML = '';
 
   if (taskSubset.length === 0) {
-    el.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 0.8rem 0;">All caught up! 🐾</li>';
+    el.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 0.8rem; padding: 0.8rem 0;">All caught up!</li>';
     return;
   }
 
@@ -1241,7 +1181,7 @@ function renderModalWidgetList(elementId, taskSubset) {
     li.className = `w-task-item ${t.completed ? 'completed' : ''}`;
     li.innerHTML = `
       <button class="w-checkbox ripple-btn" data-id="${t.id}">
-        ${t.completed ? '🐾' : ''}
+        ${t.completed ? '' : ''}
       </button>
       <span style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(t.text)}</span>
     `;
@@ -1290,17 +1230,31 @@ function updateSettingsUI() {
     const isNotifGranted = 'Notification' in window && Notification.permission === 'granted';
     const settingsNotifIcon = document.getElementById('settings-notif-icon');
     const settingsNotifStatus = document.getElementById('settings-notif-status');
-    if (settingsNotifIcon) settingsNotifIcon.textContent = isNotifGranted ? '🔔' : '🔕';
+    const settingsNotifBtn = document.getElementById('settings-notif-btn');
+    if (settingsNotifIcon) settingsNotifIcon.innerHTML = isNotifGranted ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
     if (settingsNotifStatus) settingsNotifStatus.textContent = isNotifGranted ? 'Notifications Active (Granted)' : 'Tap to enable lock-screen alerts';
+    if (settingsNotifBtn) {
+      settingsNotifBtn.textContent = isNotifGranted ? 'Enabled' : 'Enable';
+      settingsNotifBtn.className = isNotifGranted ? 'glow-btn ripple-btn small-btn' : 'btn-secondary ripple-btn small-btn';
+    }
 
     const settingsSoundIcon = document.getElementById('settings-sound-icon');
     const settingsSoundStatus = document.getElementById('settings-sound-status');
-    if (settingsSoundIcon) settingsSoundIcon.textContent = soundEnabled ? '🔊' : '🔇';
-    if (settingsSoundStatus) settingsSoundStatus.textContent = soundEnabled ? 'Sound Effects Enabled (Meows & Chimes)' : 'Sound Muted';
+    const settingsSoundBtn = document.getElementById('settings-sound-btn');
+    if (settingsSoundIcon) settingsSoundIcon.innerHTML = soundEnabled ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+    if (settingsSoundStatus) settingsSoundStatus.textContent = soundEnabled ? 'Sound Effects Enabled (Meows & Chimes)' : 'Sound Muted (Quiet Mode)';
+    if (settingsSoundBtn) {
+      settingsSoundBtn.textContent = soundEnabled ? 'Mute' : 'Enable';
+      settingsSoundBtn.className = soundEnabled ? 'glow-btn ripple-btn small-btn' : 'btn-secondary ripple-btn small-btn';
+    }
 
     const settingsThemeStatus = document.getElementById('settings-theme-status');
+    const settingsThemeBtn = document.getElementById('settings-theme-btn');
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
     if (settingsThemeStatus) settingsThemeStatus.textContent = currentTheme === 'dark' ? 'Midnight Velvet (Dark Mode)' : 'Pastel Strawberry (Light Mode)';
+    if (settingsThemeBtn) {
+      settingsThemeBtn.textContent = currentTheme === 'dark' ? 'Switch to Light' : 'Switch to Dark';
+    }
   } catch (err) {
     console.error('Error updating settings UI:', err);
   }
@@ -1346,8 +1300,13 @@ function openWidgetsFromSettings(e) {
   }
 }
 
+let notifToggleLock = false;
 async function toggleSettingsNotif(e) {
   if (e) e.stopPropagation();
+  if (notifToggleLock) return;
+  notifToggleLock = true;
+  setTimeout(() => { notifToggleLock = false; }, 300);
+
   playPopSound();
   if (!('Notification' in window)) {
     showNotification("Notifications Not Supported", "Your browser doesn't support system push notifications.");
@@ -1356,24 +1315,37 @@ async function toggleSettingsNotif(e) {
   const permission = await Notification.requestPermission();
   updateSettingsUI();
   if (permission === 'granted') {
-    showNotification("Amal Neko Glow 🐾", "Purrrrr! Lock-Screen Notifications are now active! ✨");
+    showNotification('Amal Neko Glow', 'Purrrrr! Lock-Screen Notifications are now active!');
   }
 }
 
+let soundDebounce = 0;
 function toggleSettingsSound(e) {
   if (e) e.stopPropagation();
+  const now = Date.now();
+  if (now - soundDebounce < 250) return;
+  soundDebounce = now;
+
   soundEnabled = !soundEnabled;
   localStorage.setItem('amal_sound_enabled', soundEnabled);
   updateSettingsUI();
-  if (soundEnabled) playPopSound();
+  if (soundEnabled) {
+    playPopSound();
+  }
 }
 
+let themeDebounce = 0;
 function toggleSettingsTheme(e) {
   if (e) e.stopPropagation();
+  const now = Date.now();
+  if (now - themeDebounce < 250) return;
+  themeDebounce = now;
+
   playPopSound();
   const current = document.documentElement.getAttribute('data-theme') || 'dark';
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
+  document.body.setAttribute('data-theme', next);
   localStorage.setItem('amal_theme', next);
   updateSettingsUI();
 }
@@ -1397,27 +1369,104 @@ function initSettingsEngine() {
   const themeBtn = document.getElementById('settings-theme-btn');
   const sm = document.getElementById('settings-modal');
 
-  if (btn) btn.addEventListener('click', openSettingsModal);
+  if (btn) btn.onclick = openSettingsModal;
   if (sm) {
-    sm.addEventListener('click', (e) => {
+    sm.onclick = (e) => {
       if (e.target === sm) closeSettingsModal(e);
-    });
+    };
   }
-  if (closeBtn) closeBtn.addEventListener('click', closeSettingsModal);
-  if (doneBtn) doneBtn.addEventListener('click', closeSettingsModal);
-  if (openWidgetsBtn) openWidgetsBtn.addEventListener('click', openWidgetsFromSettings);
-  if (notifBtn) notifBtn.addEventListener('click', toggleSettingsNotif);
-  if (soundBtn) soundBtn.addEventListener('click', toggleSettingsSound);
-  if (themeBtn) themeBtn.addEventListener('click', toggleSettingsTheme);
+  if (closeBtn) closeBtn.onclick = closeSettingsModal;
+  if (doneBtn) doneBtn.onclick = closeSettingsModal;
+  if (openWidgetsBtn) openWidgetsBtn.onclick = openWidgetsFromSettings;
+  if (notifBtn) notifBtn.onclick = toggleSettingsNotif;
+  if (soundBtn) soundBtn.onclick = toggleSettingsSound;
+  if (themeBtn) themeBtn.onclick = toggleSettingsTheme;
 }
 
-// Boot up logic (Immediate + DOMContentLoaded safe)
+// ===================================================
+// 🎨 COLOR THEME ENGINE & MOTION TOGGLE
+// ===================================================
+function applyThemeColor(color) {
+  document.documentElement.setAttribute('data-color-theme', color);
+  document.body.setAttribute('data-color-theme', color);
+  const swatches = document.querySelectorAll('.color-swatch');
+  swatches.forEach(s => {
+    s.classList.toggle('active', s.dataset.color === color);
+  });
+  localStorage.setItem('amal_theme_color', color);
+}
+
+function applyMotion(type) {
+  document.body.setAttribute('data-motion', type);
+  document.documentElement.setAttribute('data-motion', type);
+  const btns = document.querySelectorAll('.motion-btn');
+  btns.forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.motionType === type);
+  });
+  localStorage.setItem('amal_motion', type);
+}
+
+function initColorThemeEngine() {
+  // Apply saved color theme
+  const savedColor = localStorage.getItem('amal_theme_color') || 'sakura';
+  applyThemeColor(savedColor);
+
+  // Apply saved motion
+  const savedMotion = localStorage.getItem('amal_motion') || 'smooth';
+  applyMotion(savedMotion);
+
+  // Swatch click listeners
+  document.addEventListener('click', (e) => {
+    const swatch = e.target.closest('.color-swatch');
+    if (swatch && swatch.dataset.color) {
+      playPopSound();
+      applyThemeColor(swatch.dataset.color);
+    }
+
+    const motionBtn = e.target.closest('.motion-btn');
+    if (motionBtn && motionBtn.dataset.motionType) {
+      playPopSound();
+      applyMotion(motionBtn.dataset.motionType);
+    }
+  });
+}
+
+window.applyThemeColor = applyThemeColor;
+window.applyMotion = applyMotion;
+
+// Boot up logic (Immediate + DOMContentLoaded safe with try-catch isolation)
 function bootstrapAmalNekoApp() {
-  renderCategoryDropdowns();
-  render();
-  initParticleCanvas();
-  initSettingsEngine();
-  updateSettingsUI();
+  try {
+    initColorThemeEngine();
+  } catch (e) {
+    console.error("Theme engine init error:", e);
+  }
+
+  try {
+    renderCategoryDropdowns();
+  } catch (e) {
+    console.error("Category init error:", e);
+  }
+
+  try {
+    render();
+  } catch (e) {
+    console.error("Render error:", e);
+  }
+
+  try {
+    initSettingsEngine();
+  } catch (e) {
+    console.error("Settings engine init error:", e);
+  }
+
+  try {
+    updateSettingsUI();
+  } catch (e) {
+    console.error("Settings UI update error:", e);
+  }
+
+  console.log("🐾 Amal Neko Glow v3.2 Engine Ready & Verified!");
 }
 
 if (document.readyState === 'loading') {

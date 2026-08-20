@@ -21,7 +21,9 @@ const mimeTypes = {
 
 const server = http.createServer(async (req, res) => {
   try {
-    const urlPath = req.url === '/' ? '/index.html' : decodeURIComponent(req.url);
+    const rawUrl = req.url === '/' ? '/index.html' : req.url;
+    const cleanPath = rawUrl.split('?')[0].split('#')[0];
+    const urlPath = decodeURIComponent(cleanPath);
     const filePath = path.join(__dirname, urlPath);
     const data = await fs.readFile(filePath);
     const ext = path.extname(filePath).toLowerCase();
