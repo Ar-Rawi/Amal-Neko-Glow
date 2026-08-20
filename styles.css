@@ -62,19 +62,13 @@
 }
 
 [data-theme="light"] {
-  /* Pastel Strawberry Cat Theme - High Contrast & Lush Pastel Polish */
-  --bg-gradient: radial-gradient(circle at 50% 0%, #fff2f7 0%, #f4e8fd 50%, #eae0fa 100%);
+  /* Dynamic Pastel Light Theme - Preserves Active Color Palette Swatches */
+  --bg-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, rgba(var(--glow-rgb), 0.12) 50%, #f4effa 100%);
   --card-bg: rgba(255, 255, 255, 0.94);
   --dropdown-bg: #ffffff;
-  --card-border: rgba(157, 78, 221, 0.22);
+  --card-border: rgba(var(--glow-rgb), 0.28);
   --text-main: #2d1b4e;
   --text-muted: #6e4d8b;
-  
-  --primary-glow: #ff4785;
-  --primary-accent: #9d4edd;
-  --accent-cyan: #00b4d8;
-  --accent-purple: #7b2cbf;
-  --cat-gold: #d97706;
 
   --badge-low: rgba(16, 185, 129, 0.15);
   --badge-low-text: #059669;
@@ -86,8 +80,8 @@
   --badge-urgent-text: #e11d48;
 
   --input-bg: rgba(255, 255, 255, 0.95);
-  --input-border: rgba(157, 78, 221, 0.25);
-  --shadow-glow: 0 14px 40px rgba(157, 78, 221, 0.12);
+  --input-border: rgba(var(--glow-rgb), 0.28);
+  --shadow-glow: 0 14px 40px rgba(var(--glow-rgb), 0.14);
 }
 
 /* Reset & Global Styles */
@@ -1842,14 +1836,14 @@ h1 {
 }
 
 [data-theme="light"] .tag-v {
-  background: rgba(255, 71, 133, 0.12) !important;
-  color: #ff4785 !important;
-  border-color: rgba(255, 71, 133, 0.3) !important;
+  background: rgba(var(--glow-rgb), 0.12) !important;
+  color: var(--primary-glow) !important;
+  border-color: rgba(var(--glow-rgb), 0.3) !important;
 }
 
 [data-theme="light"] .stat-pill {
-  background: rgba(157, 78, 221, 0.08) !important;
-  border: 1px solid rgba(157, 78, 221, 0.18) !important;
+  background: rgba(var(--glow-rgb), 0.08) !important;
+  border: 1px solid rgba(var(--glow-rgb), 0.18) !important;
   color: #6e4d8b !important;
   font-weight: 600;
 }
@@ -1861,30 +1855,30 @@ h1 {
 
 [data-theme="light"] .subtasks-wrapper {
   background: rgba(248, 240, 255, 0.85) !important;
-  border: 1.5px solid rgba(157, 78, 221, 0.22) !important;
-  box-shadow: inset 0 2px 8px rgba(157, 78, 221, 0.05) !important;
+  border: 1.5px solid rgba(var(--glow-rgb), 0.22) !important;
+  box-shadow: inset 0 2px 8px rgba(var(--glow-rgb), 0.05) !important;
 }
 
 [data-theme="light"] .subtasks-header {
-  color: #7b2cbf !important;
+  color: var(--primary-accent) !important;
   font-weight: 700;
 }
 
 [data-theme="light"] .subtask-item {
   background: #ffffff !important;
-  border: 1px solid rgba(157, 78, 221, 0.18) !important;
+  border: 1px solid rgba(var(--glow-rgb), 0.18) !important;
   color: #2d1b4e !important;
 }
 
 [data-theme="light"] .subtask-input {
   background: #ffffff !important;
-  border: 1.5px solid rgba(157, 78, 221, 0.25) !important;
+  border: 1.5px solid rgba(var(--glow-rgb), 0.25) !important;
   color: #2d1b4e !important;
 }
 
 [data-theme="light"] .setting-row {
   background: rgba(248, 240, 255, 0.75) !important;
-  border: 1px solid rgba(157, 78, 221, 0.18) !important;
+  border: 1px solid rgba(var(--glow-rgb), 0.18) !important;
 }
 
 [data-theme="light"] .setting-title {
@@ -1897,7 +1891,7 @@ h1 {
 
 [data-theme="light"] .motion-toggle {
   background: rgba(235, 220, 248, 0.8) !important;
-  border: 1px solid rgba(157, 78, 221, 0.25) !important;
+  border: 1px solid rgba(var(--glow-rgb), 0.25) !important;
 }
 
 [data-theme="light"] .motion-btn {
@@ -1905,20 +1899,20 @@ h1 {
 }
 
 [data-theme="light"] .motion-btn.active {
-  background: linear-gradient(135deg, #ff4785, #9d4edd) !important;
+  background: linear-gradient(135deg, var(--primary-glow), var(--primary-accent)) !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 15px rgba(255, 71, 133, 0.3) !important;
+  box-shadow: 0 4px 15px rgba(var(--glow-rgb), 0.35) !important;
 }
 
 [data-theme="light"] .glow-btn {
-  background: linear-gradient(135deg, #ff4785 0%, #9d4edd 100%) !important;
+  background: linear-gradient(135deg, var(--primary-glow) 0%, var(--primary-accent) 100%) !important;
   color: #ffffff !important;
   font-weight: 700 !important;
-  box-shadow: 0 8px 25px rgba(255, 71, 133, 0.35) !important;
+  box-shadow: 0 8px 25px rgba(var(--glow-rgb), 0.35) !important;
 }
 
 [data-theme="light"] .todo-item {
   background: rgba(255, 255, 255, 0.95) !important;
-  border: 1px solid rgba(157, 78, 221, 0.2) !important;
-  box-shadow: 0 4px 20px rgba(157, 78, 221, 0.08) !important;
+  border: 1px solid rgba(var(--glow-rgb), 0.2) !important;
+  box-shadow: 0 4px 20px rgba(var(--glow-rgb), 0.08) !important;
 }
