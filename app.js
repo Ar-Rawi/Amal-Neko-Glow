@@ -817,6 +817,8 @@ function render() {
       li.className = `todo-item ${task.completed ? 'completed' : ''}`;
 
       let subtasksHtml = '';
+      let subtasksWrapperHtml = '';
+
       if (subtasks.length > 0) {
         subtasksHtml = subtasks.map(s => `
           <li class="subtask-item ${s.completed ? 'completed' : ''}">
@@ -829,6 +831,29 @@ function render() {
             <button class="subtask-del-btn ripple-btn" data-task-id="${task.id}" data-sub-id="${s.id}" title="Remove subtask"></button>
           </li>
         `).join('');
+
+        subtasksWrapperHtml = `
+          <!-- Subtasks Checklist Section -->
+          <div class="subtasks-wrapper">
+            <div class="subtasks-header">
+              <span>Sub-tasks / Steps (${subDone}/${subtasks.length})</span>
+            </div>
+            <ul class="subtasks-list">
+              ${subtasksHtml}
+            </ul>
+            <div class="subtask-add-row">
+              <input type="text" class="subtask-input" placeholder="Add sub-step..." data-task-id="${task.id}" />
+              <button type="button" class="subtask-add-btn ripple-btn" data-task-id="${task.id}">Add</button>
+            </div>
+          </div>
+        `;
+      } else {
+        subtasksWrapperHtml = `
+          <div class="subtask-add-row inline-subtask-form hidden" id="subtask-form-${task.id}" style="margin-top: 0.75rem;">
+            <input type="text" class="subtask-input" placeholder="Add sub-step..." data-task-id="${task.id}" />
+            <button type="button" class="subtask-add-btn ripple-btn" data-task-id="${task.id}">Add</button>
+          </div>
+        `;
       }
 
       li.innerHTML = `
@@ -848,24 +873,12 @@ function render() {
             </div>
           </div>
           <div class="task-actions">
+            ${subtasks.length === 0 ? `<button class="action-btn add-subtask-toggle ripple-btn" data-id="${task.id}" title="Add Sub-task"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Sub-task</button>` : ''}
             <button class="action-btn edit ripple-btn" data-id="${task.id}" title="Edit Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
             <button class="action-btn delete ripple-btn" data-id="${task.id}" title="Delete Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
           </div>
         </div>
-
-        <!-- Subtasks Checklist Section -->
-        <div class="subtasks-wrapper">
-          <div class="subtasks-header">
-            <span>Sub-tasks / Steps (${subDone}/${subtasks.length})</span>
-          </div>
-          <ul class="subtasks-list">
-            ${subtasksHtml}
-          </ul>
-          <div class="subtask-add-row">
-            <input type="text" class="subtask-input" placeholder="Add sub-step..." data-task-id="${task.id}" />
-            <button type="button" class="subtask-add-btn ripple-btn" data-task-id="${task.id}">Add</button>
-          </div>
-        </div>
+        ${subtasksWrapperHtml}
       `;
 
       todoList.appendChild(li);
@@ -915,6 +928,20 @@ todoList.addEventListener('click', e => {
   const subCheckbox = e.target.closest('.subtask-checkbox');
   const subDelBtn = e.target.closest('.subtask-del-btn');
   const subAddBtn = e.target.closest('.subtask-add-btn');
+  const addSubtaskToggle = e.target.closest('.add-subtask-toggle');
+
+  if (addSubtaskToggle) {
+    playPopSound();
+    const id = Number(addSubtaskToggle.dataset.id);
+    const form = document.getElementById(`subtask-form-${id}`);
+    if (form) {
+      form.classList.toggle('hidden');
+      if (!form.classList.contains('hidden')) {
+        const input = form.querySelector('.subtask-input');
+        if (input) input.focus();
+      }
+    }
+  }
 
   // Main Task Toggle
   if (toggleBtn) {
