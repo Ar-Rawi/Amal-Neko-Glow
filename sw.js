@@ -1,11 +1,9 @@
-// sw.js — Service Worker with Network-First Strategy for Instant Production Updates
-
-const CACHE_NAME = 'amalneko-v19';
+const CACHE_NAME = 'amalneko-v20';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css',
-  './app.js',
+  './styles.css?v=4.0.0',
+  './app.js?v=4.0.0',
   './manifest.json',
   './widget.html'
 ];
@@ -29,7 +27,7 @@ self.addEventListener('activate', event => {
 // Network-First Strategy (Always fetch latest online version first, fallback to cache offline)
 self.addEventListener('fetch', event => {
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-cache' })
       .then(response => {
         if (response && response.status === 200 && event.request.method === 'GET') {
           const responseClone = response.clone();
