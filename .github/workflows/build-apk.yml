@@ -30,25 +30,33 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install NPM Dependencies
+      - name: Install NPM Dependencies & Capacitor
         run: |
-          npm install
+          npm install --legacy-peer-deps
 
-      - name: Initialize & Sync Capacitor Android
+      - name: Generate Fresh Android Project with Capacitor
         run: |
-          npx cap sync android || (npx cap add android && npx cap sync android)
+          rm -rf android
+          npx cap add android
+          npx cap sync android
 
-      - name: Ensure Native Widget Files Are In Place
+      - name: Inject Native Widget Providers, Layouts & Manifest
         run: |
           mkdir -p android/app/src/main/java/com/amalnekoglow/app
           mkdir -p android/app/src/main/res/layout
           mkdir -p android/app/src/main/res/xml
           mkdir -p android/app/src/main/res/drawable
 
+          cp native-widgets/java/*.java android/app/src/main/java/com/amalnekoglow/app/
+          cp native-widgets/res/layout/*.xml android/app/src/main/res/layout/
+          cp native-widgets/res/xml/*.xml android/app/src/main/res/xml/
+          cp native-widgets/res/drawable/*.xml android/app/src/main/res/drawable/
+          cp native-widgets/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
+
       - name: Build Android Debug APK
         run: |
           cd android
-          chmod +x gradlew || true
+          chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
 
       - name: Rename APK for Easy Download

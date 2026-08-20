@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.amalnekoglow.app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Amal Neko 🐾"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+            android:exported="true"
+            android:label="Amal Neko 🐾"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Native 3x2 Wide Widget Provider -->
+        <receiver
+            android:name=".NekoWidget3x2Provider"
+            android:exported="true"
+            android:label="Neko Study 3x2 Wide Widget 🐾">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_3x2_info" />
+        </receiver>
+
+        <!-- Native 3x3 Square Widget Provider -->
+        <receiver
+            android:name=".NekoWidget3x3Provider"
+            android:exported="true"
+            android:label="Neko Dashboard 3x3 Widget 🐱">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_3x3_info" />
+        </receiver>
+
+        <!-- Native 2x3 Tall Widget Provider -->
+        <receiver
+            android:name=".NekoWidget2x3Provider"
+            android:exported="true"
+            android:label="Neko Goals 2x3 Tall Widget 🐾">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_2x3_info" />
+        </receiver>
+
+    </application>
+</manifest>
