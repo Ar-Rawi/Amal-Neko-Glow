@@ -1,7 +1,7 @@
 {
   "appId": "com.amalnekoglow.app",
   "appName": "Amal Neko 🐾",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false,
   "server": {
     "url": "https://ar-rawi.github.io/Amal-Neko-Glow/",
