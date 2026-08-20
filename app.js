@@ -79,7 +79,7 @@ function saveTasks() {
 
 // ===================================================
 // ===================================================
-// 🔊 PROCEDURAL WEB AUDIO SYNTHESIZER (Meow & Purr)
+//  PROCEDURAL WEB AUDIO SYNTHESIZER (Meow & Purr)
 // ===================================================
 let audioCtx = null;
 
@@ -94,7 +94,7 @@ function getAudioContext() {
   return audioCtx;
 }
 
-// Cute Kitten "Mee-oww" Synthesizer 🐱
+// Cute Kitten "Mee-oww" Synthesizer 
 function playMeowSound() {
   if (!soundEnabled) return;
   try {
@@ -226,7 +226,7 @@ function playPopSound() {
 }
 
 // ===================================================
-// 🐱 CAT MASCOT INTERACTION (Tap for Meow / Purr Speech)
+//  CAT MASCOT INTERACTION (Tap for Meow / Purr Speech)
 // ===================================================
 const catMascotEl = document.getElementById('cat-mascot');
 const purrSpeechEl = document.getElementById('purr-speech');
@@ -291,7 +291,7 @@ setTimeout(() => {
 
 
 // ===================================================
-// 📱 PWA & NOTIFICATIONS API (Lock-Screen & Toast)
+//  PWA & NOTIFICATIONS API (Lock-Screen & Toast)
 // ===================================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -308,7 +308,7 @@ function showNotification(title, body) {
     const toast = document.createElement('div');
     toast.className = 'cat-toast';
     toast.innerHTML = `
-      <span style="font-size: 1.5rem;">🐾</span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary-glow)" stroke-width="2"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/></svg>
       <div>
         <strong style="display: block; color: var(--primary-glow); font-size: 0.95rem;">${title}</strong>
         <span style="font-size: 0.85rem; color: var(--text-muted);">${body}</span>
@@ -329,8 +329,8 @@ function showNotification(title, body) {
       navigator.serviceWorker.ready.then(registration => {
         registration.showNotification(title, {
           body: body,
-          icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%231c152c'/><text y='.9em' font-size='80' x='10'>🐱</text></svg>",
-          badge: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='80'>🐾</text></svg>",
+          icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%231c152c'/><circle cx='50' cy='50' r='40' fill='%23ff75c3'/></svg>",
+          badge: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23ff75c3'/></svg>",
           vibrate: [200, 100, 200],
           tag: 'neko-glow-alert'
         });
@@ -347,7 +347,11 @@ const notifIcon = document.getElementById('notif-icon');
 
 function updateNotifIcon() {
   if (notifIcon) {
-    notifIcon.textContent = Notification.permission === 'granted' ? '🔔' : '🔕';
+    
+  notifIcon.innerHTML = Notification.permission === 'granted'
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
+    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.73 21a2 2 0 0 1-3.46 0"/><path d="M18.63 13A17.89 17.89 0 0 1 18 8"/><path d="M6.26 6.26A5.86 5.86 0 0 0 6 8c0 7-3 9-3 9h14"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+
   }
 }
 updateNotifIcon();
@@ -378,7 +382,11 @@ const soundIcon = document.getElementById('sound-icon');
 
 function updateSoundIcon() {
   if (soundIcon) {
-    soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+    
+  soundIcon.innerHTML = soundEnabled
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>'
+    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+
   }
 }
 updateSoundIcon();
@@ -444,21 +452,21 @@ function isOverdue(dueDateStr, completed) {
 }
 
 const priorityLabels = {
-  low: '🟢 Low',
-  medium: '🟡 Medium',
-  high: '🔴 High',
-  urgent: '⚡ Urgent'
+  low: 'Low',
+  medium: 'Medium',
+  high: 'High',
+  urgent: 'Urgent'
 };
 
 const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
 
 function getCategoryInfo(key) {
   const found = allCategories.find(c => c.key === key);
-  return found ? `${found.icon} ${found.name}` : `📝 ${key}`;
+  return found ? `${found.icon} ${found.name}` : key;
 }
 
 // ===================================================
-// 🌟 INTERACTIVE MASCOT PETTING LOGIC (Purr & Meow!)
+//  INTERACTIVE MASCOT PETTING LOGIC (Purr & Meow!)
 // ===================================================
 const purrPhrases = [
   "Purrrrr...",
@@ -500,7 +508,7 @@ if (catMascot) {
 }
 
 // ===================================================
-// 🌟 THEMED CUSTOM DROPDOWN ENGINE
+//  THEMED CUSTOM DROPDOWN ENGINE
 // ===================================================
 function setupDropdown(dropdownId, triggerId, menuId, displayId, hiddenInputId, onSelect) {
   const dropdown = document.getElementById(dropdownId);
@@ -621,7 +629,7 @@ categoryForm.addEventListener('submit', e => {
 
   playChimeSound();
   const key = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
-  const icon = newCatIcon.value || '📝';
+  const icon = newCatIcon.value || '';
 
   if (!allCategories.some(c => c.key === key)) {
     customCategories.push({ key, name, icon });
@@ -636,7 +644,7 @@ categoryForm.addEventListener('submit', e => {
 });
 
 // ===================================================
-// 📅 THEMED BESPOKE CALENDAR ENGINE
+//  THEMED BESPOKE CALENDAR ENGINE
 // ===================================================
 let calCurrentDate = new Date();
 const dateTriggerBtn = document.getElementById('date-trigger-btn');
@@ -684,7 +692,7 @@ function renderCalendar() {
     cell.addEventListener('click', () => {
       playPopSound();
       dueDateInput.value = cellDateStr;
-      dateDisplayText.textContent = `📅 ${cellDateStr}`;
+      dateDisplayText.textContent = cellDateStr;
       customCalendar.classList.add('hidden');
       renderCalendar();
     });
@@ -719,7 +727,7 @@ if (dateTriggerBtn && customCalendar) {
     playPopSound();
     const todayStr = new Date().toISOString().split('T')[0];
     dueDateInput.value = todayStr;
-    dateDisplayText.textContent = `📅 ${todayStr}`;
+    dateDisplayText.textContent = todayStr;
     customCalendar.classList.add('hidden');
   });
 
@@ -727,7 +735,7 @@ if (dateTriggerBtn && customCalendar) {
     e.stopPropagation();
     playPopSound();
     dueDateInput.value = '';
-    dateDisplayText.textContent = `📅 Select Date`;
+    dateDisplayText.textContent = 'Select Date';
     customCalendar.classList.add('hidden');
     renderCalendar();
   });
@@ -755,7 +763,7 @@ document.addEventListener('click', e => {
 });
 
 // ===================================================
-// 🚀 RENDER ENGINE WITH SUB-TASKS SUPPORT
+//  RENDER ENGINE WITH SUB-TASKS SUPPORT
 // ===================================================
 function render() {
   let filtered = tasks.filter(t => {
@@ -814,11 +822,11 @@ function render() {
           <li class="subtask-item ${s.completed ? 'completed' : ''}">
             <div style="display: flex; align-items: center; gap: 0.5rem;">
               <button class="subtask-checkbox ripple-btn" data-task-id="${task.id}" data-sub-id="${s.id}">
-                ${s.completed ? '✓' : ''}
+                ${s.completed ? '' : ''}
               </button>
               <span>${escapeHtml(s.text)}</span>
             </div>
-            <button class="subtask-del-btn ripple-btn" data-task-id="${task.id}" data-sub-id="${s.id}" title="Remove subtask">✕</button>
+            <button class="subtask-del-btn ripple-btn" data-task-id="${task.id}" data-sub-id="${s.id}" title="Remove subtask"></button>
           </li>
         `).join('');
       }
@@ -834,31 +842,27 @@ function render() {
               <div class="task-meta">
                 <span class="category-tag">${getCategoryInfo(task.category)}</span>
                 <span class="priority-tag priority-${task.priority}">${priorityLabels[task.priority] || task.priority}</span>
-                ${task.dueDate ? `<span class="due-tag ${overdue ? 'overdue' : ''}">${overdue ? '🙀 Overdue: ' : '📅 '} ${task.dueDate}</span>` : ''}
-                ${subtasks.length > 0 ? `<span class="category-tag" style="color: var(--cat-gold);">📋 ${subDone}/${subtasks.length} Sub-tasks</span>` : ''}
+                ${task.dueDate ? `<span class="due-tag ${overdue ? 'overdue' : ''}">${overdue ? 'Overdue: ' : '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> '} ${task.dueDate}</span>` : ''}
+                ${subtasks.length > 0 ? `<span class="category-tag" style="color: var(--cat-gold);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg> ${subDone}/${subtasks.length} Sub-tasks</span>` : ''}
               </div>
             </div>
           </div>
           <div class="task-actions">
-            <button class="action-btn edit ripple-btn" data-id="${task.id}" title="Edit Task">
-              ✏️
-            </button>
-            <button class="action-btn delete ripple-btn" data-id="${task.id}" title="Delete Task">
-              🗑️
-            </button>
+            <button class="action-btn edit ripple-btn" data-id="${task.id}" title="Edit Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="action-btn delete ripple-btn" data-id="${task.id}" title="Delete Task"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
           </div>
         </div>
 
         <!-- Subtasks Checklist Section -->
         <div class="subtasks-wrapper">
           <div class="subtasks-header">
-            <span>📝 Sub-tasks / Steps (${subDone}/${subtasks.length})</span>
+            <span>Sub-tasks / Steps (${subDone}/${subtasks.length})</span>
           </div>
           <ul class="subtasks-list">
             ${subtasksHtml}
           </ul>
           <div class="subtask-add-row">
-            <input type="text" class="subtask-input" placeholder="➕ Add sub-step..." data-task-id="${task.id}" />
+            <input type="text" class="subtask-input" placeholder="Add sub-step..." data-task-id="${task.id}" />
             <button type="button" class="subtask-add-btn ripple-btn" data-task-id="${task.id}">Add</button>
           </div>
         </div>
@@ -896,7 +900,7 @@ todoForm.addEventListener('submit', e => {
   saveTasks();
   taskInput.value = '';
   dueDateInput.value = '';
-  dateDisplayText.textContent = '📅 Select Date';
+  dateDisplayText.textContent = 'Select Date';
 
   showNotification("New Goal Added", `"${newTask.text}" is ready for study time!`);
   showCatSpeech('Added new goal! Mew!');
@@ -923,8 +927,8 @@ todoList.addEventListener('click', e => {
       render();
       if (task.completed) {
         spawnPurrPop(e.clientX, e.clientY);
-        showNotification("Task Completed! 😻", `Great job completing "${task.text}"!`);
-        showCatSpeech('Purrrrr! Great job! 😻');
+        showNotification("Task Completed!", `Great job completing "${task.text}"!`);
+        showCatSpeech('Purrrrr! Great job!');
       }
     }
   }
@@ -1115,7 +1119,7 @@ if (themeToggleBtn) {
 
 
 // ===================================================
-// 📱 MOBILE WIDGETS MODAL & LIVE SYNC ENGINE
+//  MOBILE WIDGETS MODAL & LIVE SYNC ENGINE
 // ===================================================
 const widgetsModal = document.getElementById('widgets-modal');
 const widgetToggleBtn = document.getElementById('widget-toggle-btn');
@@ -1223,7 +1227,7 @@ if (doneWidgetsModalBtn) {
 }
 
 // ===================================================
-// ⚙️ APP SETTINGS MODAL ENGINE (Dynamic & Bulletproof)
+//  APP SETTINGS MODAL ENGINE (Dynamic & Bulletproof)
 // ===================================================
 function updateSettingsUI() {
   try {

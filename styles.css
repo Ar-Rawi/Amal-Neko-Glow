@@ -1,4 +1,4 @@
-/* styles.css — Amal Neko Glow Ultra-Cute Study & Task Design System 🐾 */
+/* styles.css — Amal Neko Glow Design System */
 
 :root {
   /* Color Palette - Midnight Velvet Cat Dark (Default) */
@@ -535,7 +535,7 @@ h1 {
 }
 
 /* =================================================== */
-/* 🌟 BESPOKE THEMED DROPDOWNS (No Sharp Corners!)    */
+/*  BESPOKE THEMED DROPDOWNS (No Sharp Corners!)    */
 /* =================================================== */
 .custom-dropdown {
   position: relative;
@@ -646,7 +646,7 @@ h1 {
 }
 
 /* =================================================== */
-/* 📅 BESPOKE THEMED CALENDAR POPUP                   */
+/*  BESPOKE THEMED CALENDAR POPUP                   */
 /* =================================================== */
 .custom-datepicker-wrap {
   position: relative;
@@ -1015,7 +1015,7 @@ h1 {
 }
 
 /* =================================================== */
-/* 📝 SUB-TASKS / CHECKLIST LISTING SECTION            */
+/*  SUB-TASKS / CHECKLIST LISTING SECTION            */
 /* =================================================== */
 .subtasks-wrapper {
   background: rgba(0, 0, 0, 0.22);
@@ -1129,7 +1129,7 @@ h1 {
 }
 
 /* =================================================== */
-/* 📱 MOBILE WIDGETS STYLING (3x2, 3x3, 2x3)           */
+/*  MOBILE WIDGETS STYLING (3x2, 3x3, 2x3)           */
 /* =================================================== */
 .widgets-modal-card {
   max-width: 480px;
@@ -1473,7 +1473,7 @@ h1 {
 }
 
 /* =================================================== */
-/* 📱 MOBILE RESPONSIVE OPTIMIZATIONS (< 768px)       */
+/*  MOBILE RESPONSIVE OPTIMIZATIONS (< 768px)       */
 /* =================================================== */
 @media (max-width: 768px) {
   .main-wrapper {
@@ -1553,7 +1553,7 @@ h1 {
 }
 
 /* =================================================== */
-/* ⚙️ APP SETTINGS MODAL STYLING                      */
+/*  APP SETTINGS MODAL STYLING                      */
 /* =================================================== */
 .settings-modal-card {
   max-width: 520px;
