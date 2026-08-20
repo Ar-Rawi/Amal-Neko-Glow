@@ -49,11 +49,42 @@ if (fs.existsSync(manifestPath)) {
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_2x3_info" />
         </receiver>
+
+        <!-- Widget Task Service for scrollable ListView -->
+        <service android:name=".WidgetTaskService"
+                 android:permission="android.permission.BIND_REMOTEVIEWS" />
   `;
 
   if (!content.includes('NekoWidget3x2Provider')) {
     content = content.replace('</application>', `${widgetReceivers}\n    </application>`);
     fs.writeFileSync(manifestPath, content, 'utf8');
-    console.log('Successfully injected widget receivers into AndroidManifest.xml');
+    console.log('Successfully injected widget receivers and service into AndroidManifest.xml');
+  }
+}
+
+// Inject plugin registration into MainActivity.java
+const mainActivityPath = path.resolve(rootDir, 'android/app/src/main/java/com/amalnekoglow/app/MainActivity.java');
+if (fs.existsSync(mainActivityPath)) {
+  let mainContent = fs.readFileSync(mainActivityPath, 'utf8');
+  
+  if (!mainContent.includes('WidgetDataBridge.class')) {
+    const importBundle = `import android.os.Bundle;\nimport com.getcapacitor.BridgeActivity;`;
+    const onCreateOverride = `
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        registerPlugin(WidgetDataBridge.class);
+        super.onCreate(savedInstanceState);
+    }`;
+
+    // Add Bundle import if not present
+    if (!mainContent.includes('import android.os.Bundle;')) {
+        mainContent = mainContent.replace('import com.getcapacitor.BridgeActivity;', importBundle);
+    }
+
+    // Insert onCreate method
+    mainContent = mainContent.replace('public class MainActivity extends BridgeActivity {', `public class MainActivity extends BridgeActivity {${onCreateOverride}`);
+    
+    fs.writeFileSync(mainActivityPath, mainContent, 'utf8');
+    console.log('Successfully injected WidgetDataBridge plugin into MainActivity.java');
   }
 }

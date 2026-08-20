@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/widget_card_bg"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="14dp">
 
+    <!-- Header Row: Title + Add Button + Badge -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,12 +18,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="🐱 Amal Neko 🐾"
+            android:text="Amal Neko"
             android:textColor="#ffffff"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
+        <!-- + Add Button -->
+        <ImageView
+            android:id="@+id/widget_add_btn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_add"
+            android:contentDescription="Add task" />
+
         <TextView
+            android:id="@+id/widget_progress_pill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/widget_pill_bg"
@@ -36,20 +47,25 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
+    <!-- Scrollable Task ListView -->
+    <ListView
+        android:id="@+id/widget_task_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
-        android:text="✨ Stay Paw-sitive! Track your study progress and complete tasks on time."
-        android:textColor="#d1c4e9"
-        android:textSize="13sp" />
+        android:layout_marginTop="8dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:scrollbars="none"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="16dp" />
 
+    <!-- Footer -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="By Rawi 🐾 • Tap to open"
+        android:layout_marginTop="4dp"
+        android:text="By Rawi"
         android:textColor="#818cf8"
-        android:textSize="10sp" />
+        android:textSize="9sp" />
 </LinearLayout>

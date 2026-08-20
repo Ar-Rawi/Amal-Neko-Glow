@@ -114,6 +114,11 @@ if (!localStorage.getItem('amal_neko_initialized')) {
 
 function saveTasks() {
   localStorage.setItem('amal_study_todos_v3', JSON.stringify(tasks));
+  
+  // Sync with Native Android Widget (Capacitor)
+  if (window.Capacitor && window.Capacitor.Plugins.WidgetBridge) {
+    window.Capacitor.Plugins.WidgetBridge.syncTasks({ tasks: JSON.stringify(tasks) }).catch(e => console.log('Widget sync err:', e));
+  }
 }
 
 // ===================================================
