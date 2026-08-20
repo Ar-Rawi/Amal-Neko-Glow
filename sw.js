@@ -1,6 +1,6 @@
 // sw.js — Service Worker with Network-First Strategy for Instant Production Updates
 
-const CACHE_NAME = 'neko-glow-v6';
+const CACHE_NAME = 'neko-glow-v3-1';
 const ASSETS = [
   './',
   './index.html',

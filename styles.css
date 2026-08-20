@@ -1,4 +1,4 @@
-/* styles.css — Amal Neko Glow Ultra-Cute Study & Task Design System 🐾 */
+/* styles.css — Amal Neko Glow Design System */
 
 :root {
   /* Color Palette - Midnight Velvet Cat Dark (Default) */
@@ -150,8 +150,6 @@ body[data-motion="static"] .glow-orb {
 @keyframes ambientFloat {
   0% { transform: translate3d(0, 0, 0) scale(1); }
   100% { transform: translate3d(40px, 60px, 0) scale(1.1); }
-}
-  100% { transform: translate(50px, 70px) scale(1.15); }
 }
 
 /* In-App Floating Toast Notification */
