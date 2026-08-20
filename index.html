@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Amal Neko Glow 🐾 — Study & Task Companion</title>
+  <title>Amal Neko Glow — Study & Task Companion</title>
   
   <!-- PWA & Mobile Web App Meta Tags -->
   <link rel="manifest" href="manifest.json" />
@@ -21,8 +21,6 @@
   <link rel="stylesheet" href="styles.css?v=2.6.2" />
 </head>
 <body>
-  <!-- Ambient Particle Canvas (Floating Glowing Paws, Sparkles & Blinking Cat Faces) -->
-  <canvas id="particle-canvas"></canvas>
   
   <!-- Glowing Background Orbs -->
   <div class="glow-orb orb-1"></div>
@@ -47,15 +45,15 @@
           </svg>
         </div>
         <div>
-          <h1>Amal Neko Glow <span class="tag-v">v2.5 🐾</span></h1>
-          <p class="subtitle">Cute animated study & task companion 🐾</p>
+          <h1>Amal Neko Glow <span class="tag-v">v3.0</span></h1>
+          <p class="subtitle">Cute animated study & task companion</p>
         </div>
       </div>
       
       <div class="header-controls">
         <!-- Main App Settings Trigger -->
-        <button id="settings-toggle-btn" class="icon-btn ripple-btn" onclick="window.openSettingsModal &amp;&amp; window.openSettingsModal(event)" title="Open Settings ⚙️" aria-label="Settings">
-          <span class="settings-gear-icon">⚙️</span>
+        <button id="settings-toggle-btn" class="icon-btn ripple-btn" onclick="window.openSettingsModal &amp;&amp; window.openSettingsModal(event)" title="Open Settings" aria-label="Settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
         </button>
       </div>
     </header>
@@ -64,18 +62,18 @@
     <main class="glass-card main-card cat-card-container">
       <!-- Animated Cat Mascot Header (Click/Tap to Purr & Meow!) -->
       <div class="cat-mascot-header">
-        <div class="purr-bubble hidden" id="purr-speech">Purrrrr... ✨</div>
+        <div class="purr-bubble hidden" id="purr-speech">Purrrrr...</div>
         <div class="cat-ear ear-left"></div>
         <div class="cat-ear ear-right"></div>
-        <div class="cat-face-interactive ripple-btn" id="cat-mascot" role="button" tabindex="0" title="Tap me to purr & meow! 🐾">
-          <span class="cat-emoji-avatar">🐱</span>
+        <div class="cat-face-interactive ripple-btn" id="cat-mascot" role="button" tabindex="0" title="Tap me to purr & meow!">
+          <svg class="cat-emoji-avatar" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--primary-glow)" stroke-width="2"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/><circle cx="9" cy="11" r="1" fill="var(--primary-glow)"/><circle cx="15" cy="11" r="1" fill="var(--primary-glow)"/><path d="M10 14a2 2 0 0 0 4 0"/></svg>
         </div>
       </div>
 
       <!-- Progress Bar Section -->
       <section class="progress-section">
         <div class="progress-info">
-          <span class="progress-label">🐾 Study Productivity Progress</span>
+          <span class="progress-label">Study Productivity Progress</span>
           <span id="progress-text" class="progress-percentage">0% Completed</span>
         </div>
         <div class="progress-bar-track">
@@ -93,7 +91,7 @@
       <section class="creator-section">
         <form id="todo-form" class="creator-form">
           <div class="input-wrapper">
-            <input type="text" id="task-input" placeholder="🐾 Add a new study task or goal..." autocomplete="off" required />
+            <input type="text" id="task-input" placeholder="Add a new study task or goal..." autocomplete="off" required />
           </div>
           
           <div class="creator-options">
@@ -101,14 +99,14 @@
             <div class="custom-dropdown" id="dropdown-priority">
               <label class="dropdown-label">Priority:</label>
               <button type="button" class="dropdown-trigger ripple-btn" id="priority-trigger">
-                <span class="selected-text" id="priority-display">🟡 Medium</span>
+                <span class="selected-text" id="priority-display">Medium</span>
                 <span class="dropdown-arrow">▾</span>
               </button>
               <div class="dropdown-menu hidden" id="priority-menu">
-                <div class="dropdown-option" data-value="low">🟢 Low</div>
-                <div class="dropdown-option selected" data-value="medium">🟡 Medium</div>
-                <div class="dropdown-option" data-value="high">🔴 High</div>
-                <div class="dropdown-option" data-value="urgent">⚡ Urgent</div>
+                <div class="dropdown-option" data-value="low">Low</div>
+                <div class="dropdown-option selected" data-value="medium">Medium</div>
+                <div class="dropdown-option" data-value="high">High</div>
+                <div class="dropdown-option" data-value="urgent">Urgent</div>
               </div>
               <input type="hidden" id="priority-select" value="medium" />
             </div>
@@ -117,14 +115,14 @@
             <div class="custom-dropdown" id="dropdown-category">
               <label class="dropdown-label">Category:</label>
               <button type="button" class="dropdown-trigger ripple-btn" id="category-trigger">
-                <span class="selected-text" id="category-display">📚 Assignment</span>
+                <span class="selected-text" id="category-display">Assignment</span>
                 <span class="dropdown-arrow">▾</span>
               </button>
               <div class="dropdown-menu hidden" id="category-menu">
                 <div class="categories-list-container" id="category-options-list"></div>
                 <div class="dropdown-divider"></div>
                 <div class="dropdown-option add-cat-action" id="open-add-cat-btn">
-                  <span>➕ Add Custom Category...</span>
+                  <span>+ Add Custom Category...</span>
                 </div>
               </div>
               <input type="hidden" id="category-select" value="assignment" />
@@ -134,7 +132,7 @@
             <div class="custom-datepicker-wrap" id="datepicker-wrap">
               <label class="dropdown-label">Due:</label>
               <button type="button" class="dropdown-trigger date-trigger ripple-btn" id="date-trigger-btn">
-                <span id="date-display-text">📅 Select Date</span>
+                <span id="date-display-text">Select Date</span>
                 <span class="dropdown-arrow">▾</span>
               </button>
               <input type="hidden" id="due-date-input" />
@@ -158,7 +156,7 @@
             </div>
 
             <button type="submit" class="glow-btn cat-btn ripple-btn">
-              <span>Add Goal 🐾</span>
+              <span>Add Goal</span>
             </button>
           </div>
         </form>
@@ -172,10 +170,10 @@
         </div>
 
         <div class="filter-tabs" role="tablist">
-          <button class="tab-btn active ripple-btn" data-filter="all">All 🐾</button>
-          <button class="tab-btn ripple-btn" data-filter="active">Active 🐱</button>
-          <button class="tab-btn ripple-btn" data-filter="completed">Done 😻</button>
-          <button class="tab-btn ripple-btn" data-filter="overdue">Overdue 🙀</button>
+          <button class="tab-btn active ripple-btn" data-filter="all">All</button>
+          <button class="tab-btn ripple-btn" data-filter="active">Active</button>
+          <button class="tab-btn ripple-btn" data-filter="completed">Done</button>
+          <button class="tab-btn ripple-btn" data-filter="overdue">Overdue</button>
         </div>
 
         <!-- Custom Themed Sort Dropdown -->
@@ -203,7 +201,7 @@
 
         <!-- Empty State -->
         <div id="empty-state" class="empty-state hidden">
-          <div class="empty-icon">🐱🐾</div>
+          <div class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-glow)" stroke-width="1.5"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/><circle cx="9" cy="11" r="1" fill="var(--primary-glow)"/><circle cx="15" cy="11" r="1" fill="var(--primary-glow)"/><path d="M10 14a2 2 0 0 0 4 0"/></svg></div>
           <h3>All caught up, meow!</h3>
           <p>No study tasks match your current filter. Time for a cozy cat nap or add a new goal above!</p>
         </div>
@@ -211,8 +209,8 @@
       
       <!-- Footer Toolbar -->
       <footer class="app-footer">
-        <button id="clear-completed-btn" class="text-btn Danger ripple-btn">Clear Completed 🐾</button>
-        <div class="footer-meta">Crafted with 💖 for Study & Cat Lovers • Amal Neko Glow</div>
+        <button id="clear-completed-btn" class="text-btn Danger ripple-btn">Clear Completed</button>
+        <div class="footer-meta">Crafted with care for Study & Cat Lovers</div>
       </footer>
     </main>
   </div>
@@ -221,7 +219,7 @@
   <div id="widgets-modal" class="modal-overlay hidden">
     <div class="glass-card modal-card widgets-modal-card">
       <div class="modal-header">
-        <h3>📱 Mobile Widgets (3x2, 3x3, 2x3)</h3>
+        <h3>Mobile Widgets (3x2, 3x3, 2x3)</h3>
         <button id="close-widgets-modal-btn" class="icon-btn ripple-btn">&times;</button>
       </div>
 
@@ -235,40 +233,40 @@
         <!-- 3x2 Preview -->
         <div id="modal-w-3x2" class="widget-3x2">
           <div class="widget-top-bar">
-            <div class="widget-brand"><span>🐱</span><span>Neko Study 3x2</span></div>
+            <div class="widget-brand"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/></svg></span><span>Neko Study 3x2</span></div>
             <span class="widget-progress-pill" id="mw-3x2-progress">0% Done</span>
           </div>
           <ul class="widget-task-list" id="mw-3x2-tasks"></ul>
           <div class="widget-bottom-bar">
             <span id="mw-3x2-stats">0 Goals</span>
-            <span>Tap 🐾 to check</span>
+            <span>Tap to check</span>
           </div>
         </div>
 
         <!-- 3x3 Preview -->
         <div id="modal-w-3x3" class="widget-3x3 hidden">
           <div class="widget-top-bar">
-            <div class="widget-brand"><span style="font-size: 1.3rem;">🐱</span><span>Neko Dashboard 3x3</span></div>
+            <div class="widget-brand"><span style="font-size: 1.3rem;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/></svg></span><span>Neko Dashboard 3x3</span></div>
             <span class="widget-progress-pill" id="mw-3x3-progress">0% Done</span>
           </div>
           <ul class="widget-task-list" id="mw-3x3-tasks" style="max-height: 170px;"></ul>
           <div class="widget-bottom-bar">
             <span id="mw-3x3-stats">0 Goals</span>
-            <span>Purrrrr... ✨</span>
+            <span>Purrrrr...</span>
           </div>
         </div>
 
         <!-- 2x3 Preview -->
         <div id="modal-w-2x3" class="widget-2x3 hidden">
           <div class="widget-top-bar">
-            <div class="widget-brand"><span>🐱</span><span>2x3 Tall</span></div>
+            <div class="widget-brand"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/></svg></span><span>2x3 Tall</span></div>
           </div>
           <div style="font-size: 0.72rem; color: var(--primary-glow); font-weight: 700; margin: 0.2rem 0;" id="mw-2x3-progress">
             0% Completed
           </div>
           <ul class="widget-task-list" id="mw-2x3-tasks" style="max-height: 180px;"></ul>
           <div class="widget-bottom-bar">
-            <span>🐾 Study Goals</span>
+            <span>Study Goals</span>
           </div>
         </div>
       </div>
@@ -277,7 +275,7 @@
         <a href="widget.html" target="_blank" class="text-btn" style="color: var(--primary-glow); font-weight: 600;">
           ↗ Open Standalone Widgets
         </a>
-        <button type="button" id="done-widgets-modal-btn" class="glow-btn ripple-btn">Done 🐾</button>
+        <button type="button" id="done-widgets-modal-btn" class="glow-btn ripple-btn">Done</button>
       </div>
     </div>
   </div>
@@ -286,7 +284,7 @@
   <div id="category-modal" class="modal-overlay hidden">
     <div class="glass-card modal-card cat-modal">
       <div class="modal-header">
-        <h3>➕ Add Custom Category</h3>
+        <h3>Add Custom Category</h3>
         <button id="close-category-modal-btn" class="icon-btn ripple-btn">&times;</button>
       </div>
       <form id="category-form" class="modal-form">
@@ -310,7 +308,7 @@
         </div>
         <div class="modal-actions">
           <button type="button" id="cancel-category-modal-btn" class="btn-secondary ripple-btn">Cancel</button>
-          <button type="submit" class="glow-btn ripple-btn">Save Category 🐾</button>
+          <button type="submit" class="glow-btn ripple-btn">Save Category</button>
         </div>
       </form>
     </div>
@@ -320,7 +318,7 @@
   <div id="edit-modal" class="modal-overlay hidden">
     <div class="glass-card modal-card cat-modal">
       <div class="modal-header">
-        <h3>Edit Study Goal 🐾</h3>
+        <h3>Edit Study Goal</h3>
         <button id="close-modal-btn" class="icon-btn ripple-btn">&times;</button>
       </div>
       <form id="edit-form" class="modal-form">
@@ -335,10 +333,10 @@
           <div class="form-group">
             <label for="edit-priority">Priority</label>
             <select id="edit-priority" class="styled-native-select">
-              <option value="low">🟢 Low</option>
-              <option value="medium">🟡 Medium</option>
-              <option value="high">🔴 High</option>
-              <option value="urgent">⚡ Urgent</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+              <option value="urgent">Urgent</option>
             </select>
           </div>
 
@@ -357,7 +355,7 @@
 
         <div class="modal-actions">
           <button type="button" id="cancel-modal-btn" class="btn-secondary ripple-btn">Cancel</button>
-          <button type="submit" class="glow-btn ripple-btn">Save Changes 🐾</button>
+          <button type="submit" class="glow-btn ripple-btn">Save Changes</button>
         </div>
       </form>
     </div>
@@ -367,7 +365,7 @@
   <div id="settings-modal" class="modal-overlay hidden" onclick="if(event.target === this) window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">
     <div class="glass-card modal-card settings-modal-card">
       <div class="modal-header">
-        <h3>⚙️ App Settings</h3>
+        <h3>App Settings</h3>
         <button id="close-settings-modal-btn" class="icon-btn ripple-btn" onclick="window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">&times;</button>
       </div>
 
@@ -375,54 +373,94 @@
         <!-- 📱 Mobile Widgets -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-icon">📱</span>
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span>
             <div>
               <strong class="setting-title">Mobile Widgets (3x2, 3x3, 2x3)</strong>
               <p class="setting-desc">Preview and configure mobile widgets</p>
             </div>
           </div>
-          <button id="open-widgets-from-settings" class="btn-secondary ripple-btn small-btn" onclick="window.openWidgetsFromSettings &amp;&amp; window.openWidgetsFromSettings(event)">Open 📱</button>
+          <button id="open-widgets-from-settings" class="btn-secondary ripple-btn small-btn" onclick="window.openWidgetsFromSettings &amp;&amp; window.openWidgetsFromSettings(event)">Open</button>
         </div>
 
         <!-- 🔔 Notifications Toggle -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-icon" id="settings-notif-icon">🔔</span>
+            <span class="setting-icon" id="settings-notif-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
             <div>
               <strong class="setting-title">Lock-Screen Notifications</strong>
               <p class="setting-desc" id="settings-notif-status">System and mobile push alerts</p>
             </div>
           </div>
-          <button id="settings-notif-btn" class="glow-btn ripple-btn small-btn" onclick="window.toggleSettingsNotif &amp;&amp; window.toggleSettingsNotif(event)">Toggle 🔔</button>
+          <button id="settings-notif-btn" class="glow-btn ripple-btn small-btn" onclick="window.toggleSettingsNotif &amp;&amp; window.toggleSettingsNotif(event)">Toggle</button>
         </div>
 
         <!-- 🔊 Sound Effects Toggle -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-icon" id="settings-sound-icon">🔊</span>
+            <span class="setting-icon" id="settings-sound-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
             <div>
               <strong class="setting-title">Audio & Sound Effects</strong>
               <p class="setting-desc" id="settings-sound-status">Cute meow, purr, and chime sounds</p>
             </div>
           </div>
-          <button id="settings-sound-btn" class="glow-btn ripple-btn small-btn" onclick="window.toggleSettingsSound &amp;&amp; window.toggleSettingsSound(event)">Toggle 🔊</button>
+          <button id="settings-sound-btn" class="glow-btn ripple-btn small-btn" onclick="window.toggleSettingsSound &amp;&amp; window.toggleSettingsSound(event)">Toggle</button>
         </div>
 
-        <!-- 🐱 Cat Mood Theme Toggle -->
+        <!-- Color Theme Palette -->
         <div class="setting-row">
           <div class="setting-info">
-            <span class="setting-icon">🐱</span>
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.04-.23-.29-.38-.63-.38-1.01 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.52-4.48-9.5-10-9.5z"/></svg></span>
             <div>
-              <strong class="setting-title">Cat Mood Theme</strong>
+              <strong class="setting-title">Color Palette</strong>
+              <p class="setting-desc">Choose your vibe color</p>
+            </div>
+          </div>
+        </div>
+        <div class="setting-row" style="padding-top: 0;">
+          <div class="color-swatches" id="color-swatches">
+            <div class="color-swatch active" data-color="sakura" style="background: #ff75c3" title="Sakura Neon"></div>
+            <div class="color-swatch" data-color="violet" style="background: #9d4edd" title="Violet Dream"></div>
+            <div class="color-swatch" data-color="cyan" style="background: #00f2fe" title="Cyber Cyan"></div>
+            <div class="color-swatch" data-color="emerald" style="background: #00f59b" title="Emerald Matrix"></div>
+            <div class="color-swatch" data-color="solar" style="background: #ff7b00" title="Solar Flare"></div>
+            <div class="color-swatch" data-color="gold" style="background: #ffd000" title="Golden Hour"></div>
+            <div class="color-swatch" data-color="abyss" style="background: #3a86ff" title="Deep Abyss"></div>
+            <div class="color-swatch" data-color="crimson" style="background: #ff0055" title="Crimson Core"></div>
+          </div>
+        </div>
+
+        <!-- Background Motion -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            <div>
+              <strong class="setting-title">Background Motion</strong>
+              <p class="setting-desc">Control ambient animation</p>
+            </div>
+          </div>
+        </div>
+        <div class="setting-row" style="padding-top: 0;">
+          <div class="motion-toggle">
+            <button class="motion-btn active" data-motion-type="smooth">Smooth Ambient</button>
+            <button class="motion-btn" data-motion-type="static">Static Eco</button>
+          </div>
+        </div>
+
+        <!-- Dark/Light Mode Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+            <div>
+              <strong class="setting-title">Dark / Light Mode</strong>
               <p class="setting-desc" id="settings-theme-status">Midnight Velvet (Dark Mode)</p>
             </div>
           </div>
-          <button id="settings-theme-btn" class="btn-secondary ripple-btn small-btn" onclick="window.toggleSettingsTheme &amp;&amp; window.toggleSettingsTheme(event)">Switch Theme 🐱</button>
+          <button id="settings-theme-btn" class="btn-secondary ripple-btn small-btn" onclick="window.toggleSettingsTheme && window.toggleSettingsTheme(event)">Switch</button>
         </div>
       </div>
 
       <div class="modal-actions" style="margin-top: 1.5rem; justify-content: flex-end;">
-        <button type="button" id="done-settings-modal-btn" class="glow-btn ripple-btn" onclick="window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">Done 🐾</button>
+        <button type="button" id="done-settings-modal-btn" class="glow-btn ripple-btn" onclick="window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">Done</button>
       </div>
     </div>
   </div>
