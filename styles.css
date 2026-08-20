@@ -1004,12 +1004,22 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--text-main);
   font-weight: 500;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
 }
 
 .priority-tag {
   padding: 0.2rem 0.65rem;
   border-radius: 10px;
   font-weight: 600;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
 }
 
 .priority-low { background: var(--badge-low); color: var(--badge-low-text); }
@@ -1017,7 +1027,14 @@ h1 {
 .priority-high { background: var(--badge-high); color: var(--badge-high-text); }
 .priority-urgent { background: var(--badge-urgent); color: var(--badge-urgent-text); }
 
-.due-tag { color: var(--text-muted); }
+.due-tag {
+  color: var(--text-muted);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
 .due-tag.overdue { color: var(--badge-urgent-text); font-weight: 700; }
 
 .task-actions {
