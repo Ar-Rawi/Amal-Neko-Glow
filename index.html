@@ -514,6 +514,233 @@
     </div>
   </div>
 
+  <audio id="sound-complete" src="assets/complete.mp3"></audio>
+  <audio id="sound-level-up" src="assets/level-up.mp3"></audio>
+
+  <!-- Custom Neon Calendar Modal -->
+  <div id="calendar-modal" class="modal">
+    <div class="modal-content glass-card" style="max-width: 340px;">
+      <div class="modal-header">
+        <h2 id="calendar-month-year" style="font-size: 1.2rem; color: var(--primary-glow); margin: 0;">August 2026</h2>
+        <div style="display: flex; gap: 10px;">
+          <button id="calendar-prev-btn" class="icon-btn" style="color: var(--primary-glow);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button id="calendar-next-btn" class="icon-btn" style="color: var(--primary-glow);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      
+      <div class="calendar-grid-header" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; color: #a78bfa; font-size: 0.8rem; margin-top: 15px; margin-bottom: 5px;">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+      </div>
+      <div id="calendar-grid-days" class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;">
+        <!-- JS fills this -->
+      </div>
+      
+      <div class="modal-actions" style="margin-top: 15px; justify-content: space-between;">
+        <button id="calendar-clear-btn" class="glass-btn secondary" style="padding: 6px 12px; font-size: 0.85rem;">Clear</button>
+        <div style="display: flex; gap: 10px;">
+          <button id="calendar-cancel-btn" class="glass-btn secondary" style="padding: 6px 12px; font-size: 0.85rem;">Cancel</button>
+          <button id="calendar-today-btn" class="glass-btn" style="padding: 6px 12px; font-size: 0.85rem; background: var(--primary-glow); color: #fff;">Today</button>
+          <button type="submit" class="glow-btn ripple-btn">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Task Modal with Modern Bespoke Custom Dropdowns -->
+  <div id="edit-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card cat-modal">
+      <div class="modal-header">
+        <h3>Edit Study Goal</h3>
+        <button id="close-modal-btn" class="icon-btn ripple-btn" aria-label="Close">&times;</button>
+      </div>
+      <form id="edit-form" class="modal-form">
+        <input type="hidden" id="edit-task-id" />
+        
+        <div class="form-group">
+          <label for="edit-task-text">Goal Description</label>
+          <input type="text" id="edit-task-text" required autocomplete="off" />
+        </div>
+
+        <div class="form-row">
+          <!-- Modern Custom Priority Dropdown in Edit Modal -->
+          <div class="custom-dropdown" id="dropdown-edit-priority">
+            <label class="dropdown-label">Priority</label>
+            <button type="button" class="dropdown-trigger ripple-btn" id="edit-priority-trigger">
+              <span class="selected-text" id="edit-priority-display"><span class="priority-dot dot-medium"></span>Medium</span>
+              <span class="dropdown-arrow">▾</span>
+            </button>
+            <div class="dropdown-menu hidden" id="edit-priority-menu">
+              <div class="dropdown-option" data-value="low"><span class="priority-dot dot-low"></span> Low</div>
+              <div class="dropdown-option selected" data-value="medium"><span class="priority-dot dot-medium"></span> Medium</div>
+              <div class="dropdown-option" data-value="high"><span class="priority-dot dot-high"></span> High</div>
+              <div class="dropdown-option" data-value="urgent"><span class="priority-dot dot-urgent"></span> Urgent</div>
+            </div>
+            <input type="hidden" id="edit-priority" value="medium" />
+          </div>
+
+          <!-- Modern Custom Category Dropdown in Edit Modal -->
+          <div class="custom-dropdown" id="dropdown-edit-category">
+            <label class="dropdown-label">Category</label>
+            <button type="button" class="dropdown-trigger ripple-btn" id="edit-category-trigger">
+              <span class="selected-text" id="edit-category-display">Assignment</span>
+              <span class="dropdown-arrow">▾</span>
+            </button>
+            <div class="dropdown-menu hidden" id="edit-category-menu">
+              <div class="categories-list-container" id="edit-category-options-list"></div>
+            </div>
+            <input type="hidden" id="edit-category" value="assignment" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-due-date">Due Date</label>
+          <input type="date" id="edit-due-date" class="styled-native-date" />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="cancel-modal-btn" class="btn-secondary ripple-btn">Cancel</button>
+          <button type="submit" class="glow-btn ripple-btn">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- App Settings Modal -->
+  <div id="settings-modal" class="modal-overlay hidden" onclick="if(event.target === this) window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">
+    <div class="glass-card modal-card settings-modal-card">
+      <div class="modal-header">
+        <h3>App Settings</h3>
+        <button id="close-settings-modal-btn" class="icon-btn ripple-btn" onclick="window.closeSettingsModal &amp;&amp; window.closeSettingsModal(event)">&times;</button>
+      </div>
+
+      <div class="settings-options-list">
+        <!-- 📱 Mobile Widgets -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span>
+            <div>
+              <strong class="setting-title">Mobile Widgets (3x2, 3x3, 2x3)</strong>
+              <p class="setting-desc">Preview and configure mobile widgets</p>
+            </div>
+          </div>
+          <button id="open-widgets-from-settings" class="btn-secondary ripple-btn small-btn">Open</button>
+        </div>
+
+        <!-- 🔔 Notifications Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon" id="settings-notif-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd000" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
+            <div>
+              <strong class="setting-title">Lock-Screen Notifications</strong>
+              <p class="setting-desc" id="settings-notif-status">System and mobile push alerts</p>
+            </div>
+          </div>
+          <button id="settings-notif-btn" class="glow-btn ripple-btn small-btn">Toggle</button>
+        </div>
+
+        <!-- 🔊 Sound Effects Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon" id="settings-sound-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f59b" stroke-width="2.2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+            <div>
+              <strong class="setting-title">Audio & Sound Effects</strong>
+              <p class="setting-desc" id="settings-sound-status">Cute meow, purr, and chime sounds</p>
+            </div>
+          </div>
+          <button id="settings-sound-btn" class="glow-btn ripple-btn small-btn">Toggle</button>
+        </div>
+
+        <!-- Color Theme Palette -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff75c3" stroke-width="2.2"><circle cx="13.5" cy="6.5" r="2.5" fill="#ff75c3"/><circle cx="17.5" cy="10.5" r="2.5" fill="#00f2fe"/><circle cx="8.5" cy="7.5" r="2.5" fill="#ffd000"/><circle cx="6.5" cy="12" r="2.5" fill="#00f59b"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.04-.23-.29-.38-.63-.38-1.01 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.52-4.48-9.5-10-9.5z"/></svg></span>
+            <div>
+              <strong class="setting-title">Color Palette</strong>
+              <p class="setting-desc">Choose your vibe color</p>
+            </div>
+          </div>
+        </div>
+        <div class="setting-row" style="padding-top: 0;">
+          <div class="color-swatches" id="color-swatches">
+            <div class="color-swatch active" data-color="sakura" style="background: #ff75c3" title="Sakura Neon"></div>
+            <div class="color-swatch" data-color="violet" style="background: #9d4edd" title="Violet Dream"></div>
+            <div class="color-swatch" data-color="cyan" style="background: #00f2fe" title="Cyber Cyan"></div>
+            <div class="color-swatch" data-color="emerald" style="background: #00f59b" title="Emerald Matrix"></div>
+            <div class="color-swatch" data-color="solar" style="background: #ff7b00" title="Solar Flare"></div>
+            <div class="color-swatch" data-color="gold" style="background: #ffd000" title="Golden Hour"></div>
+            <div class="color-swatch" data-color="abyss" style="background: #3a86ff" title="Deep Abyss"></div>
+            <div class="color-swatch" data-color="crimson" style="background: #ff0055" title="Crimson Core"></div>
+          </div>
+        </div>
+
+        <!-- Background Motion -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c77dff" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            <div>
+              <strong class="setting-title">Background Motion</strong>
+              <p class="setting-desc">Control ambient animation</p>
+            </div>
+          </div>
+        </div>
+        <div class="setting-row" style="padding-top: 0;">
+          <div class="motion-toggle">
+            <button class="motion-btn active" data-motion-type="smooth">Smooth Ambient</button>
+            <button class="motion-btn" data-motion-type="static">Static Eco</button>
+          </div>
+        </div>
+
+        <!-- Dark/Light Mode Toggle -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
+            <div>
+              <strong class="setting-title">Dark / Light Mode</strong>
+              <p class="setting-desc" id="settings-theme-status">Midnight Velvet (Dark Mode)</p>
+            </div>
+          </div>
+          <button id="settings-theme-btn" class="btn-secondary ripple-btn small-btn">Switch</button>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1.5rem; justify-content: flex-end;">
+        <button type="button" id="done-settings-modal-btn" class="glow-btn ripple-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="sound-complete" src="assets/complete.mp3"></audio>
+  <audio id="sound-level-up" src="assets/level-up.mp3"></audio>
+
+  <!-- Custom Neon Calendar Modal -->
+  <div id="calendar-modal" class="modal">
+    <div class="modal-content glass-card" style="max-width: 340px;">
+      <div class="modal-header">
+        <h2 id="calendar-month-year" style="font-size: 1.2rem; color: var(--primary-glow); margin: 0;">August 2026</h2>
+        <div style="display: flex; gap: 10px;">
+          <button id="calendar-prev-btn" class="icon-btn" style="color: var(--primary-glow);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button id="calendar-next-btn" class="icon-btn" style="color: var(--primary-glow);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
+      
+      <div class="calendar-grid-header" style="display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; color: #a78bfa; font-size: 0.8rem; margin-top: 15px; margin-bottom: 5px;">
+        <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+      </div>
+      <div id="calendar-grid-days" class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center;">
+        <!-- JS fills this -->
+      </div>
+      
+      <div class="modal-actions" style="margin-top: 15px; justify-content: space-between;">
+        <button id="calendar-clear-btn" class="glass-btn secondary" style="padding: 6px 12px; font-size: 0.85rem;">Clear</button>
+        <div style="display: flex; gap: 10px;">
+          <button id="calendar-cancel-btn" class="glass-btn secondary" style="padding: 6px 12px; font-size: 0.85rem;">Cancel</button>
+          <button id="calendar-today-btn" class="glass-btn" style="padding: 6px 12px; font-size: 0.85rem; background: var(--primary-glow); color: #fff;">Today</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="custom-calendar.js"></script>
   <script src="app.js?v=4.0.0"></script>
 </body>
 </html>

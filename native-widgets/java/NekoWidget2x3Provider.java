@@ -72,40 +72,44 @@ public class NekoWidget2x3Provider extends AppWidgetProvider {
 
             if ("DELETE".equals(taskAction)) {
                 deleteTask(context, taskId);
+            } else if ("TOGGLE".equals(taskAction)) {
+                toggleTask(context, taskId);
             } else if ("EDIT".equals(taskAction)) {
-                setPendingActionAndLaunch(context, "{\"action\":\"edit\", \"taskId\":" + taskId + "}");
+                Intent editIntent = new Intent(context, WidgetTaskDialogActivity.class);
+                editIntent.putExtra("task_id", taskId);
+                editIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(editIntent);
             }
         } else if (ACTION_ADD.equals(action)) {
-            setPendingActionAndLaunch(context, "{\"action\":\"add\"}");
+            Intent addIntent = new Intent(context, WidgetTaskDialogActivity.class);
+            addIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(addIntent);
         } else if (ACTION_FILTER.equals(action)) {
-            cycleFilter(context);
+            Intent filterIntent = new Intent(context, WidgetFilterActivity.class);
+            filterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(filterIntent);
         }
     }
 
-    private void setPendingActionAndLaunch(Context context, String jsonAction) {
+    private void toggleTask(Context context, int taskId) {
         SharedPreferences prefs = context.getSharedPreferences("NekoWidgetData", Context.MODE_PRIVATE);
-        prefs.edit().putString("pending_action", jsonAction).apply();
-
-        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-        if (launchIntent != null) {
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(launchIntent);
+        String json = prefs.getString("tasks_json", "[]");
+        try {
+            JSONArray arr = new JSONArray(json);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                if (obj.optInt("id", -1) == taskId) {
+                    boolean comp = obj.optBoolean("completed", false);
+                    obj.put("completed", !comp);
+                    break;
+                }
+            }
+            prefs.edit().putString("tasks_json", arr.toString()).apply();
+            prefs.edit().putBoolean("widget_tasks_dirty", true).apply();
+            refreshWidgets(context);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    private void cycleFilter(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("NekoWidgetData", Context.MODE_PRIVATE);
-        String current = prefs.getString("widget_filter_category", "all");
-        String next = "all";
-        
-        if ("all".equals(current)) next = "study";
-        else if ("study".equals(current)) next = "project";
-        else if ("project".equals(current)) next = "assignment";
-        else if ("assignment".equals(current)) next = "home";
-        else next = "all";
-
-        prefs.edit().putString("widget_filter_category", next).apply();
-        refreshWidgets(context);
     }
 
     private void deleteTask(Context context, int taskId) {

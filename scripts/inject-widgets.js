@@ -53,6 +53,15 @@ if (fs.existsSync(manifestPath)) {
         <!-- Widget Task Service for scrollable ListView -->
         <service android:name=".WidgetTaskService"
                  android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <!-- Transparent Dialog Activities for Widget Quick Actions -->
+        <activity android:name=".WidgetFilterActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:excludeFromRecents="true" />
+                  
+        <activity android:name=".WidgetTaskDialogActivity"
+                  android:theme="@android:style/Theme.DeviceDefault.Dialog"
+                  android:excludeFromRecents="true" />
   `;
 
   if (!content.includes('NekoWidget3x2Provider')) {

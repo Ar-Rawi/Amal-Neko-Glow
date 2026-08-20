@@ -9,15 +9,26 @@
     android:paddingEnd="4dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_marginBottom="6dp"
+    android:background="@drawable/bg_task_active">
 
-    <!-- Task Text (No Checkbox) -->
+    <!-- Checkbox Button -->
+    <ImageView
+        android:id="@+id/task_check_btn"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/ic_uncheck"
+        android:contentDescription="Complete task"
+        android:padding="2dp" />
+
+    <!-- Task Text -->
     <TextView
         android:id="@+id/task_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="Task name"
         android:textColor="#d1c4e9"
@@ -25,13 +36,13 @@
         android:maxLines="2"
         android:ellipsize="end" />
 
-    <!-- Priority Orb -->
+    <!-- Priority Orb Glow -->
     <ImageView
         android:id="@+id/task_priority_orb"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_orb"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="6dp"
+        android:src="@drawable/ic_orb_glow"
         android:contentDescription="Task Priority" />
 
     <!-- Delete Action Button -->

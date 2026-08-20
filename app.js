@@ -340,15 +340,12 @@ if (window.Capacitor && window.Capacitor.Plugins.App && window.Capacitor.Plugins
     try {
       // 1. Sync any tasks toggled or deleted from the widget
       const { tasks: tasksJson } = await window.Capacitor.Plugins.WidgetBridge.getTasks();
-      if (tasksJson && tasksJson !== '[]') {
+      if (tasksJson) {
         const nativeTasks = JSON.parse(tasksJson);
-        // Only overwrite if the native tasks array actually changed (prevent empty overwrite)
-        if (nativeTasks.length > 0 || tasks.length > 0) {
-          tasks = nativeTasks;
-          localStorage.setItem('amal_study_todos_v3', JSON.stringify(tasks));
-          renderTasks();
-          updateStats();
-        }
+        tasks = nativeTasks;
+        localStorage.setItem('amal_study_todos_v3', JSON.stringify(tasks));
+        renderTasks();
+        updateStats();
       }
 
       // 2. Handle pending intents (Edit / Add clicked on widget)
@@ -375,6 +372,10 @@ if (window.Capacitor && window.Capacitor.Plugins.App && window.Capacitor.Plugins
   window.Capacitor.Plugins.App.addListener('appStateChange', ({ isActive }) => {
     if (isActive) syncFromWidget();
   });
+
+  if (window.initCustomCalendar) {
+    window.initCustomCalendar();
+  }
 }
 
 

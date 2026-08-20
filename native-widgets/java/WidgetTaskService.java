@@ -85,14 +85,14 @@ public class WidgetTaskService extends RemoteViewsService {
                 e.printStackTrace();
             }
 
-            // Colorize text
+            // Colorize background (not text)
             if (isOverdue) {
-                views.setTextColor(R.id.task_text, Color.parseColor("#fecaca")); // super-light red
+                views.setInt(R.id.task_item_container, "setBackgroundResource", R.drawable.bg_task_overdue);
             } else {
-                views.setTextColor(R.id.task_text, Color.parseColor("#a7f3d0")); // super-light green (active)
+                views.setInt(R.id.task_item_container, "setBackgroundResource", R.drawable.bg_task_active);
             }
 
-            // Set priority orb color
+            // Set priority orb color (tints the white gradient and core)
             int orbColor = Color.parseColor("#3b82f6"); // Default Low: blue
             if ("high".equals(task.priority)) {
                 orbColor = Color.parseColor("#ef4444"); // High: red
@@ -101,7 +101,13 @@ public class WidgetTaskService extends RemoteViewsService {
             }
             views.setInt(R.id.task_priority_orb, "setColorFilter", orbColor);
 
-            // Fill-in intent for tapping the task row (Edit)
+            // Fill-in intent for tapping the checkbox (Toggle)
+            Intent toggleIntent = new Intent();
+            toggleIntent.putExtra("task_id", task.id);
+            toggleIntent.putExtra("action", "TOGGLE");
+            views.setOnClickFillInIntent(R.id.task_check_btn, toggleIntent);
+
+            // Fill-in intent for tapping the task row (Edit Native Popup)
             Intent editIntent = new Intent();
             editIntent.putExtra("task_id", task.id);
             editIntent.putExtra("action", "EDIT");

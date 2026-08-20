@@ -3,9 +3,9 @@
     android:id="@+id/widget_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/widget_card_bg"
+    android:background="@drawable/bg_widget_glass"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="0dp">
 
     <!-- Header: Title -->
     <TextView
@@ -41,18 +41,20 @@
         <!-- Filter Button -->
         <ImageView
             android:id="@+id/widget_filter_btn"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_marginEnd="6dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="8dp"
             android:src="@drawable/ic_filter"
+            android:padding="4dp"
             android:contentDescription="Filter categories" />
 
         <!-- + Add Button -->
         <ImageView
             android:id="@+id/widget_add_btn"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@drawable/ic_add"
+            android:padding="4dp"
             android:contentDescription="Add task" />
     </LinearLayout>
 
