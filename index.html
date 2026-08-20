@@ -211,6 +211,80 @@
     </main>
   </div>
 
+  <!-- Mobile Widgets Drawer Modal -->
+  <div id="widgets-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card widgets-modal-card">
+      <div class="modal-header">
+        <h3>Mobile Widgets (3x2, 3x3, 2x3)</h3>
+        <button id="close-widgets-modal-btn" class="icon-btn ripple-btn" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-widget-tabs">
+        <button class="m-tab-btn active" data-wsize="3x2">3x2 Wide</button>
+        <button class="m-tab-btn" data-wsize="3x3">3x3 Square</button>
+        <button class="m-tab-btn" data-wsize="2x3">2x3 Tall</button>
+      </div>
+
+      <div class="modal-widget-preview-area">
+        <!-- 3x2 Preview -->
+        <div id="modal-w-3x2" class="widget-3x2">
+          <div class="widget-top-bar">
+            <div class="widget-brand">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff75c3" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/><circle cx="9" cy="11" r="1.2" fill="#ffd000"/><circle cx="15" cy="11" r="1.2" fill="#ffd000"/></svg>
+              <span>Neko Study 3x2</span>
+            </div>
+            <span class="widget-progress-pill" id="mw-3x2-progress">0% Done</span>
+          </div>
+          <ul class="widget-task-list" id="mw-3x2-tasks"></ul>
+          <div class="widget-bottom-bar">
+            <span id="mw-3x2-stats">0 Goals</span>
+            <span>Tap to check</span>
+          </div>
+        </div>
+
+        <!-- 3x3 Preview -->
+        <div id="modal-w-3x3" class="widget-3x3 hidden">
+          <div class="widget-top-bar">
+            <div class="widget-brand">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff75c3" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/><circle cx="9" cy="11" r="1.2" fill="#ffd000"/><circle cx="15" cy="11" r="1.2" fill="#ffd000"/></svg>
+              <span>Neko Dashboard 3x3</span>
+            </div>
+            <span class="widget-progress-pill" id="mw-3x3-progress">0% Done</span>
+          </div>
+          <ul class="widget-task-list" id="mw-3x3-tasks" style="max-height: 170px;"></ul>
+          <div class="widget-bottom-bar">
+            <span id="mw-3x3-stats">0 Goals</span>
+            <span>Purrrrr... ✨</span>
+          </div>
+        </div>
+
+        <!-- 2x3 Preview -->
+        <div id="modal-w-2x3" class="widget-2x3 hidden">
+          <div class="widget-top-bar">
+            <div class="widget-brand">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff75c3" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M12 5c-3 0-5 2-6 4-2-2-4-1-4 2 0 4 3 8 10 8s10-4 10-8c0-3-2-4-4-2-1-2-3-4-6-4z"/><circle cx="9" cy="11" r="1.2" fill="#ffd000"/><circle cx="15" cy="11" r="1.2" fill="#ffd000"/></svg>
+              <span>2x3 Tall</span>
+            </div>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--primary-glow); font-weight: 700; margin: 0.2rem 0;" id="mw-2x3-progress">
+            0% Completed
+          </div>
+          <ul class="widget-task-list" id="mw-2x3-tasks" style="max-height: 180px;"></ul>
+          <div class="widget-bottom-bar">
+            <span>Study Goals</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-actions" style="justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+        <a href="widget.html" target="_blank" class="text-btn" style="color: var(--primary-glow); font-weight: 600;">
+          ↗ Open Standalone Widgets
+        </a>
+        <button type="button" id="done-widgets-modal-btn" class="glow-btn ripple-btn">Done</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Custom Add Category Modal -->
   <div id="category-modal" class="modal-overlay hidden">
     <div class="glass-card modal-card cat-modal">
