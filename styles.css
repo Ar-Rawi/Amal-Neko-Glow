@@ -260,7 +260,7 @@ body[data-motion="static"] .cat-face-interactive {
   justify-content: space-between;
   margin-bottom: 2.8rem;
   position: relative;
-  z-index: 50;
+  z-index: 10;
 }
 
 .brand {
@@ -363,7 +363,8 @@ h1 {
 /* Glass Card & Cute Cat Mascot Header (Static & Peaceful) */
 .cat-card-container {
   position: relative;
-  margin-top: 3.8rem;
+  margin-top: 4rem;
+  z-index: 100;
 }
 
 .cat-mascot-header {
@@ -374,8 +375,9 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 30;
+  z-index: 500;
   overflow: visible;
+  isolation: isolate;
 }
 
 .cat-face-interactive {
@@ -410,7 +412,8 @@ h1 {
   position: absolute;
   top: -58px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateZ(0);
+  -webkit-transform: translateX(-50%) translateZ(0);
   white-space: nowrap;
   background: #140d22 !important;
   background-color: #140d22 !important;
@@ -1715,11 +1718,23 @@ h1 {
   }
 
   .cat-card-container {
-    margin-top: 3.4rem;
+    margin-top: 4.2rem;
+    z-index: 100 !important;
   }
 
   .cat-mascot-header {
-    top: -38px;
+    top: -42px;
+    z-index: 500 !important;
+  }
+
+  .purr-bubble {
+    top: -56px;
+    font-size: 0.88rem;
+    padding: 0.46rem 1.2rem;
+    background: #140d22 !important;
+    background-color: #140d22 !important;
+    opacity: 1 !important;
+    z-index: 9999999 !important;
   }
 
   .cat-face-interactive {
