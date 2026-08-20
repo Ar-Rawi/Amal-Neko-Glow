@@ -260,13 +260,15 @@ body[data-motion="static"] .cat-face-interactive {
   justify-content: space-between;
   margin-bottom: 2.8rem;
   position: relative;
-  z-index: 10;
+  z-index: 1 !important;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 1.1rem;
+  position: relative;
+  z-index: 1 !important;
 }
 
 .cat-badge {
@@ -292,6 +294,8 @@ h1 {
   background: linear-gradient(135deg, #fff 0%, var(--primary-glow) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  position: relative;
+  z-index: 1 !important;
 }
 
 .tag-v {
@@ -309,6 +313,8 @@ h1 {
   font-size: 0.92rem;
   color: var(--text-muted);
   margin-top: 0.2rem;
+  position: relative;
+  z-index: 1 !important;
 }
 
 .header-controls {
@@ -364,7 +370,7 @@ h1 {
 .cat-card-container {
   position: relative;
   margin-top: 4rem;
-  z-index: 100;
+  z-index: 1000 !important;
 }
 
 .cat-mascot-header {
@@ -375,7 +381,7 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 500;
+  z-index: 10000 !important;
   overflow: visible;
   isolation: isolate;
 }
@@ -410,28 +416,28 @@ h1 {
 
 .purr-bubble {
   position: absolute;
-  top: -58px;
+  top: -60px;
   left: 50%;
-  transform: translateX(-50%) translateZ(0);
-  -webkit-transform: translateX(-50%) translateZ(0);
+  transform: translateX(-50%) translateZ(100px);
+  -webkit-transform: translateX(-50%) translateZ(100px);
   white-space: nowrap;
-  background: #140d22 !important;
-  background-color: #140d22 !important;
+  background: linear-gradient(135deg, var(--primary-accent), var(--primary-glow)) !important;
+  background-color: var(--primary-glow) !important;
   color: #ffffff !important;
   font-size: 0.95rem;
   font-weight: 800;
   padding: 0.52rem 1.4rem;
-  border-radius: 20px;
-  box-shadow: 0 12px 35px #000000, 0 0 20px rgba(var(--glow-rgb), 0.7) !important;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85), 0 0 25px rgba(var(--glow-rgb), 0.8) !important;
   animation: popPurr 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 999999 !important;
+  z-index: 999999999 !important;
   pointer-events: none;
-  border: 2.5px solid var(--primary-glow) !important;
+  border: 2.5px solid #ffffff !important;
   opacity: 1 !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  isolation: isolate;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  isolation: isolate !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .purr-bubble::after {
@@ -444,22 +450,8 @@ h1 {
   height: 0;
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
-  border-top: 9px solid var(--primary-glow);
-  z-index: 1000000;
-}
-
-.purr-bubble::before {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 6px solid #140d22;
-  z-index: 1000001;
+  border-top: 9px solid var(--primary-glow) !important;
+  z-index: 1000000000;
 }
 
 [data-theme="light"] .purr-bubble {
@@ -1724,17 +1716,20 @@ h1 {
 
   .cat-mascot-header {
     top: -42px;
-    z-index: 500 !important;
+    z-index: 10000 !important;
   }
 
   .purr-bubble {
     top: -56px;
     font-size: 0.88rem;
     padding: 0.46rem 1.2rem;
-    background: #140d22 !important;
-    background-color: #140d22 !important;
+    background: linear-gradient(135deg, var(--primary-accent), var(--primary-glow)) !important;
+    background-color: var(--primary-glow) !important;
     opacity: 1 !important;
-    z-index: 9999999 !important;
+    z-index: 999999999 !important;
+    border: 2.5px solid #ffffff !important;
+    transform: translateX(-50%) translateZ(100px) !important;
+    -webkit-transform: translateX(-50%) translateZ(100px) !important;
   }
 
   .cat-face-interactive {

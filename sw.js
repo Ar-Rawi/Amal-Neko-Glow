@@ -1,6 +1,6 @@
 // sw.js — Service Worker with Network-First Strategy for Instant Production Updates
 
-const CACHE_NAME = 'amalneko-v18';
+const CACHE_NAME = 'amalneko-v19';
 const ASSETS = [
   './',
   './index.html',
