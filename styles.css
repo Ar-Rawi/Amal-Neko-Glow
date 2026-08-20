@@ -1070,21 +1070,24 @@ h1 {
 
 .action-btn.add-subtask-toggle {
   width: auto;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.8rem;
+  height: 28px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--primary-glow);
-  background: rgba(var(--glow-rgb), 0.12);
-  border: 1px solid rgba(var(--glow-rgb), 0.25);
-  border-radius: 10px;
+  background: rgba(var(--glow-rgb), 0.1);
+  border: 1px solid rgba(var(--glow-rgb), 0.22);
+  border-radius: 8px;
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.25rem;
+  line-height: 1;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .action-btn.add-subtask-toggle:hover {
-  background: rgba(var(--glow-rgb), 0.22);
+  background: rgba(var(--glow-rgb), 0.2);
   transform: translateY(-1px);
 }
 
@@ -1719,7 +1722,8 @@ h1 {
   .task-meta {
     flex-wrap: wrap;
     gap: 0.35rem;
-    margin-top: 0.35rem;
+    margin-top: 0.5rem;
+    align-items: center;
   }
 
   .task-actions {
@@ -1730,19 +1734,21 @@ h1 {
     padding-top: 0;
     margin-top: 0;
     flex-shrink: 0;
-    gap: 0.35rem;
+    gap: 0.3rem;
   }
 
   .action-btn {
-    min-width: 36px;
-    min-height: 36px;
-    padding: 0.4rem;
+    min-width: 32px;
+    min-height: 32px;
+    height: 32px;
+    padding: 0.3rem;
     border-radius: 8px;
   }
 
   .action-btn.add-subtask-toggle {
-    padding: 0.3rem 0.65rem;
-    font-size: 0.78rem;
+    height: 26px;
+    padding: 0.12rem 0.5rem;
+    font-size: 0.74rem;
   }
 
   /* Subtasks on Mobile */
